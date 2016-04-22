@@ -1,4 +1,4 @@
-FooClass,FC,,,,
-1,W,FooClass(File file),are you sure that you want to pass a null as an output file,,
-2,E,FooClass(File file),"the file ""<file>"" canot be written to",,
-3,E,write(String message),invalid message,,"you canot pass null or """" as a message"
+FooClass,FC,,,
+FC001,W,FooClass(File file),are you sure that you want to pass a null as an output file,
+FC002,E,FooClass(File file),"the file ""<file>"" canot be written to",
+FC003,E,write(String message),invalid message,"you canot pass null or """" as a message"
