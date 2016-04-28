@@ -5,6 +5,7 @@
 
 # IntelliJ personal stuff, I don't want those
 .idea/
+*.iml
 
 # Package Files #
 *.jar
