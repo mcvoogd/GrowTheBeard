@@ -12,8 +12,8 @@ public class TestPanel extends JPanel {
 
     private WiimoteHandler wiimoteHandler;
 
-    public TestPanel(){
-        wiimoteHandler = new WiimoteHandler();
+    public TestPanel(WiimoteHandler wiimoteHandler){
+        this.wiimoteHandler = wiimoteHandler;
         new Timer(10, e -> repaint()).start();
     }
 
