@@ -25,9 +25,9 @@ public class WiimoteHandler{
         SearchWiimotes();
     }
 
-    public static void main(String[] args){
-        new WiimoteHandler();
-    }
+//    public static void main(String[] args){
+//        new WiimoteHandler();
+//    }
 
     public void SearchWiimotes(){
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
@@ -140,11 +140,13 @@ public class WiimoteHandler{
                 }
             });
         }
+        System.out.println("Wiimotes connected");
     }
     
     public void drawDebug(Graphics2D g){
-        g.setColor(new Color(0, 0, 0, 63));
-        g.fillRect(0, 0, 200*wiimotes.length, 200);
+        System.out.println("Draw Debug");
+        g.setColor(new Color(120, 120, 120, 63));
+        g.fillRect(10, 10, 200, 200);
     }
     
     private void setButton(int wiimoteID, Buttons button, boolean value){
