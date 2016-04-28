@@ -1,11 +1,10 @@
 package GUI;
 
+import TimberGame.WiimoteHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by kevin on 28/04/2016.
- */
 public class FramePanel extends JFrame{
 
     public static void main(String[] args) {
@@ -14,11 +13,13 @@ public class FramePanel extends JFrame{
 
     public FramePanel()
     {
+        WiimoteHandler wiimoteHandler = new WiimoteHandler();  // bug-fix, don't ask
+        
         System.out.println("Frame constructed");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1920, 1080));
         setVisible(true);
         setResizable(false);
-        setContentPane(new PaintPanel());
+        setContentPane(new PaintPanel(wiimoteHandler));
     }
 }

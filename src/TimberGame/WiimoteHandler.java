@@ -25,9 +25,9 @@ public class WiimoteHandler{
         SearchWiimotes();
     }
 
-//    public static void main(String[] args){
-//        new WiimoteHandler();
-//    }
+    public static void main(String[] args){
+        new WiimoteHandler();
+    }
 
     public void SearchWiimotes(){
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
@@ -140,13 +140,26 @@ public class WiimoteHandler{
                 }
             });
         }
-        System.out.println("Wiimotes connected");
     }
     
     public void drawDebug(Graphics2D g){
-        System.out.println("Draw Debug");
-        g.setColor(new Color(120, 120, 120, 63));
-        g.fillRect(10, 10, 200, 200);
+        int width = 400;
+        int height = 200;
+        for(int i = 0; i < wiimotes.length; i++){
+            int j = width * i;
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(0, 0, width + j, height);
+            g.setColor(new Color(127, 127, 127, 127));
+            g.drawRect(0, 0, width + j, height);
+            Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
+            g.setFont(font);
+            g.setColor(new Color(255, 255, 255));
+            g.drawString("G-Force", 2 + j, 10);
+            g.drawString("Orientation", width/2 + 2 + j, 10);
+            g.setColor(new Color(255, 255, 255, 127));
+            g.drawLine(width/2 + j, 0, width/2 + j, height);
+            g.drawLine(j, height/2, width + j, height/2);
+        }
     }
     
     private void setButton(int wiimoteID, Buttons button, boolean value){
@@ -191,9 +204,27 @@ public class WiimoteHandler{
      * Returns true if there is a nunchuck connected.
      * 
      * @param wiimoteID index of list of connected wiimotes
-     * @return true if a nunchuck connected is
+     * @return true if a nunchuck is connected
      */
     public boolean isNunchuckConnected(int wiimoteID){
         return connectedNunchucks[wiimoteID];
+    }
+
+    /**
+     * Activates motion sensing on all connected wiimotes.
+     */
+    public void activateMotionSensing(){
+        for(Wiimote w : wiimotes){
+            w.activateMotionSensing();
+        }
+    }
+
+    /**
+     * Deactivates motion sensing on all connected wiimotes.
+     */
+    public void deactivateMotionSensing(){
+        for(Wiimote w : wiimotes){
+            w.deactivateMotionSensing();
+        }
     }
 }

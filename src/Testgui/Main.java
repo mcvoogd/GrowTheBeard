@@ -5,9 +5,6 @@ import TimberGame.WiimoteHandler;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by Harmen on 28-4-2016.
- */
 public class Main extends JFrame{
 
     private WiimoteHandler wiimoteHandler;
