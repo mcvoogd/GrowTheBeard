@@ -8,7 +8,8 @@
 *.iml
 
 # Package Files #
-*.jar
+# But exclude the fucking .jar cuz we need it
+#*.jar
 *.war
 *.ear
 
