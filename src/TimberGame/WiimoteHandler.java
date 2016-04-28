@@ -23,9 +23,6 @@ public class WiimoteHandler{
 
     public WiimoteHandler(){
         SearchWiimotes();
-        while(true){
-            System.out.println("kaas");
-        }
     }
 
     public static void main(String[] args){
@@ -146,7 +143,8 @@ public class WiimoteHandler{
     }
     
     public void drawDebug(Graphics2D g){
-        
+        g.setColor(new Color(0, 0, 0, 63));
+        g.fillRect(0, 0, 200*wiimotes.length, 200);
     }
     
     private void setButton(int wiimoteID, Buttons button, boolean value){
