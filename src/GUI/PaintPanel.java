@@ -10,14 +10,17 @@ public class PaintPanel extends JPanel{
     private int fontsize = 20;
     private final int MAXFONT = 30;
     private final int MINFONT = 5;
+    private Timer timer;
     
     private WiimoteHandler wiimoteHandler;
     private boolean drawDebug = true;  // TODO: I'd like a keylistener for this, F3 please
 
     public PaintPanel(WiimoteHandler wiimoteHandler) {
         System.out.println("Paint Panel constructed");
-        new Timer(1000/60, e -> repaint()).start();
+        timer = new Timer(1000/60, e -> repaint());
+        timer.start();
         this.wiimoteHandler = wiimoteHandler;
+        wiimoteHandler.activateMotionSensing();
     }
 
     public void paintComponent(Graphics g)

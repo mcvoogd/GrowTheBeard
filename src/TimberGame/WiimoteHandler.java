@@ -2,6 +2,8 @@ package TimberGame;
 
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
+import wiiusej.values.GForce;
+import wiiusej.values.Orientation;
 import wiiusej.wiiusejevents.physicalevents.*;
 import wiiusej.wiiusejevents.utils.WiimoteListener;
 import wiiusej.wiiusejevents.wiiuseapievents.*;
@@ -9,24 +11,33 @@ import wiiusej.wiiusejevents.wiiuseapievents.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.LinkedList;
 
 public class WiimoteHandler{
+
+    private float[] battery = new float[4];
+
+    public void setBattery(int wiimoteID, float battery){
+        this.battery[wiimoteID] = battery;
+    }
+
     public enum Buttons{
         KEY_HOME, KEY_1, KEY_2, KEY_A, KEY_B, KEY_MINUS, KEY_PLUS, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT
     }
     
     private Wiimote[] wiimotes;
-    private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>(4);
-    private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>(4);
+    private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
+    private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
+    private GForce gForce;
+    private Orientation orientation;
 
     private boolean[] connectedNunchucks = new boolean[4];
+    
+    private LinkedList<GForce> gForceList = new LinkedList<>();
+    private LinkedList<Orientation> orientationList = new LinkedList<>();
 
     public WiimoteHandler(){
         SearchWiimotes();
-    }
-
-    public static void main(String[] args){
-        new WiimoteHandler();
     }
 
     public void SearchWiimotes(){
@@ -93,7 +104,11 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent){
+                public void onMotionSensingEvent(MotionSensingEvent e){
+                    setgForce(e.getGforce());
+                    storeGForce(e.getGforce());
+                    setOrientation(e.getOrientation());
+                    storeOrientation(e.getOrientation());
                 }
 
                 @Override
@@ -106,7 +121,8 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onStatusEvent(StatusEvent statusEvent){
+                public void onStatusEvent(StatusEvent e){
+                    setBattery(finalI, e.getBatteryLevel());
                 }
 
                 @Override
@@ -142,23 +158,80 @@ public class WiimoteHandler{
         }
     }
     
+    private void setgForce(GForce gForce){
+        this.gForce = gForce;
+    }
+    
+    private void setOrientation(Orientation orientation){
+        this.orientation = orientation;
+    }
+    
+    private void storeGForce(GForce gForce){
+        gForceList.add(gForce);
+    }
+    
+    private void storeOrientation(Orientation orientation){
+        orientationList.add(orientation);
+    }
+
     public void drawDebug(Graphics2D g){
         int width = 400;
         int height = 200;
+        int scale = 12;
         for(int i = 0; i < wiimotes.length; i++){
-            int j = width * i;
-            g.setColor(new Color(0, 0, 0, 127));
-            g.fillRect(0, 0, width + j, height);
-            g.setColor(new Color(127, 127, 127, 127));
-            g.drawRect(0, 0, width + j, height);
+            int offset = width * i;
             Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
             g.setFont(font);
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(0, 0, width + offset, height);
+            
+            g.setColor(new Color(127, 127, 127, 255));  // draw 0 line
+            g.drawLine(offset, height/2, width + offset, height/2);
+            
+            for(int x = 1; x < gForceList.size(); x++){  // x = x coordinate on screen
+                g.setColor(new Color(255, 0, 0));
+                g.drawLine(x - 1, Math.round(gForceList.get(x-1).getX() * -(height/scale) + height/2), x, Math.round(gForceList.get(x).getX() * -(height/scale) + height/2));
+                g.setColor(new Color(0, 255, 0));
+                g.drawLine(x - 1, Math.round(gForceList.get(x-1).getY() * -(height/scale) + height/2), x, Math.round(gForceList.get(x).getY() * -(height/scale) + height/2));
+                g.setColor(new Color(0, 0, 255));
+                g.drawLine(x - 1, Math.round(gForceList.get(x-1).getZ() * -(height/scale) + height/2), x, Math.round(gForceList.get(x).getZ() * -(height/scale) + height/2));
+            }
+            for(int x = 1; x < orientationList.size(); x++){
+                g.setColor(new Color(255, 255, 0));
+                g.drawLine(x - 1 + width/2, Math.round(orientationList.get(x-1).getPitch()/36 * -(height/scale) + height/2), x + width/2 , Math.round(orientationList.get(x).getPitch()/36 * -(height /scale) + height/2));
+                g.setColor(new Color(0, 255, 255));
+                g.drawLine(x - 1 + width/2, Math.round(orientationList.get(x-1).getRoll()/36 * -(height/scale) + height/2), x + width/2 , Math.round(orientationList.get(x).getRoll()/36 * -(height /scale) + height/2));
+            }
             g.setColor(new Color(255, 255, 255));
-            g.drawString("G-Force", 2 + j, 10);
-            g.drawString("Orientation", width/2 + 2 + j, 10);
-            g.setColor(new Color(255, 255, 255, 127));
-            g.drawLine(width/2 + j, 0, width/2 + j, height);
-            g.drawLine(j, height/2, width + j, height/2);
+            g.drawString("G-Force", 2 + offset, 10);
+            g.drawString("Orientation", width/2 + 2 + offset, 10);
+            g.drawString("X = " + gForceList.getLast().getX(), 2, 20);
+            g.drawString("Y = " + gForceList.getLast().getY(), 2, 30);
+            g.drawString("Z = " + gForceList.getLast().getZ(), 2, 40);
+            g.drawString("Pitch = " + orientationList.getLast().getPitch(), width/2+2, 20);
+            g.drawString("Roll = " + orientationList.getLast().getRoll(), width/2+2, 30);
+            g.setColor(new Color(255, 255, 255, 127));  // draw middle line
+            g.drawLine(width/2 + offset, 0, width/2 + offset, height);
+            
+            if(battery[i] < 0.2f){
+                g.setColor(new Color(255, 0, 0));
+            }else{
+                g.setColor(new Color(0,255,0));
+            }
+            g.fillRect(2, height-12, Math.round(50*battery[i]), 10);
+            g.setColor(new Color(255, 255, 255));
+            g.drawRect(2, height-12, 50, 10);
+            
+            g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
+            g.drawRect(0, 0, width + offset, height);
+        }
+        
+        // clean up lists
+        while(gForceList.size() > width/2){
+            gForceList.remove();
+        }
+        while(orientationList.size() > width/2){
+            orientationList.remove();
         }
     }
     
