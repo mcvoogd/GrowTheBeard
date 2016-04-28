@@ -2,18 +2,15 @@ package TimberGame;
 
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
-import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
-import wiiusej.wiiusejevents.physicalevents.IREvent;
-import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
+import wiiusej.wiiusejevents.physicalevents.*;
 import wiiusej.wiiusejevents.utils.WiimoteListener;
 import wiiusej.wiiusejevents.wiiuseapievents.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
 public class WiimoteHandler{
-    
     public enum Buttons{
         KEY_HOME, KEY_1, KEY_2, KEY_A, KEY_B, KEY_MINUS, KEY_PLUS, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT
     }
@@ -22,8 +19,13 @@ public class WiimoteHandler{
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>(4);
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>(4);
 
+    private boolean[] connectedNunchucks = new boolean[4];
+
     public WiimoteHandler(){
         SearchWiimotes();
+        while(true){
+            System.out.println("kaas");
+        }
     }
 
     public static void main(String[] args){
@@ -31,7 +33,7 @@ public class WiimoteHandler{
     }
 
     public void SearchWiimotes(){
-        wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
             boolean[] bool = new boolean[4];
             for(int j = 0; j < bool.length; j++){
@@ -98,7 +100,12 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onExpansionEvent(ExpansionEvent expansionEvent){
+                public void onExpansionEvent(ExpansionEvent e){
+                    if(e instanceof NunchukEvent){
+                        NunchukEvent ne = (NunchukEvent) e;
+                        System.out.println(ne.getNunchukJoystickEvent().getAngle());
+                        System.out.println(ne.getNunchukJoystickEvent().getMagnitude());
+                    }
                 }
 
                 @Override
@@ -110,11 +117,13 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent){
+                public void onNunchukInsertedEvent(NunchukInsertedEvent e){
+                    setNunchuckConnected(e.getWiimoteId(), true);
                 }
 
                 @Override
-                public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent){
+                public void onNunchukRemovedEvent(NunchukRemovedEvent e){
+                    setNunchuckConnected(e.getWiimoteId(), false);
                 }
 
                 @Override
@@ -134,6 +143,10 @@ public class WiimoteHandler{
                 }
             });
         }
+    }
+    
+    public void drawDebug(Graphics2D g){
+        
     }
     
     private void setButton(int wiimoteID, Buttons button, boolean value){
@@ -168,5 +181,19 @@ public class WiimoteHandler{
      */
     public boolean getIsButtonDown(int wiimoteID, Buttons button){
         return heldButtons.get(wiimoteID).get(button);
+    }
+
+    private void setNunchuckConnected(int nunchuck, boolean value){
+        connectedNunchucks[nunchuck] = value;
+    }
+
+    /**
+     * Returns true if there is a nunchuck connected.
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     * @return true if a nunchuck connected is
+     */
+    public boolean isNunchuckConnected(int wiimoteID){
+        return connectedNunchucks[wiimoteID];
     }
 }

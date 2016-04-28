@@ -1,5 +1,7 @@
 package GUI;
 
+import TimberGame.WiimoteHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +13,9 @@ public class PaintPanel extends JPanel {
     private int fontsize = 20;
     private final int MAXFONT = 30;
     private final int MINFONT = 5;
+    
+    private WiimoteHandler wiimoteHandler = new WiimoteHandler();
+    private boolean drawDebug = true;  // TODO: I'd like a keylistener for this, F3 please
 
 
     public PaintPanel() {
@@ -26,6 +31,10 @@ public class PaintPanel extends JPanel {
         g2d.setFont(new Font("Purisa", Font.PLAIN, fontsize));
         g2d.drawString("Timber Game", 960, 540);
         drawStart(g2d);
+        
+        if(drawDebug){
+            wiimoteHandler.drawDebug(g2d);
+        }
     }
 
     public void drawStart(Graphics2D g2d)
