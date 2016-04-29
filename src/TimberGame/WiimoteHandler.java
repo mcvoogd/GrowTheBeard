@@ -1,5 +1,6 @@
 package TimberGame;
 
+import sun.awt.image.ImageWatched;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.GForce;
@@ -35,6 +36,8 @@ public class WiimoteHandler{
     
     private LinkedList<LinkedList<GForce>> gForceList = new LinkedList<>();
     private LinkedList<LinkedList<Orientation>> orientationList = new LinkedList<>();
+    private LinkedList<LinkedList<GForce>> gForceNunchuckList = new LinkedList<>();
+    private LinkedList<LinkedList<Orientation>> orientationNunchuckList = new LinkedList<>();
     
     public WiimoteHandler(){
         SearchWiimotes();
@@ -46,6 +49,8 @@ public class WiimoteHandler{
             gForceList.add(i, new LinkedList<>());
             orientationList.add(i, new LinkedList<>());
             pressedButtons.add(new EnumMap<>(Buttons.class));
+            gForceNunchuckList.add(i, new LinkedList<>());
+            orientationNunchuckList.add(i, new LinkedList<>());
             heldButtons.add(new EnumMap<>(Buttons.class));
             boolean[] bool = new boolean[4];
             for(int j = 0; j < bool.length; j++){
@@ -57,11 +62,8 @@ public class WiimoteHandler{
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
                 public void onButtonsEvent(WiimoteButtonsEvent e){  // godfuckingdamnit why can't this be easier, jesus fuck.
-                    if(e.isButtonHomeJustPressed()){
-                        System.out.println("FinalI: " + finalI);
+                    if(e.isButtonHomeJustPressed())
                         setButton(finalI, Buttons.KEY_HOME, true);
-                    }
-
                     if(e.isButtonHomeJustReleased())
                         setButton(finalI, Buttons.KEY_HOME, false);
                     if(e.isButtonOneJustPressed())
@@ -122,8 +124,11 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
-//                        System.out.println(ne.getNunchukJoystickEvent().getAngle());
-//                        System.out.println(ne.getNunchukJoystickEvent().getMagnitude());
+                        if(ne.isThereMotionSensingEvent()){
+                            MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
+                            storeNunchuckGForce(finalI, me.getGforce());
+                            storeNunchuckOrentation(finalI, me.getOrientation());
+                        }
                     }
                 }
 
@@ -181,6 +186,14 @@ public class WiimoteHandler{
         orientationList.get(wiimoteID).add(orientation);
     }
 
+    private void storeNunchuckGForce(int wiiMoteID, GForce gForce){
+        gForceNunchuckList.get(wiiMoteID).add(gForce);
+    }
+
+    private void storeNunchuckOrentation(int wiiMoteID, Orientation orientation){
+        orientationNunchuckList.get(wiiMoteID).add(orientation);
+    }
+
     public void drawDebug(Graphics2D g){
         int width = 400;
         int height = 200;
@@ -194,7 +207,6 @@ public class WiimoteHandler{
             
             g.setColor(new Color(127, 127, 127, 255));  // draw 0 line
             g.drawLine(offset, height/2, width, height/2);
-            
             for(int x = 1; x < gForceList.get(i).size(); x++){  // x = x coordinate on screen
                 LinkedList<GForce> gf = gForceList.get(i);
                 g.setColor(new Color(255, 0, 0));
@@ -204,6 +216,7 @@ public class WiimoteHandler{
                 g.setColor(new Color(0, 0, 255));
                 g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
             }
+
             for(int x = 1; x < orientationList.get(i).size(); x++){
                 LinkedList<Orientation> o = orientationList.get(i);
                 g.setColor(new Color(255, 255, 0));
@@ -234,11 +247,29 @@ public class WiimoteHandler{
             g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
             g.drawRect(0, 0, width + offset, height);
 
-//           System.out.println(isNunchuckConnected(i));
-
             if(isNunchuckConnected(i)){
-                System.out.println("Draw nunchuck");
 
+                g.setColor(new Color(0, 0, 0, 127));
+                g.fillRect(offset, height, width, height);
+                height = height * 3; //TODO fix better
+
+                for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){  // x = x coordinate on screen
+                    LinkedList<GForce> gf = gForceNunchuckList.get(i);
+                    g.setColor(new Color(255, 0, 0));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
+                    g.setColor(new Color(0, 255, 0));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
+                    g.setColor(new Color(0, 0, 255));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
+                }
+
+                for(int x = 1; x < orientationNunchuckList.get(i).size(); x++){
+                    LinkedList<Orientation> o = orientationNunchuckList.get(i);
+                    g.setColor(new Color(255, 255, 0));
+                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
+                    g.setColor(new Color(0, 255, 255));
+                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
+                }
             }
             // clean up lists
             while(gForceList.get(i).size() > width/2){
@@ -246,6 +277,12 @@ public class WiimoteHandler{
             }
             while(orientationList.get(i).size() > width/2){
                 orientationList.get(i).remove();
+            }
+            while(gForceNunchuckList.get(i).size() > width/2){
+                gForceNunchuckList.get(i).remove();
+            }
+            while(orientationNunchuckList.get(i).size() > width/2){
+                orientationNunchuckList.get(i).remove();
             }
         }
     }
