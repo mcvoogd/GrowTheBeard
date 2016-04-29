@@ -5,10 +5,7 @@ import TimberGame.WiimoteHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +29,6 @@ public class PaintPanel extends JPanel{
         timer.start();
         this.wiimoteHandler = wiimoteHandler;
         wiimoteHandler.activateMotionSensing();
-        new Timer(1000/60, e -> repaint()).start();
         try {
             background = ImageIO.read(new File("start.png"));
             System.out.println("read succesvol");
@@ -46,11 +42,14 @@ public class PaintPanel extends JPanel{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        
+        g2d.drawImage(background, 0, 0, null);
+        drawStart(g2d, "Press A + B to start");
+        
+        // always as last
         if(drawDebug){
             wiimoteHandler.drawDebug(g2d);
         }
-        g2d.drawImage(background, 0, 0, null);
-        drawStart(g2d, "Press A + B to start");
     }
 
     public void drawStart(Graphics2D g2d, String text)

@@ -190,26 +190,26 @@ public class WiimoteHandler{
             Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
             g.setFont(font);
             g.setColor(new Color(0, 0, 0, 127));
-            g.fillRect(offset, 0, width + (width*i), height);
+            g.fillRect(offset, 0, width, height);
             
             g.setColor(new Color(127, 127, 127, 255));  // draw 0 line
-            g.drawLine(offset, height/2, width + offset, height/2);
+            g.drawLine(offset, height/2, width, height/2);
             
-            for(int x = 1; x < gForceList.size(); x++){  // x = x coordinate on screen
+            for(int x = 1; x < gForceList.get(i).size(); x++){  // x = x coordinate on screen
                 LinkedList<GForce> gf = gForceList.get(i);
                 g.setColor(new Color(255, 0, 0));
-                g.drawLine(x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
+                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
                 g.setColor(new Color(0, 255, 0));
-                g.drawLine(x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
+                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
                 g.setColor(new Color(0, 0, 255));
-                g.drawLine(x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
+                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
             }
-            for(int x = 1; x < orientationList.size(); x++){
+            for(int x = 1; x < orientationList.get(i).size(); x++){
                 LinkedList<Orientation> o = orientationList.get(i);
                 g.setColor(new Color(255, 255, 0));
-                g.drawLine(x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
+                g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
                 g.setColor(new Color(0, 255, 255));
-                g.drawLine(x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
+                g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
             }
             g.setColor(new Color(255, 255, 255));
             g.drawString("G-Force", 2 + offset, 10);
@@ -227,20 +227,20 @@ public class WiimoteHandler{
             }else{
                 g.setColor(new Color(0,255,0));
             }
-            g.fillRect(offset + 2, height-12, Math.round(offset + 50*battery[i]), 10);
+            g.fillRect(offset + 2, height-12, Math.round(50*battery[i]), 10);
             g.setColor(new Color(255, 255, 255));
-            g.drawRect(offset + 2, height-12, offset + 50, 10);
+            g.drawRect(offset + 2, height-12, 50, 10);
             
             g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
             g.drawRect(0, 0, width + offset, height);
-        }
-        
-        // clean up lists
-        while(gForceList.size() > width/2){
-            gForceList.remove();
-        }
-        while(orientationList.size() > width/2){
-            orientationList.remove();
+            
+            // clean up lists
+            while(gForceList.get(i).size() > width/2){
+                gForceList.get(i).remove();
+            }
+            while(orientationList.get(i).size() > width/2){
+                orientationList.get(i).remove();
+            }
         }
     }
     
