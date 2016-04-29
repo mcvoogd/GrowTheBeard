@@ -278,18 +278,34 @@ public class WiimoteHandler{
                     g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2 + height), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2 + height));
                 }
 
+                g.setColor(new Color(255, 255, 255));
+                int startHeight = height;
+                g.drawString("G-Force", 2 + offset, startHeight + 10);
+                g.drawString("Orientation", width/2 + 2 + offset, startHeight + 10);
+                g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2, startHeight +  20);
+                g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2, startHeight + 30);
+                g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2, startHeight + 40);
+                g.drawString("Pitch = " + orientationNunchuckList.get(i).getLast().getPitch(), offset + width/2+2, startHeight + 20);
+                g.drawString("Roll = " + orientationNunchuckList.get(i).getLast().getRoll(), offset + width/2+2, startHeight + 30);
+                g.setColor(new Color(255, 255, 255, 127));  // draw middle line
+                g.drawLine(width/2 + offset, offset, width/2 + offset, startHeight + height);
+
+                g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
+                g.drawRect(offset, startHeight, width + offset, height);
+
                 g.setColor(new Color(0, 0, 0, 127));
                 g.fillRect(offset, height + height, width/2, height);
                 g.setColor(new Color(40, 40, 40, 127));
                 g.fill(new Ellipse2D.Double(offset, height + height, width/2, height));
-                
+                g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
+                g.drawRect(offset, startHeight, width/2 + offset,startHeight + height);
+
                 int dotSize = 20;
                 double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/4 - dotSize/2) * joystickEvents[i].getMagnitude())));
                 double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotSize/2) * joystickEvents[i].getMagnitude())));
                 g.setColor(new Color(255, 0, 0));
                 g.fill(new Ellipse2D.Double(Math.round(x + width/4 - dotSize/2 + offset), Math.round(y + 2*height + height/2 - dotSize/2), dotSize, dotSize));
             }
-            
             // clean up lists
             while(gForceWiimoteList.get(i).size() > width/2){
                 gForceWiimoteList.get(i).remove();
