@@ -1,6 +1,5 @@
 package TimberGame;
 
-import sun.awt.image.ImageWatched;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.GForce;
@@ -34,8 +33,8 @@ public class WiimoteHandler{
 
     private boolean[] connectedNunchucks = new boolean[4];
     
-    private LinkedList<LinkedList<GForce>> gForceList = new LinkedList<>();
-    private LinkedList<LinkedList<Orientation>> orientationList = new LinkedList<>();
+    private LinkedList<LinkedList<GForce>> gForceWiimoteList = new LinkedList<>();
+    private LinkedList<LinkedList<Orientation>> orientationWiimoteList = new LinkedList<>();
     private LinkedList<LinkedList<GForce>> gForceNunchuckList = new LinkedList<>();
     private LinkedList<LinkedList<Orientation>> orientationNunchuckList = new LinkedList<>();
     
@@ -46,8 +45,8 @@ public class WiimoteHandler{
     public void SearchWiimotes(){
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
-            gForceList.add(i, new LinkedList<>());
-            orientationList.add(i, new LinkedList<>());
+            gForceWiimoteList.add(i, new LinkedList<>());
+            orientationWiimoteList.add(i, new LinkedList<>());
             pressedButtons.add(new EnumMap<>(Buttons.class));
             gForceNunchuckList.add(i, new LinkedList<>());
             orientationNunchuckList.add(i, new LinkedList<>());
@@ -124,11 +123,9 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
-                        if(ne.isThereMotionSensingEvent()){
-                            MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
-                            storeNunchuckGForce(finalI, me.getGforce());
-                            storeNunchuckOrentation(finalI, me.getOrientation());
-                        }
+                        MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
+                        storeNunchuckGForce(finalI, me.getGforce());
+                        storeNunchuckOrentation(finalI, me.getOrientation());
                     }
                 }
 
@@ -179,11 +176,11 @@ public class WiimoteHandler{
     }
     
     private void storeGForce(int wiimoteID, GForce gForce){
-        gForceList.get(wiimoteID).add(gForce);
+        gForceWiimoteList.get(wiimoteID).add(gForce);
     }
     
     private void storeOrientation(int wiimoteID, Orientation orientation){
-        orientationList.get(wiimoteID).add(orientation);
+        orientationWiimoteList.get(wiimoteID).add(orientation);
     }
 
     private void storeNunchuckGForce(int wiiMoteID, GForce gForce){
@@ -194,6 +191,7 @@ public class WiimoteHandler{
         orientationNunchuckList.get(wiiMoteID).add(orientation);
     }
 
+    @SuppressWarnings("Duplicates")
     public void drawDebug(Graphics2D g){
         int width = 400;
         int height = 200;
@@ -205,10 +203,10 @@ public class WiimoteHandler{
             g.setColor(new Color(0, 0, 0, 127));
             g.fillRect(offset, 0, width, height);
             
-            g.setColor(new Color(127, 127, 127, 255));  // draw 0 line
+            g.setColor(new Color(255, 255, 255, 63));  // draw 0 line
             g.drawLine(offset, height/2, width, height/2);
-            for(int x = 1; x < gForceList.get(i).size(); x++){  // x = x coordinate on screen
-                LinkedList<GForce> gf = gForceList.get(i);
+            for(int x = 1; x < gForceWiimoteList.get(i).size(); x++){  // x = x coordinate on screen
+                LinkedList<GForce> gf = gForceWiimoteList.get(i);
                 g.setColor(new Color(255, 0, 0));
                 g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
                 g.setColor(new Color(0, 255, 0));
@@ -217,8 +215,8 @@ public class WiimoteHandler{
                 g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
             }
 
-            for(int x = 1; x < orientationList.get(i).size(); x++){
-                LinkedList<Orientation> o = orientationList.get(i);
+            for(int x = 1; x < orientationWiimoteList.get(i).size(); x++){
+                LinkedList<Orientation> o = orientationWiimoteList.get(i);
                 g.setColor(new Color(255, 255, 0));
                 g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
                 g.setColor(new Color(0, 255, 255));
@@ -227,11 +225,11 @@ public class WiimoteHandler{
             g.setColor(new Color(255, 255, 255));
             g.drawString("G-Force", 2 + offset, 10);
             g.drawString("Orientation", width/2 + 2 + offset, 10);
-            g.drawString("X = " + gForceList.get(i).getLast().getX(), offset + 2, 20);
-            g.drawString("Y = " + gForceList.get(i).getLast().getY(), offset + 2, 30);
-            g.drawString("Z = " + gForceList.get(i).getLast().getZ(), offset + 2, 40);
-            g.drawString("Pitch = " + orientationList.get(i).getLast().getPitch(), offset + width/2+2, 20);
-            g.drawString("Roll = " + orientationList.get(i).getLast().getRoll(), offset + width/2+2, 30);
+            g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
+            g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
+            g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
+            g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + width/2+2, 20);
+            g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + width/2+2, 30);
             g.setColor(new Color(255, 255, 255, 127));  // draw middle line
             g.drawLine(width/2 + offset, 0, width/2 + offset, height);
             
@@ -251,32 +249,31 @@ public class WiimoteHandler{
 
                 g.setColor(new Color(0, 0, 0, 127));
                 g.fillRect(offset, height, width, height);
-                height = height * 3; //TODO fix better
 
-                for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){  // x = x coordinate on screen
+                for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){
                     LinkedList<GForce> gf = gForceNunchuckList.get(i);
                     g.setColor(new Color(255, 0, 0));
-                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2 + height), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2 + height));
                     g.setColor(new Color(0, 255, 0));
-                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2 + height), offset + x, Math.round(gf.get(x).getY() * -(height/scale) + height/2 + height));
                     g.setColor(new Color(0, 0, 255));
-                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2 + height), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2 + height));
                 }
 
                 for(int x = 1; x < orientationNunchuckList.get(i).size(); x++){
                     LinkedList<Orientation> o = orientationNunchuckList.get(i);
                     g.setColor(new Color(255, 255, 0));
-                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
+                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2 + height), offset + x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2 + height));
                     g.setColor(new Color(0, 255, 255));
-                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
+                    g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2 + height), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2 + height));
                 }
             }
             // clean up lists
-            while(gForceList.get(i).size() > width/2){
-                gForceList.get(i).remove();
+            while(gForceWiimoteList.get(i).size() > width/2){
+                gForceWiimoteList.get(i).remove();
             }
-            while(orientationList.get(i).size() > width/2){
-                orientationList.get(i).remove();
+            while(orientationWiimoteList.get(i).size() > width/2){
+                orientationWiimoteList.get(i).remove();
             }
             while(gForceNunchuckList.get(i).size() > width/2){
                 gForceNunchuckList.get(i).remove();
