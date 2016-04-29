@@ -15,10 +15,11 @@ public class Main extends JFrame{
 
     public Main(){
         wiimoteHandler = new WiimoteHandler();
+        TestPanel panel = new TestPanel(wiimoteHandler);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1920, 1080));
         setVisible(true);
         setResizable(false);
-        setContentPane(new TestPanel(wiimoteHandler));
+        setContentPane(panel);
     }
 }

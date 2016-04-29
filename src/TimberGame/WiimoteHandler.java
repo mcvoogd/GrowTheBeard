@@ -5,6 +5,7 @@ import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.utils.NunchukJoystickEventPanel;
 import wiiusej.values.GForce;
+import wiiusej.values.IRSource;
 import wiiusej.values.Orientation;
 import wiiusej.wiiusejevents.physicalevents.*;
 import wiiusej.wiiusejevents.utils.WiimoteListener;
@@ -12,6 +13,7 @@ import wiiusej.wiiusejevents.wiiuseapievents.*;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -30,6 +32,7 @@ public class WiimoteHandler{
     
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
+    private IRSource[] irSources;
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
     private GForce gForce;
@@ -62,6 +65,7 @@ public class WiimoteHandler{
             }
             bool[i] = true;
             wiimotes[i].setLeds(bool[0], bool[1], bool[2], bool[3]);
+            wiimotes[i].activateIRTRacking();
             final int finalI = i;  // Java anonymous classes can't handle swag, but can handle final variables.
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
@@ -113,7 +117,12 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onIrEvent(IREvent irEvent){
+                public void onIrEvent(IREvent e){
+                    irSources = e.getIRPoints();
+                    IRSource[] list = e.getIRPoints();
+                    for (int i = 0; i < list.length; i++) {
+                        System.out.println("IR Point:" + i + " X ir:" + list[i].getX() + " Y ir:" + list[i].getY());
+                    }
                 }
 
                 @Override
@@ -306,6 +315,21 @@ public class WiimoteHandler{
                 g.setColor(new Color(255, 0, 0));
                 g.fill(new Ellipse2D.Double(Math.round(x + width/4 - dotSize/2 + offset), Math.round(y + 2*height + height/2 - dotSize/2), dotSize, dotSize));
             }
+
+            //Draw IR points
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(offset + width/2, height + height, width/2, height);
+            for (int j = 0; j < irSources.length; j++) {
+                int x = irSources[i].getX();
+                int y = irSources[i].getY();
+                double scaleFactor = (double)height / 1000;
+                double newX = (double)x * scaleFactor;
+                double newY = (double)y * scaleFactor;
+                System.out.println("Draw X:" + newX + " Draw Y:" + newY + " Scale:" + scaleFactor);
+                g.setColor(Color.BLUE);
+                g.fill(new Rectangle2D.Double(newX + offset + width/2, newY + height + height, 5, 5));
+            }
+
             // clean up lists
             while(gForceWiimoteList.get(i).size() > width/2){
                 gForceWiimoteList.get(i).remove();
