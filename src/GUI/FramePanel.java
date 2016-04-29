@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FramePanel extends JFrame{
-
+    PaintPanel paintpanel = new PaintPanel(new WiimoteHandler());
     public static void main(String[] args) {
         new FramePanel();
     }
@@ -20,6 +20,6 @@ public class FramePanel extends JFrame{
         setSize(new Dimension(1920, 1080));
         setVisible(true);
         setResizable(false);
-        setContentPane(new PaintPanel(wiimoteHandler));
+        setContentPane(paintpanel);
     }
 }
