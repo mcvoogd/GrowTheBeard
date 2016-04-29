@@ -282,15 +282,14 @@ public class WiimoteHandler{
                 g.fillRect(offset, height + height, width/2, height);
                 g.setColor(new Color(40, 40, 40, 127));
                 g.fill(new Ellipse2D.Double(offset, height + height, width/2, height));
-                int dotWidth = 10, dotHeight = 10;
-                double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/4 - dotWidth/2) * joystickEvents[i].getMagnitude())));
-                double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotHeight/2) * joystickEvents[i].getMagnitude())));
-                g.setColor(new Color(250, 60, 60, 127));
-
-                g.fill(new Ellipse2D.Double((int) x + width/4 - dotWidth,(int) y + height + height + height/2, dotWidth, dotHeight));
-
-
+                
+                int dotSize = 20;
+                double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/4 - dotSize/2) * joystickEvents[i].getMagnitude())));
+                double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotSize/2) * joystickEvents[i].getMagnitude())));
+                g.setColor(new Color(255, 0, 0));
+                g.fill(new Ellipse2D.Double(Math.round(x + width/4 - dotSize/2 + offset), Math.round(y + 2*height + height/2 - dotSize/2), dotSize, dotSize));
             }
+            
             // clean up lists
             while(gForceWiimoteList.get(i).size() > width/2){
                 gForceWiimoteList.get(i).remove();
