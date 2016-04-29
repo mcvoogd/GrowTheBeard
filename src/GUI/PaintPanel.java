@@ -15,9 +15,6 @@ import java.io.IOException;
 
 public class PaintPanel extends JPanel{
     private int startteller = 0;
-    private int fontsize = 30;
-    private final int MAXFONT = 50;
-    private final int MINFONT = 20;
     private boolean timerstarted = false;
     Shape s = null;
     private BufferedImage background;

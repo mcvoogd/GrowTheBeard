@@ -15,7 +15,7 @@ public class Main extends JFrame{
 
     public Main(){
         wiimoteHandler = new WiimoteHandler();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1920, 1080));
         setVisible(true);
         setResizable(false);
