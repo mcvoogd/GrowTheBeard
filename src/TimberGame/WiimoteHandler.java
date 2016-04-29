@@ -1,9 +1,7 @@
 package TimberGame;
 
-import sun.awt.image.ImageWatched;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
-import wiiusej.utils.NunchukJoystickEventPanel;
 import wiiusej.values.GForce;
 import wiiusej.values.IRSource;
 import wiiusej.values.Orientation;
@@ -35,8 +33,8 @@ public class WiimoteHandler{
     private IRSource[] irSources;
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
-    private GForce gForce;
-    private Orientation orientation;
+    private GForce[] gForce = new GForce[4];
+    private Orientation[] orientation = new Orientation[4];
 
     private boolean[] connectedNunchucks = new boolean[4];
     
@@ -184,11 +182,11 @@ public class WiimoteHandler{
     }
     
     private void setgForce(int wiimoteID, GForce gForce){
-        this.gForce = gForce;
+        this.gForce[wiimoteID] = gForce;
     }
     
     private void setOrientation(int wiimoteID, Orientation orientation){
-        this.orientation = orientation;
+        this.orientation[wiimoteID] = orientation;
     }
     
     private void storeGForce(int wiimoteID, GForce gForce){
@@ -212,8 +210,8 @@ public class WiimoteHandler{
 
     @SuppressWarnings("Duplicates")
     public void drawDebug(Graphics2D g){
-        int width = 400;
-        int height = 200;
+        int width = 300;
+        int height = 150;
         int scale = 12;
         for(int i = 0; i < wiimotes.length; i++){
             int offset = width * i;
@@ -241,14 +239,6 @@ public class WiimoteHandler{
                 g.setColor(new Color(0, 255, 255));
                 g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
             }
-            g.setColor(new Color(255, 255, 255));
-            g.drawString("G-Force", 2 + offset, 10);
-            g.drawString("Orientation", width/2 + 2 + offset, 10);
-            g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
-            g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
-            g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
-            g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + width/2+2, 20);
-            g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + width/2+2, 30);
             g.setColor(new Color(255, 255, 255, 127));  // draw middle line
             g.drawLine(width/2 + offset, 0, width/2 + offset, height);
             
@@ -264,10 +254,20 @@ public class WiimoteHandler{
             g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
             g.drawRect(0, 0, width + offset, height);
 
-            if(isNunchuckConnected(i)){
+            g.setColor(new Color(255, 255, 255));
+            g.drawString("Wiimote - G-Force", 2 + offset, 10);
+            g.drawString("Orientation", width/2 + 2 + offset, 10);
+            g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
+            g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
+            g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
+            g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + width/2+2, 20);
+            g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + width/2+2, 30);
 
+            if(isNunchuckConnected(i)){
                 g.setColor(new Color(0, 0, 0, 127));
                 g.fillRect(offset, height, width, height);
+                g.setColor(new Color(255, 255, 255, 63));  // draw 0 line
+                g.drawLine(offset, height/2 + height, width, height/2 + height);
 
                 for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){
                     LinkedList<GForce> gf = gForceNunchuckList.get(i);
@@ -286,34 +286,36 @@ public class WiimoteHandler{
                     g.setColor(new Color(0, 255, 255));
                     g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2 + height), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2 + height));
                 }
-
-                g.setColor(new Color(255, 255, 255));
-                int startHeight = height;
-                g.drawString("G-Force", 2 + offset, startHeight + 10);
-                g.drawString("Orientation", width/2 + 2 + offset, startHeight + 10);
-                g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2, startHeight +  20);
-                g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2, startHeight + 30);
-                g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2, startHeight + 40);
-                g.drawString("Pitch = " + orientationNunchuckList.get(i).getLast().getPitch(), offset + width/2+2, startHeight + 20);
-                g.drawString("Roll = " + orientationNunchuckList.get(i).getLast().getRoll(), offset + width/2+2, startHeight + 30);
+                
                 g.setColor(new Color(255, 255, 255, 127));  // draw middle line
-                g.drawLine(width/2 + offset, offset, width/2 + offset, startHeight + height);
+                g.drawLine(width/2 + offset, offset, width/2 + offset, height + height);
 
                 g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
-                g.drawRect(offset, startHeight, width + offset, height);
+                g.drawRect(offset, height, width + offset, height);
 
                 g.setColor(new Color(0, 0, 0, 127));
                 g.fillRect(offset, height + height, width/2, height);
-                g.setColor(new Color(40, 40, 40, 127));
+                g.setColor(new Color(63, 63, 63, 127));
                 g.fill(new Ellipse2D.Double(offset, height + height, width/2, height));
                 g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
-                g.drawRect(offset, startHeight, width/2 + offset,startHeight + height);
+                g.drawRect(offset, height, width/2 + offset, height + height);
 
                 int dotSize = 20;
                 double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/4 - dotSize/2) * joystickEvents[i].getMagnitude())));
                 double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotSize/2) * joystickEvents[i].getMagnitude())));
                 g.setColor(new Color(255, 0, 0));
                 g.fill(new Ellipse2D.Double(Math.round(x + width/4 - dotSize/2 + offset), Math.round(y + 2*height + height/2 - dotSize/2), dotSize, dotSize));
+
+                g.setColor(new Color(255, 255, 255));
+                g.drawString("Nunchuck - G-Force", 2 + offset, height + 10);
+                g.drawString("Orientation", width/2 + 2 + offset, height + 10);
+                g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2, height +  20);
+                g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2, height + 30);
+                g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2, height + 40);
+                g.drawString("Pitch = " + orientationNunchuckList.get(i).getLast().getPitch(), offset + width/2+2, height + 20);
+                g.drawString("Roll = " + orientationNunchuckList.get(i).getLast().getRoll(), offset + width/2+2, height + 30);
+                g.drawString("Angle = " + joystickEvents[i].getAngle(), offset + 2, height*2 + 10);
+                g.drawString("Magnitude = " + joystickEvents[i].getMagnitude(), offset + 2, height*2 + 20);
             }
 
             //Draw IR points
@@ -325,7 +327,6 @@ public class WiimoteHandler{
                 double scaleFactor = (double)height / 1000;
                 double newX = (double)x * scaleFactor;
                 double newY = (double)y * scaleFactor;
-                System.out.println("Draw X:" + newX + " Draw Y:" + newY + " Scale:" + scaleFactor);
                 g.setColor(Color.BLUE);
                 g.fill(new Rectangle2D.Double(newX + offset + width/2, newY + height + height, 5, 5));
             }
