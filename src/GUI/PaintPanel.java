@@ -18,7 +18,7 @@ public class PaintPanel extends JPanel{
     private boolean timerstarted = false;
     Shape s = null;
     private BufferedImage background;
-    private int fontsize = 20;
+    private double fontsize = 0;
     private final int MAXFONT = 50;
     private final int MINFONT = 40;
     private Timer timer;
@@ -57,7 +57,7 @@ public class PaintPanel extends JPanel{
 
     public void drawStart(Graphics2D g2d, String text)
     {
-        Font f = getFont().deriveFont(Font.BOLD, fontsize);
+        Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
         GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), text);
         double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
         s = v.getOutline((float) (getWidth()/2 - width/2), 1800 /2);
@@ -65,20 +65,20 @@ public class PaintPanel extends JPanel{
         if(!timerstarted) {
             timerstarted = true;
             final boolean[] triggered = {false};
-            Timer t = new Timer(1000/30, e -> {
+            Timer t = new Timer(1000/60, e -> {
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize++;
-                     if(fontsize == MAXFONT)
+                    fontsize += 0.3;
+                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
                     }
                 }
                 else
                 {
-                    fontsize--;
-                    if(fontsize == MINFONT)
+                    fontsize -= 0.3;
+                    if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
                     }
