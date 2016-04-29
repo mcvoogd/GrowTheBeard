@@ -45,7 +45,8 @@ public class WiimoteHandler{
         for(int i = 0; i < wiimotes.length; i++){
             gForceList.add(i, new LinkedList<>());
             orientationList.add(i, new LinkedList<>());
-            
+            pressedButtons.add(new EnumMap<>(Buttons.class));
+            heldButtons.add(new EnumMap<>(Buttons.class));
             boolean[] bool = new boolean[4];
             for(int j = 0; j < bool.length; j++){
                 bool[j] = false;
@@ -56,8 +57,11 @@ public class WiimoteHandler{
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
                 public void onButtonsEvent(WiimoteButtonsEvent e){  // godfuckingdamnit why can't this be easier, jesus fuck.
-                    if(e.isButtonHomeJustPressed())
+                    if(e.isButtonHomeJustPressed()){
+                        System.out.println("FinalI: " + finalI);
                         setButton(finalI, Buttons.KEY_HOME, true);
+                    }
+
                     if(e.isButtonHomeJustReleased())
                         setButton(finalI, Buttons.KEY_HOME, false);
                     if(e.isButtonOneJustPressed())
