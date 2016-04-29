@@ -138,12 +138,12 @@ public class WiimoteHandler{
 
                 @Override
                 public void onNunchukInsertedEvent(NunchukInsertedEvent e){
-                    setNunchuckConnected(e.getWiimoteId(), true);
+                    setNunchuckConnected(finalI, true);
                 }
 
                 @Override
                 public void onNunchukRemovedEvent(NunchukRemovedEvent e){
-                    setNunchuckConnected(e.getWiimoteId(), false);
+                    setNunchuckConnected(finalI, false);
                 }
 
                 @Override
