@@ -22,17 +22,20 @@ public class PaintPanel extends JPanel{
     private final int MAXFONT = 50;
     private final int MINFONT = 40;
     private Timer timer;
-
+    private boolean startmenuactive = true;
     private WiimoteHandler wiimoteHandler;
     private boolean drawDebug = true;  // TODO: I'd like a keylistener for this, F3 please
 
     public PaintPanel(WiimoteHandler wiimoteHandler) {
         System.out.println("Paint Panel constructed");
-        timer = new Timer(1000/60, e -> repaint());
+        timer = new Timer(1000/60, e -> {
+            repaint();
+            startteller++;
+            if(startteller > 1000) {setStartmenuactive(false);} // SIMULATE PRESSING A + B
+        });
         timer.start();
         this.wiimoteHandler = wiimoteHandler;
         wiimoteHandler.activateMotionSensing();
-        new Timer(1000/60, e -> repaint()).start();
         try {
             background = ImageIO.read(new File("start.png"));
             System.out.println("read succesvol");
@@ -46,9 +49,11 @@ public class PaintPanel extends JPanel{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawImage(background, 0, 0, null);
-        drawStart(g2d, "Press A + B to start");
 
+        if(startmenuactive) {
+            g2d.drawImage(background, 0, 0, null);
+            drawStart(g2d, "Press A + B to start");
+        }
         // always as last
         if(drawDebug){
             wiimoteHandler.drawDebug(g2d);
@@ -89,5 +94,9 @@ public class PaintPanel extends JPanel{
        g2d.setColor(Color.WHITE);
        g2d.fill(s);
 
+    }
+
+    public void setStartmenuactive(boolean active) {
+        startmenuactive = active;
     }
 }
