@@ -14,7 +14,7 @@ public class FramePanel extends JFrame{
     public FramePanel()
     {
         WiimoteHandler wiimoteHandler = new WiimoteHandler();  // bug-fix, don't ask
-        
+
         System.out.println("Frame constructed");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1920, 1080));

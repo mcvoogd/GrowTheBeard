@@ -122,8 +122,8 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
-                        System.out.println(ne.getNunchukJoystickEvent().getAngle());
-                        System.out.println(ne.getNunchukJoystickEvent().getMagnitude());
+//                        System.out.println(ne.getNunchukJoystickEvent().getAngle());
+//                        System.out.println(ne.getNunchukJoystickEvent().getMagnitude());
                     }
                 }
 
@@ -233,7 +233,13 @@ public class WiimoteHandler{
             
             g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
             g.drawRect(0, 0, width + offset, height);
-            
+
+//           System.out.println(isNunchuckConnected(i));
+
+            if(isNunchuckConnected(i)){
+                System.out.println("Draw nunchuck");
+
+            }
             // clean up lists
             while(gForceList.get(i).size() > width/2){
                 gForceList.get(i).remove();
