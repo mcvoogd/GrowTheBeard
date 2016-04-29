@@ -1,7 +1,9 @@
 package TimberGame;
 
+import sun.awt.image.ImageWatched;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
+import wiiusej.utils.NunchukJoystickEventPanel;
 import wiiusej.values.GForce;
 import wiiusej.values.Orientation;
 import wiiusej.wiiusejevents.physicalevents.*;
@@ -9,6 +11,7 @@ import wiiusej.wiiusejevents.utils.WiimoteListener;
 import wiiusej.wiiusejevents.wiiuseapievents.*;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -26,6 +29,7 @@ public class WiimoteHandler{
     }
     
     private Wiimote[] wiimotes;
+    private JoystickEvent[] joystickEvents;
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
     private GForce gForce;
@@ -43,6 +47,7 @@ public class WiimoteHandler{
     }
 
     public void SearchWiimotes(){
+        joystickEvents = new JoystickEvent[4];
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
             gForceWiimoteList.add(i, new LinkedList<>());
@@ -123,6 +128,8 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
+                        JoystickEvent joystickEvent = ne.getNunchukJoystickEvent();
+                        storeNunchuckJoystick(finalI, joystickEvent);
                         MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
                         storeNunchuckGForce(finalI, me.getGforce());
                         storeNunchuckOrentation(finalI, me.getOrientation());
@@ -189,6 +196,9 @@ public class WiimoteHandler{
 
     private void storeNunchuckOrentation(int wiiMoteID, Orientation orientation){
         orientationNunchuckList.get(wiiMoteID).add(orientation);
+    }
+    private void storeNunchuckJoystick(int wiiMoteID, JoystickEvent joystickEvent){
+        joystickEvents[wiiMoteID] = joystickEvent;
     }
 
     @SuppressWarnings("Duplicates")
@@ -267,6 +277,19 @@ public class WiimoteHandler{
                     g.setColor(new Color(0, 255, 255));
                     g.drawLine(offset + x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2 + height), offset + x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2 + height));
                 }
+
+                g.setColor(new Color(0, 0, 0, 127));
+                g.fillRect(offset, height + height, width/2, height);
+                g.setColor(new Color(40, 40, 40, 127));
+                g.fill(new Ellipse2D.Double(offset, height + height, width/2, height));
+                int dotWidth = 10, dotHeight = 10;
+                double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/4 - dotWidth/2) * joystickEvents[i].getMagnitude())));
+                double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotHeight/2) * joystickEvents[i].getMagnitude())));
+                g.setColor(new Color(250, 60, 60, 127));
+
+                g.fill(new Ellipse2D.Double((int) x + width/4 - dotWidth,(int) y + height + height + height/2, dotWidth, dotHeight));
+
+
             }
             // clean up lists
             while(gForceWiimoteList.get(i).size() > width/2){
