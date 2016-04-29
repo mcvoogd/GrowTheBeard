@@ -1,5 +1,7 @@
 package GUI;
 
+import TimberGame.WiimoteHandler;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by kevin on 28/04/2016.
- */
-public class PaintPanel extends JPanel {
+public class PaintPanel extends JPanel{
     private int startteller = 0;
     private int fontsize = 30;
     private final int MAXFONT = 50;
@@ -22,9 +21,20 @@ public class PaintPanel extends JPanel {
     private boolean timerstarted = false;
     Shape s = null;
     private BufferedImage background;
+    private int fontsize = 20;
+    private final int MAXFONT = 30;
+    private final int MINFONT = 5;
+    private Timer timer;
 
-    public PaintPanel() {
+    private WiimoteHandler wiimoteHandler;
+    private boolean drawDebug = true;  // TODO: I'd like a keylistener for this, F3 please
+
+    public PaintPanel(WiimoteHandler wiimoteHandler) {
         System.out.println("Paint Panel constructed");
+        timer = new Timer(1000/60, e -> repaint());
+        timer.start();
+        this.wiimoteHandler = wiimoteHandler;
+        wiimoteHandler.activateMotionSensing();
         new Timer(1000/60, e -> repaint()).start();
         try {
             background = ImageIO.read(new File("start.png"));
@@ -38,6 +48,10 @@ public class PaintPanel extends JPanel {
     {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        if(drawDebug){
+            wiimoteHandler.drawDebug(g2d);
+        }
         g2d.drawImage(background, 0, 0, null);
         drawStart(g2d, "Press A + B to start");
     }

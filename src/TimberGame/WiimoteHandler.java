@@ -2,37 +2,51 @@ package TimberGame;
 
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
-import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
-import wiiusej.wiiusejevents.physicalevents.IREvent;
-import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
+import wiiusej.values.GForce;
+import wiiusej.values.Orientation;
+import wiiusej.wiiusejevents.physicalevents.*;
 import wiiusej.wiiusejevents.utils.WiimoteListener;
 import wiiusej.wiiusejevents.wiiuseapievents.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.LinkedList;
 
 public class WiimoteHandler{
-    
+
+    private float[] battery = new float[4];
+
+    public void setBattery(int wiimoteID, float battery){
+        this.battery[wiimoteID] = battery;
+    }
+
     public enum Buttons{
         KEY_HOME, KEY_1, KEY_2, KEY_A, KEY_B, KEY_MINUS, KEY_PLUS, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT
     }
     
     private Wiimote[] wiimotes;
-    private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>(4);
-    private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>(4);
+    private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
+    private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
+    private GForce gForce;
+    private Orientation orientation;
 
+    private boolean[] connectedNunchucks = new boolean[4];
+    
+    private LinkedList<LinkedList<GForce>> gForceList = new LinkedList<>();
+    private LinkedList<LinkedList<Orientation>> orientationList = new LinkedList<>();
+    
     public WiimoteHandler(){
         SearchWiimotes();
     }
 
-    public static void main(String[] args){
-        new WiimoteHandler();
-    }
-
     public void SearchWiimotes(){
-        wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
+            gForceList.add(i, new LinkedList<>());
+            orientationList.add(i, new LinkedList<>());
+            pressedButtons.add(new EnumMap<>(Buttons.class));
+            heldButtons.add(new EnumMap<>(Buttons.class));
             boolean[] bool = new boolean[4];
             for(int j = 0; j < bool.length; j++){
                 bool[j] = false;
@@ -43,8 +57,11 @@ public class WiimoteHandler{
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
                 public void onButtonsEvent(WiimoteButtonsEvent e){  // godfuckingdamnit why can't this be easier, jesus fuck.
-                    if(e.isButtonHomeJustPressed())
+                    if(e.isButtonHomeJustPressed()){
+                        System.out.println("FinalI: " + finalI);
                         setButton(finalI, Buttons.KEY_HOME, true);
+                    }
+
                     if(e.isButtonHomeJustReleased())
                         setButton(finalI, Buttons.KEY_HOME, false);
                     if(e.isButtonOneJustPressed())
@@ -94,15 +111,25 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent){
+                public void onMotionSensingEvent(MotionSensingEvent e){
+                    setgForce(finalI, e.getGforce());
+                    storeGForce(finalI, e.getGforce());
+                    setOrientation(finalI, e.getOrientation());
+                    storeOrientation(finalI, e.getOrientation());
                 }
 
                 @Override
-                public void onExpansionEvent(ExpansionEvent expansionEvent){
+                public void onExpansionEvent(ExpansionEvent e){
+                    if(e instanceof NunchukEvent){
+                        NunchukEvent ne = (NunchukEvent) e;
+                        System.out.println(ne.getNunchukJoystickEvent().getAngle());
+                        System.out.println(ne.getNunchukJoystickEvent().getMagnitude());
+                    }
                 }
 
                 @Override
-                public void onStatusEvent(StatusEvent statusEvent){
+                public void onStatusEvent(StatusEvent e){
+                    setBattery(finalI, e.getBatteryLevel());
                 }
 
                 @Override
@@ -110,11 +137,13 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent){
+                public void onNunchukInsertedEvent(NunchukInsertedEvent e){
+                    setNunchuckConnected(e.getWiimoteId(), true);
                 }
 
                 @Override
-                public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent){
+                public void onNunchukRemovedEvent(NunchukRemovedEvent e){
+                    setNunchuckConnected(e.getWiimoteId(), false);
                 }
 
                 @Override
@@ -133,6 +162,85 @@ public class WiimoteHandler{
                 public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent classicControllerRemovedEvent){
                 }
             });
+        }
+    }
+    
+    private void setgForce(int wiimoteID, GForce gForce){
+        this.gForce = gForce;
+    }
+    
+    private void setOrientation(int wiimoteID, Orientation orientation){
+        this.orientation = orientation;
+    }
+    
+    private void storeGForce(int wiimoteID, GForce gForce){
+        gForceList.get(wiimoteID).add(gForce);
+    }
+    
+    private void storeOrientation(int wiimoteID, Orientation orientation){
+        orientationList.get(wiimoteID).add(orientation);
+    }
+
+    public void drawDebug(Graphics2D g){
+        int width = 400;
+        int height = 200;
+        int scale = 12;
+        for(int i = 0; i < wiimotes.length; i++){
+            int offset = width * i;
+            Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
+            g.setFont(font);
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(offset, 0, width + (width*i), height);
+            
+            g.setColor(new Color(127, 127, 127, 255));  // draw 0 line
+            g.drawLine(offset, height/2, width + offset, height/2);
+            
+            for(int x = 1; x < gForceList.size(); x++){  // x = x coordinate on screen
+                LinkedList<GForce> gf = gForceList.get(i);
+                g.setColor(new Color(255, 0, 0));
+                g.drawLine(x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
+                g.setColor(new Color(0, 255, 0));
+                g.drawLine(x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
+                g.setColor(new Color(0, 0, 255));
+                g.drawLine(x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
+            }
+            for(int x = 1; x < orientationList.size(); x++){
+                LinkedList<Orientation> o = orientationList.get(i);
+                g.setColor(new Color(255, 255, 0));
+                g.drawLine(x - 1 + width/2, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2), x + width/2 , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2));
+                g.setColor(new Color(0, 255, 255));
+                g.drawLine(x - 1 + width/2, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2), x + width/2 , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2));
+            }
+            g.setColor(new Color(255, 255, 255));
+            g.drawString("G-Force", 2 + offset, 10);
+            g.drawString("Orientation", width/2 + 2 + offset, 10);
+            g.drawString("X = " + gForceList.get(i).getLast().getX(), offset + 2, 20);
+            g.drawString("Y = " + gForceList.get(i).getLast().getY(), offset + 2, 30);
+            g.drawString("Z = " + gForceList.get(i).getLast().getZ(), offset + 2, 40);
+            g.drawString("Pitch = " + orientationList.get(i).getLast().getPitch(), offset + width/2+2, 20);
+            g.drawString("Roll = " + orientationList.get(i).getLast().getRoll(), offset + width/2+2, 30);
+            g.setColor(new Color(255, 255, 255, 127));  // draw middle line
+            g.drawLine(width/2 + offset, 0, width/2 + offset, height);
+            
+            if(battery[i] < 0.2f){
+                g.setColor(new Color(255, 0, 0));
+            }else{
+                g.setColor(new Color(0,255,0));
+            }
+            g.fillRect(offset + 2, height-12, Math.round(offset + 50*battery[i]), 10);
+            g.setColor(new Color(255, 255, 255));
+            g.drawRect(offset + 2, height-12, offset + 50, 10);
+            
+            g.setColor(new Color(255, 255, 255, 127));  // draw encasing rect
+            g.drawRect(0, 0, width + offset, height);
+        }
+        
+        // clean up lists
+        while(gForceList.size() > width/2){
+            gForceList.remove();
+        }
+        while(orientationList.size() > width/2){
+            orientationList.remove();
         }
     }
     
@@ -168,5 +276,37 @@ public class WiimoteHandler{
      */
     public boolean getIsButtonDown(int wiimoteID, Buttons button){
         return heldButtons.get(wiimoteID).get(button);
+    }
+
+    private void setNunchuckConnected(int nunchuck, boolean value){
+        connectedNunchucks[nunchuck] = value;
+    }
+
+    /**
+     * Returns true if there is a nunchuck connected.
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     * @return true if a nunchuck is connected
+     */
+    public boolean isNunchuckConnected(int wiimoteID){
+        return connectedNunchucks[wiimoteID];
+    }
+
+    /**
+     * Activates motion sensing on all connected wiimotes.
+     */
+    public void activateMotionSensing(){
+        for(Wiimote w : wiimotes){
+            w.activateMotionSensing();
+        }
+    }
+
+    /**
+     * Deactivates motion sensing on all connected wiimotes.
+     */
+    public void deactivateMotionSensing(){
+        for(Wiimote w : wiimotes){
+            w.deactivateMotionSensing();
+        }
     }
 }
