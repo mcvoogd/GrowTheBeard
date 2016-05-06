@@ -16,8 +16,8 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 
 public class WiimoteHandler{
-
     private float[] battery = new float[4];
+    private boolean[] isMotionSensingActive = new boolean[4];
 
     public void setBattery(int wiimoteID, float battery){
         this.battery[wiimoteID] = battery;
@@ -43,9 +43,12 @@ public class WiimoteHandler{
     private LinkedList<LinkedList<Orientation>> orientationNunchuckList = new LinkedList<>();
     
     public WiimoteHandler(){
-        SearchWiimotes();
+        
     }
 
+    /**
+     * Searches for wiimotes.
+     */
     public void SearchWiimotes(){
         joystickEvents = new JoystickEvent[4];
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
@@ -145,6 +148,7 @@ public class WiimoteHandler{
 
                 @Override
                 public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent){
+                    
                 }
 
                 @Override
@@ -203,149 +207,165 @@ public class WiimoteHandler{
         joystickEvents[wiiMoteID] = joystickEvent;
     }
 
+    /**
+     * Draws sensor data from the wiimotes on screen.
+     * 
+     * @param g Graphics component to draw on
+     */
     @SuppressWarnings("Duplicates")
     public void drawDebug(Graphics2D g){
         int width = 250;
         @SuppressWarnings("SuspiciousNameCombination") int height = width;
         int scale = height/20;
-        for(int i = 0; i < wiimotes.length; i++){
-            int offset = width*2 * i;
-            Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
-            g.setFont(font);
-            // draw background boxes
-            g.setColor(new Color(0, 0, 0, 127));
-            g.fillRect(offset, 0, width, height);
-            g.fillRect(offset, height, width, height);
-            g.fillRect(offset, height*2, width, height);
-
-            // draw axes
-            g.setColor(new Color(255, 255, 255, 63));
-            g.drawLine(offset, height/2, width, height/2);
-            g.drawLine(offset, height/2 + height, width, height/2 + height);
-            for(int x = 1; x < gForceWiimoteList.get(i).size(); x++){  // g-force for wiimote
-                LinkedList<GForce> gf = gForceWiimoteList.get(i);
-                g.setColor(new Color(255, 0, 0));
-                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getX() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getX() * -(height/scale) + height/2));
-                g.setColor(new Color(0, 255, 0));
-                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getY() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getY() * -(height/scale) + height/2));
-                g.setColor(new Color(0, 0, 255));
-                g.drawLine(offset + x - 1, Math.round(gf.get(x-1).getZ() * -(height/scale) + height/2), offset + x, Math.round(gf.get(x).getZ() * -(height/scale) + height/2));
-            }
-
-            for(int x = 1; x < orientationWiimoteList.get(i).size(); x++){  // orientation for wiimote
-                LinkedList<Orientation> o = orientationWiimoteList.get(i);
-                g.setColor(new Color(255, 255, 0));
-                g.drawLine(offset + x - 1, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2) + height, offset + x , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2) + height);
-                g.setColor(new Color(0, 255, 255));
-                g.drawLine(offset + x - 1, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2) + height, offset + x, Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2) + height);
-            }
-            
-            if(battery[i] < 0.2f){
-                g.setColor(new Color(255, 0, 0));
-            }else{
-                g.setColor(new Color(0,255,0));
-            }
-            g.fillRect(offset + 2, height-12, Math.round(50*battery[i]), 10);
-            g.setColor(new Color(255, 255, 255));
-            g.drawRect(offset + 2, height-12, 50, 10);
-
-            //Draw IR points
-            for(int j = 0; j < irSources.length; j++){
-                int x = irSources[j].getX();
-                int y = irSources[j].getY();
-                double scaleFactor = (double) height / 1000;
-                int newX = (int) Math.round(x * scaleFactor);
-                int newY = (int) Math.round(y * scaleFactor);
-                g.setColor(new Color(255, 0, 0));
-                g.fillOval(newX + offset, newY + height * 2, 10, 10);
-                g.setColor(new Color(255, 255, 255));
-                g.drawString("X" + j + " = " + irSources[j].getX() + " Y" + j + " = " + irSources[j].getY(), offset + 2, height * 2 + 10 * (j + 1));
-            }
-            
-            //draw boxes outlines
-            g.setColor(new Color(255, 255, 255, 127));
-            g.drawRect(offset, 0, width, height);
-            g.drawRect(offset, height, width, height);
-            g.drawRect(offset, height*2, width, height);
-            
-            // draw text
-            g.setColor(new Color(255, 255, 255));
-            g.drawString("Wiimote - G-Force", offset + 2, 10);
-            g.drawString("Orientation", offset + 2, height + 10);
-            g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
-            g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
-            g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
-            g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
-            g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
-
-            if(isNunchuckConnected(i)){
+        for(int i = 0; wiimotes != null && i < wiimotes.length; i++){
+            int offset = width * 2 * i;
+            if(isMotionSensingActive[i]){
+                Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 10);
+                g.setFont(font);
                 // draw background boxes
                 g.setColor(new Color(0, 0, 0, 127));
-                g.fillRect(offset + width, 0, width, height);
-                g.fillRect(offset + width, height, width, height);
-                g.fillRect(offset + width, height * 2, width, height);
-                g.fillOval(offset + width, height * 2, width, height);
-                
+                g.fillRect(offset, 0, width, height);
+                g.fillRect(offset, height, width, height);
+                g.fillRect(offset, height * 2, width, height);
+
                 // draw axes
-                g.setColor(new Color(255, 255, 255, 63));  // draw 0 line
-                g.drawLine(offset + width, height/2, offset + width * 2, height/2);
-                g.drawLine(offset + width, height + height/2, offset + width * 2, height + height/2);
-
-                for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){  // g-force for nunchuck
-                    LinkedList<GForce> gf = gForceNunchuckList.get(i);
+                g.setColor(new Color(255, 255, 255, 63));
+                g.drawLine(offset, height / 2, width, height / 2);
+                g.drawLine(offset, height / 2 + height, width, height / 2 + height);
+                for(int x = 1; x < gForceWiimoteList.get(i).size(); x++){  // g-force for wiimote
+                    LinkedList<GForce> gf = gForceWiimoteList.get(i);
                     g.setColor(new Color(255, 0, 0));
-                    g.drawLine(offset + x - 1 + width, Math.round(gf.get(x-1).getX()*4 * -(height/scale) + height/2), offset + x + width, Math.round(gf.get(x).getX()*4 * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x - 1).getX() * -(height / scale) + height / 2), offset + x, Math.round(gf.get(x).getX() * -(height / scale) + height / 2));
                     g.setColor(new Color(0, 255, 0));
-                    g.drawLine(offset + x - 1 + width, Math.round(gf.get(x-1).getY()*4 * -(height/scale) + height/2), offset + x + width, Math.round(gf.get(x).getY()*4 * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x - 1).getY() * -(height / scale) + height / 2), offset + x, Math.round(gf.get(x).getY() * -(height / scale) + height / 2));
                     g.setColor(new Color(0, 0, 255));
-                    g.drawLine(offset + x - 1 + width, Math.round(gf.get(x-1).getZ()*4 * -(height/scale) + height/2), offset + x + width, Math.round(gf.get(x).getZ()*4 * -(height/scale) + height/2));
+                    g.drawLine(offset + x - 1, Math.round(gf.get(x - 1).getZ() * -(height / scale) + height / 2), offset + x, Math.round(gf.get(x).getZ() * -(height / scale) + height / 2));
                 }
 
-                for(int x = 1; x < orientationNunchuckList.get(i).size(); x++){  // orientation for nunchuck
-                    LinkedList<Orientation> o = orientationNunchuckList.get(i);
+                for(int x = 1; x < orientationWiimoteList.get(i).size(); x++){  // orientation for wiimote
+                    LinkedList<Orientation> o = orientationWiimoteList.get(i);
                     g.setColor(new Color(255, 255, 0));
-                    g.drawLine(offset + x - 1 + width, Math.round(o.get(x-1).getPitch()/36 * -(height/scale) + height/2 + height), offset + x + width , Math.round(o.get(x).getPitch()/36 * -(height /scale) + height/2 + height));
+                    g.drawLine(offset + x - 1, Math.round(o.get(x - 1).getPitch() / 36 * -(height / scale) + height / 2) + height, offset + x, Math.round(o.get(x).getPitch() / 36 * -(height / scale) + height / 2) + height);
                     g.setColor(new Color(0, 255, 255));
-                    g.drawLine(offset + x - 1 + width, Math.round(o.get(x-1).getRoll()/36 * -(height/scale) + height/2 + height), offset + x + width , Math.round(o.get(x).getRoll()/36 * -(height /scale) + height/2 + height));
+                    g.drawLine(offset + x - 1, Math.round(o.get(x - 1).getRoll() / 36 * -(height / scale) + height / 2) + height, offset + x, Math.round(o.get(x).getRoll() / 36 * -(height / scale) + height / 2) + height);
                 }
 
-                int dotSize = 20;
-                double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width/2 - dotSize/2) * joystickEvents[i].getMagnitude())));
-                double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height/2 - dotSize/2) * joystickEvents[i].getMagnitude())));
-                g.setColor(new Color(255, 0, 0));
-                g.fill(new Ellipse2D.Double(Math.round(x + width/2 - dotSize/2 + offset + width), Math.round(y + height/2 - dotSize/2 + height*2), dotSize, dotSize));
+                if(battery[i] < 0.2f){
+                    g.setColor(new Color(255, 0, 0));
+                }else{
+                    g.setColor(new Color(0, 255, 0));
+                }
+                g.fillRect(offset + 2, height - 12, Math.round(50 * battery[i]), 10);
+                g.setColor(new Color(255, 255, 255));
+                g.drawRect(offset + 2, height - 12, 50, 10);
+
+                //Draw IR points
+                if(irSources != null){
+                    for(int j = 0; j < irSources.length; j++){
+                        int x = irSources[j].getX();
+                        int y = irSources[j].getY();
+                        double scaleFactor = (double) height / 1000;
+                        int newX = (int) Math.round(x * scaleFactor);
+                        int newY = (int) Math.round(y * scaleFactor);
+                        g.setColor(new Color(255, 0, 0));
+                        g.fillOval(newX + offset, newY + height * 2, 10, 10);
+                        g.setColor(new Color(255, 255, 255));
+                        g.drawString("X" + j + " = " + irSources[j].getX() + " Y" + j + " = " + irSources[j].getY(), offset + 2, height * 2 + 10 * (j + 1));
+                    }
+                }
 
                 //draw boxes outlines
                 g.setColor(new Color(255, 255, 255, 127));
-                g.drawRect(offset + width, 0, width, height);
-                g.drawRect(offset + width, height, width, height);
-                g.drawRect(offset + width, height*2, width, height);
-                
+                g.drawRect(offset, 0, width, height);
+                g.drawRect(offset, height, width, height);
+                g.drawRect(offset, height * 2, width, height);
+
                 // draw text
                 g.setColor(new Color(255, 255, 255));
-                g.drawString("Nunchuck - G-Force", 2 + offset + width, 10);
-                g.drawString("Orientation", width/2 + 2 + offset + width, height + 10);
-                g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2 + width, 20);
-                g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2 + width, 30);
-                g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2 + width, 40);
-                g.drawString("Pitch = " + orientationNunchuckList.get(i).getLast().getPitch(), offset + 2 + width, height + 20);
-                g.drawString("Roll = " + orientationNunchuckList.get(i).getLast().getRoll(), offset + 2 + width, height + 30);
-                g.drawString("Angle = " + joystickEvents[i].getAngle(), offset + 2 + width, height*2 + 10);
-                g.drawString("Magnitude = " + joystickEvents[i].getMagnitude(), offset + 2 + width, height*2 + 20);
-            }
+                g.drawString("Wiimote - G-Force", offset + 2, 10);
+                g.drawString("Orientation", offset + 2, height + 10);
+                g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
+                g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
+                g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
+                g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
+                g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
 
-            // clean up lists
-            while(gForceWiimoteList.get(i).size() > width){
-                gForceWiimoteList.get(i).remove();
-            }
-            while(orientationWiimoteList.get(i).size() > width){
-                orientationWiimoteList.get(i).remove();
-            }
-            while(gForceNunchuckList.get(i).size() > width){
-                gForceNunchuckList.get(i).remove();
-            }
-            while(orientationNunchuckList.get(i).size() > width){
-                orientationNunchuckList.get(i).remove();
+                if(isNunchuckConnected(i)){
+                    // draw background boxes
+                    g.setColor(new Color(0, 0, 0, 127));
+                    g.fillRect(offset + width, 0, width, height);
+                    g.fillRect(offset + width, height, width, height);
+                    g.fillRect(offset + width, height * 2, width, height);
+                    g.fillOval(offset + width, height * 2, width, height);
+
+                    // draw axes
+                    g.setColor(new Color(255, 255, 255, 63));  // draw 0 line
+                    g.drawLine(offset + width, height / 2, offset + width * 2, height / 2);
+                    g.drawLine(offset + width, height + height / 2, offset + width * 2, height + height / 2);
+
+                    for(int x = 1; x < gForceNunchuckList.get(i).size(); x++){  // g-force for nunchuck
+                        LinkedList<GForce> gf = gForceNunchuckList.get(i);
+                        g.setColor(new Color(255, 0, 0));
+                        g.drawLine(offset + x - 1 + width, Math.round(gf.get(x - 1).getX() * 4 * -(height / scale) + height / 2), offset + x + width, Math.round(gf.get(x).getX() * 4 * -(height / scale) + height / 2));
+                        g.setColor(new Color(0, 255, 0));
+                        g.drawLine(offset + x - 1 + width, Math.round(gf.get(x - 1).getY() * 4 * -(height / scale) + height / 2), offset + x + width, Math.round(gf.get(x).getY() * 4 * -(height / scale) + height / 2));
+                        g.setColor(new Color(0, 0, 255));
+                        g.drawLine(offset + x - 1 + width, Math.round(gf.get(x - 1).getZ() * 4 * -(height / scale) + height / 2), offset + x + width, Math.round(gf.get(x).getZ() * 4 * -(height / scale) + height / 2));
+                    }
+
+                    for(int x = 1; x < orientationNunchuckList.get(i).size(); x++){  // orientation for nunchuck
+                        LinkedList<Orientation> o = orientationNunchuckList.get(i);
+                        g.setColor(new Color(255, 255, 0));
+                        g.drawLine(offset + x - 1 + width, Math.round(o.get(x - 1).getPitch() / 36 * -(height / scale) + height / 2 + height), offset + x + width, Math.round(o.get(x).getPitch() / 36 * -(height / scale) + height / 2 + height));
+                        g.setColor(new Color(0, 255, 255));
+                        g.drawLine(offset + x - 1 + width, Math.round(o.get(x - 1).getRoll() / 36 * -(height / scale) + height / 2 + height), offset + x + width, Math.round(o.get(x).getRoll() / 36 * -(height / scale) + height / 2 + height));
+                    }
+
+                    int dotSize = 20;
+                    double x = ((Math.cos(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((width / 2 - dotSize / 2) * joystickEvents[i].getMagnitude())));
+                    double y = ((Math.sin(Math.toRadians(joystickEvents[i].getAngle() - 90)) * ((height / 2 - dotSize / 2) * joystickEvents[i].getMagnitude())));
+                    g.setColor(new Color(255, 0, 0));
+                    g.fill(new Ellipse2D.Double(Math.round(x + width / 2 - dotSize / 2 + offset + width), Math.round(y + height / 2 - dotSize / 2 + height * 2), dotSize, dotSize));
+
+                    //draw boxes outlines
+                    g.setColor(new Color(255, 255, 255, 127));
+                    g.drawRect(offset + width, 0, width, height);
+                    g.drawRect(offset + width, height, width, height);
+                    g.drawRect(offset + width, height * 2, width, height);
+
+                    // draw text
+                    g.setColor(new Color(255, 255, 255));
+                    g.drawString("Nunchuck - G-Force", 2 + offset + width, 10);
+                    g.drawString("Orientation", width / 2 + 2 + offset + width, height + 10);
+                    g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2 + width, 20);
+                    g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2 + width, 30);
+                    g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2 + width, 40);
+                    g.drawString("Pitch = " + orientationNunchuckList.get(i).getLast().getPitch(), offset + 2 + width, height + 20);
+                    g.drawString("Roll = " + orientationNunchuckList.get(i).getLast().getRoll(), offset + 2 + width, height + 30);
+                    g.drawString("Angle = " + joystickEvents[i].getAngle(), offset + 2 + width, height * 2 + 10);
+                    g.drawString("Magnitude = " + joystickEvents[i].getMagnitude(), offset + 2 + width, height * 2 + 20);
+                }
+
+                // clean up lists
+                while(gForceWiimoteList.get(i).size() > width){
+                    gForceWiimoteList.get(i).remove();
+                }
+                while(orientationWiimoteList.get(i).size() > width){
+                    orientationWiimoteList.get(i).remove();
+                }
+                while(gForceNunchuckList.get(i).size() > width){
+                    gForceNunchuckList.get(i).remove();
+                }
+                while(orientationNunchuckList.get(i).size() > width){
+                    orientationNunchuckList.get(i).remove();
+                }
+            }else{
+                g.setColor(new Color(0, 0, 0, 127));
+                g.fillRect(offset, 0, width, height);
+                g.setColor(new Color(255, 255, 255));
+                g.drawString("MotionSensing disabled for Wiimote " + i, offset + 2, 10);
+                g.setColor(new Color(255, 0, 0));
+                g.drawString("Press M to force enable on all devices", offset + 2, 20);
             }
         }
     }
@@ -402,8 +422,22 @@ public class WiimoteHandler{
      * Activates motion sensing on all connected wiimotes.
      */
     public void activateMotionSensing(){
-        for(Wiimote w : wiimotes){
-            w.activateMotionSensing();
+        if(wiimotes != null){
+            for(int i = 0; i < wiimotes.length; i++){
+                activateMotionSensing(i);
+            }
+        }
+    }
+
+    /**
+     * Activates motion sensing for given wiimote.
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     */
+    public void activateMotionSensing(int wiimoteID){
+        if(wiimotes[wiimoteID] != null){
+            wiimotes[wiimoteID].activateMotionSensing();
+            isMotionSensingActive[wiimoteID] = true;
         }
     }
 
@@ -411,8 +445,22 @@ public class WiimoteHandler{
      * Deactivates motion sensing on all connected wiimotes.
      */
     public void deactivateMotionSensing(){
-        for(Wiimote w : wiimotes){
-            w.deactivateMotionSensing();
+        if(wiimotes != null){
+            for(int i = 0; i < wiimotes.length; i++){
+                deactivateMotionSensing(i);
+            }
+        }
+    }
+
+    /**
+     * Deactivates motion sensing on given wiimote.
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     */
+    public void deactivateMotionSensing(int wiimoteID){
+        if(wiimotes[wiimoteID] != null){
+            wiimotes[wiimoteID].deactivateMotionSensing();
+            isMotionSensingActive[wiimoteID] = false;
         }
     }
 }

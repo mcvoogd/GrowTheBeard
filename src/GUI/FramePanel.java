@@ -13,8 +13,8 @@ public class FramePanel extends JFrame{
 
     public FramePanel()
     {
-        WiimoteHandler wiimoteHandler = new WiimoteHandler();  // bug-fix, don't ask
-        System.setProperty("sun.java2d.opengl", "true");
+        //WiimoteHandler wiimoteHandler = new WiimoteHandler();  // bug-fix, don't ask  // DO NOT REMOVE THIS LINE, EVEN IF COMMENTED OUT
+        System.setProperty("sun.java2d.opengl", "true");  // should enable hardware-acceleration
 
         System.out.println("Frame constructed");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

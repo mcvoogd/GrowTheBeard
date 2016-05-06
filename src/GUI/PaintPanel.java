@@ -7,14 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class PaintPanel extends JPanel{
-    private int startteller = 0;
+public class PaintPanel extends JPanel implements ActionListener{
+    private int startCounter = 0;
     private boolean timerstarted = false;
     Shape s = null;
     private BufferedImage background;
@@ -24,24 +25,51 @@ public class PaintPanel extends JPanel{
     private Timer timer;
     private boolean startmenuactive = true;
     private WiimoteHandler wiimoteHandler;
-    private boolean drawDebug = true;  // TODO: I'd like a keylistener for this, F3 please
+    private boolean drawDebug = false;  // TODO: I'd like a keylistener for this, F3 please
 
     public PaintPanel(WiimoteHandler wiimoteHandler) {
         System.out.println("Paint Panel constructed");
         timer = new Timer(1000/60, e -> {
             repaint();
-            startteller++;
-            if(startteller > 1000) {setStartmenuactive(false);} // SIMULATE PRESSING A + B
+            startCounter++;
+            if(startCounter > 1000) {setStartmenuactive(false);} // SIMULATE PRESSING A + B
         });
         timer.start();
         this.wiimoteHandler = wiimoteHandler;
-        wiimoteHandler.activateMotionSensing();
         try {
             background = ImageIO.read(new File("start.png"));
             System.out.println("read succesvol");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        setFocusable(true);
+        requestFocus();
+        addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent e){
+                
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e){
+                switch(e.getKeyCode()){
+                    case KeyEvent.VK_F3:
+                        drawDebug = !drawDebug;
+                        break;
+                    case KeyEvent.VK_F5:
+                        wiimoteHandler.SearchWiimotes();
+                        break;
+                    case KeyEvent.VK_M:
+                        wiimoteHandler.activateMotionSensing();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e){
+                
+            }
+        });
     }
 
     public void paintComponent(Graphics g)
@@ -54,6 +82,7 @@ public class PaintPanel extends JPanel{
             g2d.drawImage(background, 0, 0, null);
             drawStart(g2d, "Press A + B to start");
         }
+        
         // always as last
         if(drawDebug){
             wiimoteHandler.drawDebug(g2d);
@@ -93,10 +122,14 @@ public class PaintPanel extends JPanel{
           }
        g2d.setColor(Color.WHITE);
        g2d.fill(s);
-
     }
 
     public void setStartmenuactive(boolean active) {
         startmenuactive = active;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
+        
     }
 }
