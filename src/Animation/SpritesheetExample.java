@@ -46,7 +46,7 @@ class SpriteSheetPanel extends JPanel implements ActionListener {
 		BufferedImage img = null;
 		for(int index = 1; index < 86; index++)
 		{
-			path = "images/" + index + ".png";
+			path = "src/Animation/images/" + index + ".png";
 			try {
 				img = ImageIO.read(new File(path));
 				
@@ -56,7 +56,7 @@ class SpriteSheetPanel extends JPanel implements ActionListener {
 			images.add(img);
 		}
 		
-		Timer timer = new Timer(1000/29, this);
+		Timer timer = new Timer(1000/5, this);
 		timer.start();
 	}
 
