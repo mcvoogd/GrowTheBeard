@@ -87,7 +87,7 @@ public class PaintPanel extends JPanel implements ActionListener{
             drawStart(g, "Press A + B to start");
         }
         
-        // always draw last
+        // always draw debug last
         if(drawDebug){
             wiimoteHandler.drawDebug(g);
         }

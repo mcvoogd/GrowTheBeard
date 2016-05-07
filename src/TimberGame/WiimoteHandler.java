@@ -336,7 +336,7 @@ public class WiimoteHandler{
                     // draw text
                     g.setColor(new Color(255, 255, 255));
                     g.drawString("Nunchuck - G-Force", 2 + offset + width, 10);
-                    g.drawString("Orientation", width / 2 + 2 + offset + width, height + 10);
+                    g.drawString("Orientation", 2 + offset + width, height + 10);
                     g.drawString("X = " + gForceNunchuckList.get(i).getLast().getX(), offset + 2 + width, 20);
                     g.drawString("Y = " + gForceNunchuckList.get(i).getLast().getY(), offset + 2 + width, 30);
                     g.drawString("Z = " + gForceNunchuckList.get(i).getLast().getZ(), offset + 2 + width, 40);

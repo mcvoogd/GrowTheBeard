@@ -8,6 +8,7 @@ import java.io.IOException;
 public class BootScreen{
     private static final int AXE_THROW_SPEED = 4;
     private static final int BEARD_SPEED = 8;
+    private static final int TEXT_SPEED = 2;
     private int animationTick;
     
     /**
@@ -38,13 +39,21 @@ public class BootScreen{
             int y = 540 - axe.getHeight(null)/2;
             g.drawImage(axe, EasyTransformer.rotateAroundCenterWithOffset(axe, rotation, 100, -100, x, y), null);
         }else{
-            if(animationTick <= (720 / AXE_THROW_SPEED) + beard.getHeight(null)/BEARD_SPEED){
+            if(animationTick <= (720 / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){
                 int clipHeight = (animationTick - 720 / AXE_THROW_SPEED) * BEARD_SPEED;
                 g.setClip(860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, 860-beard.getWidth(null)/2, clipHeight);
                 g.drawImage(beard, 860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, null);
                 g.setClip(0, 0, 1920, 1080);
             }else{
                 g.drawImage(beard, 860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, null);
+                if(animationTick <= (720 / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED + 400 / TEXT_SPEED){
+                    float opacity = ((animationTick - 720 / AXE_THROW_SPEED) - beard.getHeight(null) / BEARD_SPEED) / (400.0f / TEXT_SPEED);
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+                    g.drawImage(text, 850 - text.getWidth(null) / 2, 590 - text.getHeight(null) / 2, null);
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+                }else{
+                    g.drawImage(text, 850 - text.getWidth(null) / 2, 590 - text.getHeight(null) / 2, null);
+                }
             }
             g.drawImage(axe, 960-axe.getWidth(null)/2, 540-axe.getHeight(null)/2, null);
         }
