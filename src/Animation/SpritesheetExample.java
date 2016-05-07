@@ -56,7 +56,7 @@ class SpriteSheetPanel extends JPanel implements ActionListener {
 			images.add(img);
 		}
 		
-		Timer timer = new Timer(1000/5, this);
+		Timer timer = new Timer(1000/29, this);
 		timer.start();
 	}
 

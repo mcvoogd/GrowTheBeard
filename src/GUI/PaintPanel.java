@@ -25,12 +25,11 @@ public class PaintPanel extends JPanel implements ActionListener{
     private Timer timer;
     private boolean startmenuactive = true;
     private WiimoteHandler wiimoteHandler;
-    private boolean drawDebug = false;  // TODO: I'd like a keylistener for this, F3 please
+    private boolean drawDebug = false;
     private boolean bootAnimation = true;
     private BootScreen bootScreen = new BootScreen();
 
     public PaintPanel(WiimoteHandler wiimoteHandler) {
-        System.out.println("Paint Panel constructed");
         timer = new Timer(1000/60, e -> {
             repaint();
             startCounter++;
@@ -40,7 +39,6 @@ public class PaintPanel extends JPanel implements ActionListener{
         this.wiimoteHandler = wiimoteHandler;
         try {
             System.out.println("Loading resources...");
-            
             background = ImageIO.read(new File("start.png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,10 +87,13 @@ public class PaintPanel extends JPanel implements ActionListener{
             drawStart(g, "Press A + B to start");
         }
         
-        // always as last
+        // always draw last
         if(drawDebug){
             wiimoteHandler.drawDebug(g);
         }
+
+        // fixes stutter on Linux systems
+        Toolkit.getDefaultToolkit().sync();
     }
 
     public void drawStart(Graphics2D g2d, String text)
