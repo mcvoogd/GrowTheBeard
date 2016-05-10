@@ -230,8 +230,8 @@ public class WiimoteHandler{
 
                 // draw axes
                 g.setColor(new Color(255, 255, 255, 63));
-                g.drawLine(offset, height / 2, width, height / 2);
-                g.drawLine(offset, height / 2 + height, width, height / 2 + height);
+                g.drawLine(offset, height / 2, offset + width, height / 2);
+                g.drawLine(offset, height / 2 + height, offset + width, height / 2 + height);
                 for(int x = 1; x < gForceWiimoteList.get(i).size(); x++){  // g-force for wiimote
                     LinkedList<GForce> gf = gForceWiimoteList.get(i);
                     g.setColor(new Color(255, 0, 0));
