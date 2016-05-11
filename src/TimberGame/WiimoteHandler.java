@@ -27,6 +27,17 @@ public class WiimoteHandler{
         KEY_HOME, KEY_1, KEY_2, KEY_A, KEY_B, KEY_MINUS, KEY_PLUS, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT
     }
     
+    // a dedicated class to handle disconnects and exceptions
+    /*public class WiimoteWrapper
+    {
+        private Wiimote wiimote;
+        public WiimoteWrapper(Wiimote wiimote) {this.wiimote = wiimote;}
+        public Wiimote get()
+        {
+            
+        }
+    }*/
+    
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
     private IRSource[] irSources;

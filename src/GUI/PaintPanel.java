@@ -63,6 +63,10 @@ public class PaintPanel extends JPanel implements ActionListener{
                         break;
                     case KeyEvent.VK_M:
                         wiimoteHandler.activateMotionSensing();
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        System.exit(1);
+                        break;
                 }
             }
 
