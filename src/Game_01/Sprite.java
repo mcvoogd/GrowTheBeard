@@ -1,6 +1,7 @@
 package Game_01;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
@@ -25,7 +26,10 @@ public class Sprite {
 		ImageIcon ii = new ImageIcon(imageName);
 		image = ii.getImage();
 	}
-	
+
+	protected void setImage(BufferedImage image){
+		this.image = image;
+	}
 	public Image getImage() {
 		return image;
 	}

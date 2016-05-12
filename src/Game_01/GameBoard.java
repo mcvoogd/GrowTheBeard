@@ -1,4 +1,6 @@
 package Game_01;
+import Util.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,6 +44,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	private void initGameBoard() {
+		new Images();
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setBackground(Color.WHITE);

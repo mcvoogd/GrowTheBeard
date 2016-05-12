@@ -1,5 +1,6 @@
 package Testgui;
 
+import Util.Images;
 import TimberGame.WiimoteHandler;
 
 import javax.swing.*;
@@ -21,6 +22,9 @@ public class TestPanel extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        wiimoteHandler.drawDebug(g2d);
+        g2d.drawRect(0, 0, 50, 50);
+        g2d.drawImage(Images.woodBlock, 0, 0, null);
+        //wiimoteHandler.drawDebug(g2d);
+
     }
 }

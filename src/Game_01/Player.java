@@ -1,4 +1,6 @@
 package Game_01;
+import Util.Images;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,11 +21,13 @@ public class Player extends Sprite {
 	
 	private void initPlayer() {
 		if (number == 1) {
-			loadImage("Sprite1.png");
+//			loadImage("Sprite1.png");
+			setImage(Images.player1);
 			getDimensions();
 		}
 		if (number == 2) {
-			loadImage("Sprite2.png");
+//			loadImage("Sprite2.png");
+			setImage(Images.player2);
 			getDimensions();
 		}
 	}

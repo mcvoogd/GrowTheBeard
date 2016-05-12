@@ -1,4 +1,6 @@
 package Game_01;
+import Util.Images;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +19,8 @@ public class WoodBlock extends Sprite {
 	}
 
 	private void initWoodBlock() {
-		loadImage("Sprite3.png");
+//		loadImage("Sprite3.png");
+		setImage(Images.woodBlock);
 		getDimensions();
 	}
 
