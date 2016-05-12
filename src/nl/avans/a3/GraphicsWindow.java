@@ -1,5 +1,7 @@
-package GUI;
+package nl.avans.a3;
 
+import GUI.BootScreen;
+import Support.Logger;
 import TimberGame.WiimoteHandler;
 
 import javax.imageio.ImageIO;
@@ -15,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class PaintPanel extends JPanel implements ActionListener{
+public class GraphicsWindow extends JPanel implements ActionListener{
     private int startCounter = 0;
     private boolean timerstarted = false;
     Shape s = null;
@@ -33,8 +35,9 @@ public class PaintPanel extends JPanel implements ActionListener{
     private boolean bootAnimation = true;
     private BootScreen bootScreen = new BootScreen();
 
-    public PaintPanel(WiimoteHandler wiimoteHandler) {
-        System.out.println("Paint Panel constructed");
+    public GraphicsWindow(/*WiimoteHandler wiimoteHandler*/) {
+        setName("Grow the Beard");
+        wiimoteHandler = new WiimoteHandler();
         timer = new Timer(1000/60, e -> {
             repaint();
             startteller++;
@@ -42,7 +45,6 @@ public class PaintPanel extends JPanel implements ActionListener{
 
         });
         timer.start();
-        this.wiimoteHandler = wiimoteHandler;
         wiimoteHandler.activateMotionSensing();
         try {
             System.out.println("Loading resources...");
@@ -73,7 +75,8 @@ public class PaintPanel extends JPanel implements ActionListener{
                         wiimoteHandler.activateMotionSensing();
                         break;
                     case KeyEvent.VK_ESCAPE:
-                        System.exit(1);
+                        Logger.instance.log("GW001", "GraphicsWindow::GraphicsWindow", "Program Exited by keypress", Logger.LogType.LOG);
+                        System.exit(0);
                         break;
                 }
             }
@@ -96,10 +99,10 @@ public class PaintPanel extends JPanel implements ActionListener{
         }
 
         if(startmenuactive) {
-          //  g.drawImage(background, 0, 0, null);
+            //  g.drawImage(background, 0, 0, null);
             drawStart(g, "Press A + B to start");
         }else if(choosemenuactive){
-            fonttimer.stop();
+            //fonttimer.stop();
             drawChooseMenu(g);
         }
         // always as last
@@ -111,34 +114,13 @@ public class PaintPanel extends JPanel implements ActionListener{
         Toolkit.getDefaultToolkit().sync();
     }
 
-    public void drawChooseMenu(Graphics2D g2d)  // https://youtu.be/H07zYvkNYL8?t=3s
+    public void drawChooseMenu(Graphics2D g2d)
     {
-        // https://youtu.be/H07zYvkNYL8?t=3s
-        //screensize will be 1920x1080. // too bad you can't ask java the screen size.
-                                        //
-                                        //
-                                        // no wait... you can.
-        System.out.println(getWidth());
-        System.out.println(getHeight());
-        System.out.println("WOOOO MAGIC NUMBERS!");
-        Shape /*trololo*/ single = new Rectangle2D.Double(50, 50, 885, 450);  // https://youtu.be/H07zYvkNYL8?t=3s
-        System.out.println("SO MAGIC! SUCH UNBELIEVABLE!");
-        /* COMMENTS, COMMENTS EVERYWHERE! */ Shape multi = new Rectangle2D.Double(1920- /* fuck you */ 100-855, 50, 885, 450);
-        System.out.println("Huehuehue i'm too lazy to use proper readable code");
-        System.out.println("but here's a star for at least trying:\n" + 
-                "                .\n" +
-                "               ,O,\n" +
-                "              ,OOO,\n" +
-                "        'oooooOOOOOooooo'\n" +
-                "          `OOOOOOOOOOO`\n" +
-                "            `OOOOOOO`\n" +
-                "            OOOO'OOOO\n" +
-                "           OOO'   'OOO\n" +
-                "          O'         'O");
-        Shape scoreboard /*lmao*/ = new Rectangle2D.Double(50, 1080-465-100, 885, 450);  // too bad for you, i'm raping your code
-        System.out.println("\r\n\r\nMy face when seeing this~");
-        System.out.println("https://youtu.be/H07zYvkNYL8?t=3s\r\n\r\n");
-        /* One does not simply use magic numbers */Shape gallery = /*lel*/ new Rectangle2D.Double(1920-100-855, 1080-465-100, 885, 450);  //https://youtu.be/H07zYvkNYL8?t=3s
+        //screensize will be 1920x1080.
+        Shape single = new Rectangle2D.Double(50, 50, 885, 450);
+        Shape multi = new Rectangle2D.Double(1920-100-855, 50, 885, 450);
+        Shape scoreboard = new Rectangle2D.Double(50, 1080-465-100, 885, 450);
+        Shape gallery = new Rectangle2D.Double(1920-100-855, 1080-465-100, 885, 450);
 
         g2d.fill(single);
         g2d.fill(multi);
@@ -163,7 +145,7 @@ public class PaintPanel extends JPanel implements ActionListener{
                 if(fontsize < MAXFONT && !triggered[0])
                 {
                     fontsize += 0.3;
-                     if(fontsize >= MAXFONT)
+                    if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
                     }
@@ -176,11 +158,11 @@ public class PaintPanel extends JPanel implements ActionListener{
                         triggered[0] = false;
                     }
                 }
-           });
+            });
             t.start();
-          }
-       g2d.setColor(Color.WHITE);
-       g2d.fill(s);
+        }
+        g2d.setColor(Color.WHITE);
+        g2d.fill(s);
 
     }
 

@@ -1,8 +1,5 @@
 package Support;
 
-/**
- * Created by flori on 12-May-16.
- */
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

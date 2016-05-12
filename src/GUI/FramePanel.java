@@ -18,11 +18,11 @@ public class FramePanel extends JFrame{
 
         System.out.println("Frame constructed");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-       // setUndecorated(true);
-       // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(new Dimension(1920, 1080));
-        setVisible(true);
         setResizable(false);
+        setVisible(true);
         setContentPane(paintpanel);
     }
 }
