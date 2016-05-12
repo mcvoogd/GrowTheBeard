@@ -1,4 +1,4 @@
 Logger,LO,,,
 LO001,E,Logger::log(Exception e),Exception can't be null,pass a non null Exception to resolve the error
 LO002,W,"Logger::log(String, ..)",are you sureyou want to log an empty warning,"this warning is logged since the message of the log is either null or ecual to """" witch is probably not what you want"
-L0003,E,"Logger::log(…, String codePath, String message, ...)","the log type cannot be NOTTHING, code(<code>) message(<message>)",the nothing type is reserved for the console / log to indicate that notthing should be shown so a log canot have this type
+L0003,E,"Logger::log(…, String codePath, String message, ...)","the log type cannot be NOTHING, code(<code>) message(<message>)",the nothing type is reserved for the console / log to indicate that notthing should be shown so a log canot have this type
