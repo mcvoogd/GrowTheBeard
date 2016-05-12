@@ -21,6 +21,7 @@ class Logger
         Logger.instance.log("TC004", "Logger::main", "    ", LogType.ERROR);
         Logger.instance.log("TC005", "Logger::main", "", LogType.ERROR);
         Logger.instance.log("TC006", "Logger::main", null, LogType.ERROR);
+        Logger.instance.log("TC007", "Logger::main", "I think I can break the rules", LogType.NOTTHING);
     }
 
     public enum LogType
@@ -104,6 +105,7 @@ class Logger
         final int CODE_PATH_LENGTH = 40;
 
         if (message == null || message.trim().equals("")) log("LO002", "Logger::log(String, ...)", "are you sure you want to log an empty message", LogType.WARNING);
+        if (type == LogType.NOTTHING) {log("LC003", "Logger::(String, ...)", "the log type cannot be NOTTING, code("+code+") message("+message+")", LogType.ERROR); return;}
 
         String combinedMessage = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()) + " ";
 
