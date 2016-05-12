@@ -1,5 +1,6 @@
 package Testgui;
 
+import Util.Images;
 import TimberGame.WiimoteHandler;
 
 import javax.swing.*;
@@ -14,10 +15,11 @@ public class Main extends JFrame{
     }
 
     public Main(){
+        new Images();
         wiimoteHandler = new WiimoteHandler();
         TestPanel panel = new TestPanel(wiimoteHandler);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(new Dimension(1920, 1080));
+        setSize(new Dimension(720, 450));
         setVisible(true);
         setResizable(false);
         setContentPane(panel);
