@@ -7,29 +7,14 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class Logger
+public class Logger
 {
-    public static void main(String[] args)
-    {
-        Logger.instance.log("TC001", "Logger::main", "Hello World", LogType.ERROR);
-        Logger.instance.log(null, null, "testLog", LogType.LOG);
-        Logger.instance.log("TC002", "Logger::method(int)", "10", LogType.WARNING);
-        Logger.instance.log("TC003", "Logger::method(float)", "10.0", LogType.WARNING);
-        System.out.println("hey, how are you");
-        Logger.instance.log(new IndexOutOfBoundsException("use the size of your array fuckers"));
-        Logger.instance.log(null);
-        Logger.instance.log("TC004", "Logger::main", "    ", LogType.ERROR);
-        Logger.instance.log("TC005", "Logger::main", "", LogType.ERROR);
-        Logger.instance.log("TC006", "Logger::main", null, LogType.ERROR);
-        Logger.instance.log("TC007", "Logger::main", "I think I can break the rules", LogType.NOTTHING);
-    }
-
     public enum LogType
     {
-        LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTTHING(4);
+        LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTHING(4);
 
         protected final int typeN;
-        private LogType(int n) {typeN = n;}
+        LogType(int n) {typeN = n;}
     }
 
     public static final Logger instance = new Logger();
@@ -105,7 +90,7 @@ class Logger
         final int CODE_PATH_LENGTH = 40;
 
         if (message == null || message.trim().equals("")) log("LO002", "Logger::log(String, ...)", "are you sure you want to log an empty message", LogType.WARNING);
-        if (type == LogType.NOTTHING) {log("LC003", "Logger::(String, ...)", "the log type cannot be NOTTING, code("+code+") message("+message+")", LogType.ERROR); return;}
+        if (type == LogType.NOTHING) {log("LC003", "Logger::(String, ...)", "the log type cannot be NOTHING, code("+code+") message("+message+")", LogType.ERROR); return;}
 
         String combinedMessage = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()) + " ";
 
