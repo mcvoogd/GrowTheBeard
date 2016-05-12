@@ -4,9 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-/**
- * Created by Harmen on 12-5-2016.
- */
 public class Images {
 
     public static BufferedImage woodBlock;

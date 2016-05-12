@@ -7,6 +7,10 @@
 .idea/
 *.iml
 
+# Eclipse personal stuff, Thijs, keep your crap out of here
+.classpath
+.project
+
 # Package Files #
 # But exclude the fucking .jar cuz we need it
 #*.jar
