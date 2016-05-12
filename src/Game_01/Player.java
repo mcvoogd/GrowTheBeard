@@ -19,11 +19,11 @@ public class Player extends Sprite {
 	
 	private void initPlayer() {
 		if (number == 1) {
-			loadImage("C:\\Users\\Thijs\\Desktop\\Sprite1.png");
+			loadImage("Sprite1.png");
 			getDimensions();
 		}
 		if (number == 2) {
-			loadImage("C:\\Users\\Thijs\\Desktop\\Sprite2.png");
+			loadImage("Sprite2.png");
 			getDimensions();
 		}
 	}

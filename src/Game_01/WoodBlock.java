@@ -17,7 +17,7 @@ public class WoodBlock extends Sprite {
 	}
 
 	private void initWoodBlock() {
-		loadImage("C:\\Users\\Thijs\\Desktop\\Sprite3.png");
+		loadImage("Sprite3.png");
 		getDimensions();
 	}
 
