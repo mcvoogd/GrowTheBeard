@@ -17,6 +17,10 @@ class Logger
         Logger.instance.log("TC003", "Logger::method(float)", "10.0", LogType.WARNING);
         System.out.println("hey, how are you");
         Logger.instance.log(new IndexOutOfBoundsException("use the size of your array fuckers"));
+        Logger.instance.log(null);
+        Logger.instance.log("TC004", "Logger::main", "    ", LogType.ERROR);
+        Logger.instance.log("TC005", "Logger::main", "", LogType.ERROR);
+        Logger.instance.log("TC006", "Logger::main", null, LogType.ERROR);
     }
 
     public enum LogType
@@ -83,10 +87,14 @@ class Logger
 
     public void log(Exception e)
     {
-        String codePath = "";
-        StackTraceElement cause = e.getStackTrace()[0];
-        codePath += cause.getClassName() + "::" + cause.getMethodName();
-        log(null, codePath, e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
+        if (e == null) log("LO001", "Logger::log(Exception)", "Exception can't be null", LogType.ERROR);
+        else
+        {
+            String codePath = "";
+            StackTraceElement cause = e.getStackTrace()[0];
+            codePath += cause.getClassName() + "::" + cause.getMethodName();
+            log(null, codePath, e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
+        }
     }
 
     public void log(final String code, final String codePath, final String message, final LogType type)
@@ -94,6 +102,8 @@ class Logger
         final int LOG_TYPE_LENGTH = 9;
         final int CODE_LENGTH = 5;
         final int CODE_PATH_LENGTH = 40;
+
+        if (message == null || message.trim().equals("")) log("LO002", "Logger::log(String, ...)", "are you sure you want to log an empty message", LogType.WARNING);
 
         String combinedMessage = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()) + " ";
 
