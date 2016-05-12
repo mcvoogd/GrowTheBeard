@@ -1,0 +1,3 @@
+Logger,LO,,,
+LO001,E,Logger::log(Exception e),Exception can't be null,pass a non null Exception to resolve the error
+LO002,W,"Logger::log(String, ..)",are you sureyou want to log an empty warning,"this warning is logged since the message of the log is either null or ecual to """" witch is probably not what you want"
