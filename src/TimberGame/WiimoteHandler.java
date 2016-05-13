@@ -27,17 +27,6 @@ public class WiimoteHandler{
         KEY_HOME, KEY_1, KEY_2, KEY_A, KEY_B, KEY_MINUS, KEY_PLUS, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT
     }
     
-    // a dedicated class to handle disconnects and exceptions
-    /*public class WiimoteWrapper
-    {
-        private Wiimote wiimote;
-        public WiimoteWrapper(Wiimote wiimote) {this.wiimote = wiimote;}
-        public Wiimote get()
-        {
-            
-        }
-    }*/
-    
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
     private IRSource[] irSources;
@@ -158,8 +147,8 @@ public class WiimoteHandler{
                 }
 
                 @Override
-                public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent){
-                    
+                public void onDisconnectionEvent(DisconnectionEvent e){
+                    disconnect(finalI);
                 }
 
                 @Override
@@ -190,7 +179,11 @@ public class WiimoteHandler{
             });
         }
     }
-    
+
+    private void disconnect(int wiimoteID){
+        wiimotes[wiimoteID] = null;
+    }
+
     private void setgForce(int wiimoteID, GForce gForce){
         this.gForce[wiimoteID] = gForce;
     }

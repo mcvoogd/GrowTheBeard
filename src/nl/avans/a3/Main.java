@@ -36,6 +36,11 @@ public class Main{
         try{
             Frame frame = new Frame();
             frame.add(new GraphicsWindow());
+            frame.setTitle("Grow the Beard");
+            frame.setAutoRequestFocus(true);
+            frame.setUndecorated(true);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            frame.toFront();
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
             while(true);
