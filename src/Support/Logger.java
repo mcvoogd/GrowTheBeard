@@ -15,6 +15,7 @@ public class Logger
     }
 
     public static final Logger instance = new Logger();
+    public static void init() {} // to ensure the instance gets initialized
 
     private PrintStream consoleStream, logStream;
     private LogType consoleLevel, logLevel;

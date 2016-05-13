@@ -8,6 +8,7 @@ import Support.Logger;
 public class TestLogger {
     public static void main(String[] args)
     {
+        System.out.println("the main");
         Logger.instance.log("TC001", "Logger::main", "Hello World", Logger.LogType.ERROR);
         Logger.instance.log(null, null, "testLog", Logger.LogType.LOG);
         Logger.instance.log("TC002", "Logger::method(int)", "10", Logger.LogType.WARNING);
