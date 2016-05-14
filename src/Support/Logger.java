@@ -8,47 +8,50 @@ public class Logger
 {
     public enum LogType
     {
-        LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTHING(4);
+        LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTHING(4); // NOTE: the nothing type is used for the filter and should not used as a log type
 
-        protected final int typeN;
+        protected final int typeN; // A number to filter logs the higher te number to higher it's priority is
         LogType(int n) {typeN = n;}
     }
 
     public static final Logger instance = new Logger();
-    public static void init() {} // to ensure the instance gets initialized
+    public static void init() {initialized = true;} // to ensure the instance gets initialized
+    private static boolean initialized = false; // a boolean to ensure a warning can be logged when init isn't called on startup
 
-    private PrintStream consoleStream, logStream;
-    private LogType consoleLevel, logLevel;
+    private static final int LOG_TYPE_LENGTH = 9; // the amount of char's used to display the log's type, should never change
+    private static final int CODE_LENGTH = 5; // the amount of char's used to display the log's LogType, should never change
+    private static final int CODE_PATH_LENGTH = 70; // the amount of char's used to display the code path
+
+    private PrintStream consoleStream, logStream; // the logger's outputs
+    private LogType consoleLevel, logLevel; // the logger's outputs' filters
 
 
     private Logger()
     {
         consoleStream = System.out;
-        new File("runtime_data/").mkdir();
+        new File("runtime_data/").mkdir(); // ensuring the runtime_data folder exits
         try {
-            logStream = new PrintStream(new File("runtime_data/log.txt"));
-        } catch (FileNotFoundException e) {}
-        consoleLevel = LogType.LOG;
-        logLevel = LogType.LOG;
-        System.setOut(new PrintStream(new OutputStream() {
+            logStream = new PrintStream(new File("runtime_data/log.txt")); // creating a file for the log
+        } catch (FileNotFoundException e) {log(e);}
+        setConsoleLevel(LogType.LOG);
+        setLogLevel(LogType.LOG);
+
+        // creating a new sysout that redirects to the logger
+        synchronized (System.out)
+        {
+            System.setOut(new PrintStream(new OutputStream() {
             @Override
-            public void write(byte[] b)
+            public void write(byte[] b) { }
+
+            public void write(byte[] b, int off, int len) // put rhe sysout message into a log
             {
-                if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "System.out.print", new String(b), LogType.LOG);
+                if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
             }
 
-            public void write(byte[] b, int off, int len)
-            {
-                write(b);
-            }
-
             @Override
-            public void write(int b) throws IOException {
-                byte[] b2 = new byte[1];
-                b2[0] = (byte)b;
-                write(b2);
-            }
+            public void write(int b) throws IOException {}
         }));
+        }
     }
 
     public void setConsoleLevel(LogType type) {consoleLevel = type;}
@@ -71,24 +74,27 @@ public class Logger
 
     public void log(Exception e)
     {
-        if (e == null) log("LO001", "Logger::log(Exception)", "Exception can't be null", LogType.ERROR);
-        else
-        {
-            String codePath = "";
-            StackTraceElement cause = e.getStackTrace()[0];
-            codePath += cause.getClassName() + "::" + cause.getMethodName();
-            log(null, codePath, e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
-        }
+        checkInitilazation();
+        if (e == null) log("LO001", "Exception can't be null", LogType.ERROR);
+        else log(null, e.getStackTrace()[0].toString(), e.getMessage(), LogType.EXCEPTION);
     }
+
+    public void log(final String code, final String message, final LogType type)
+    {
+        checkInitilazation();
+        // even tough this method is deprecated in order to prevent code duplication we still use it
+        log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
+    }
+
+    @Deprecated()
+    /**
+     * @Deprecated the log method has been replaced by a log method that generates the code path itself, just remove the codePath argument and you're good to go
+    **/
 
     public void log(final String code, final String codePath, final String message, final LogType type)
     {
-        final int LOG_TYPE_LENGTH = 9;
-        final int CODE_LENGTH = 5;
-        final int CODE_PATH_LENGTH = 40;
-
-        if (message == null || message.trim().equals("")) log("LO002", "Logger::log(String, ...)", "are you sure you want to log an empty message", LogType.WARNING);
-        if (type == LogType.NOTHING) {log("LC003", "Logger::(String, ...)", "the log type cannot be NOTHING, code("+code+") message("+message+")", LogType.ERROR); return;}
+        if (message == null || message.trim().equals("")) log("LO002", "are you sure you want to log an empty message", LogType.WARNING);
+        if (type == LogType.NOTHING) {log("LC003", "the log type cannot be NOTHING, code("+code+") message("+message+")", LogType.ERROR); return;}
 
         String combinedMessage = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()) + " ";
 
@@ -102,5 +108,12 @@ public class Logger
             if (consoleStream != null && consoleLevel.typeN <= type.typeN) consoleStream.print(combinedMessage + "\n");
             if (logStream != null && logLevel.typeN <= type.typeN) logStream.print(combinedMessage + "\n");
         }
+    }
+
+    private void checkInitilazation()
+    {
+        if (initialized == true) return;
+        init();
+        log("LO004", "the logger is not properly initialized", LogType.WARNING);
     }
 }
