@@ -98,7 +98,7 @@ public class Logger
     }
 
     /**
-     * logs an exception
+     * logs an exception, intended to be used to catch exceptions at a central place like the main
      * @param e the exception that needs to be logged
      */
     public void log(Exception e)
