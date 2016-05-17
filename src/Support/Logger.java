@@ -105,7 +105,7 @@ public class Logger
     {
         checkInitilazation();
         if (e == null) log("LO001", "Exception can't be null", LogType.ERROR);
-        else log(null, e.getStackTrace()[0].toString(), e.getMessage(), LogType.EXCEPTION);
+        else log(null, e.getStackTrace()[0].toString(), e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
     }
 
     /**
