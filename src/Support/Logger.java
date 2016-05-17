@@ -34,7 +34,7 @@ public class Logger
         consoleStream = System.out;
         new File("runtime_data/").mkdir(); // ensuring the runtime_data folder exits
         try {
-            logStream = new PrintStream(new File("runtime_data/log.txt")); // creating a file for the log
+            logStream = new PrintStream(new File("runtime_data/log_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date())) + ".txt"); // creating a file for the log
         } catch (FileNotFoundException e) {log(e);}
         setConsoleLevel(LogType.LOG);
         setLogLevel(LogType.LOG);
