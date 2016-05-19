@@ -88,7 +88,7 @@ public class BootScreen extends JPanel{
         if(animationTick <= DOUBLEROTATION / AXE_THROW_SPEED){
             int rotation = animationTick * AXE_THROW_SPEED;
             int x = -DOUBLEROTATION * AXE_THROW_SPEED + animationTick * AXE_THROW_SPEED * AXE_THROW_SPEED + (GraphicsWindow.WIDTH/2 - axe.getWidth(null)/2);
-            int y = 540 - axe.getHeight(null)/2;
+            int y = GraphicsWindow.HEIGHT/2 - axe.getHeight(null)/2;
             g.drawImage(axe, EasyTransformer.rotateAroundCenterWithOffset(axe, rotation, 100, -100, x, y), null);
         }else{
             if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){
