@@ -23,6 +23,13 @@ import javax.swing.Timer;
 public class GameBoard extends JPanel implements ActionListener {
 
 	private Timer timer;
+	private Timer endTimer;
+	private Timer timeLeft;
+
+	private int time = 30;
+	private int scorePlayer1;
+	private int scorePlayer2;
+
 	private Player player1;
 	private Player player2;
 	private ArrayList<WoodBlock> woodBlocks;
@@ -55,12 +62,23 @@ public class GameBoard extends JPanel implements ActionListener {
 		player2 = new Player(START_X_PLAYER2, 0, 2);
 
 		initWoodBlocks();
+	if (inGame) {
+		endTimer = new Timer(30000, e -> inGame = !inGame);
+		endTimer.start();
+
+		timeLeft = new Timer(1000, e -> {
+            time--;
+            scorePlayer1++;
+            scorePlayer2++;
+        });
+		timeLeft.start();
+	}
 
 		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 
-	public void initWoodBlocks() {
+	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
 		woodBlocks.add(new WoodBlock(40, -800));
 	}
@@ -71,29 +89,32 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 
 		if (inGame) {
+			Font tf = new Font("Calibri", Font.BOLD, 72);
+			g2.setFont(tf);
+			g2.drawString("Time left: " + time, 1000, 1000);
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
 			g2.draw(new Line2D.Double(0, 0, 1920, 0));
 			g2.translate(0, -40);
 			drawPlayers(g);
 
-			for (int i = 0; i < woodBlocks.size(); i++) {
-				WoodBlock w = woodBlocks.get(i);
+			for (WoodBlock w : woodBlocks) {
 				if (w.getVisible()) {
 					g.drawImage(w.getImage(), w.getX(), w.getY(), this);
 				}
 			}
 		}
 
-		if (!inGame && player1Win) {
-			drawGameEndPL1(g);
-		}
-
-		if (!inGame && player2Win) {
-			drawGameEndPL2(g);
-		}
-		if (!inGame && !player1Win && !player2Win) {
-			drawGameEnd(g);
+		if (!inGame) {
+			if (player1Win) {
+				drawGameEndPL1(g);
+			}
+			if (player2Win) {
+				drawGameEndPL2(g);
+			}
+			else {
+				drawGameEnd(g);
+			}
 		}
 		Toolkit.getDefaultToolkit().sync();
 	}
@@ -172,7 +193,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	public void checkCollision() {
+	private void checkCollision() {
 		Rectangle rect3 = player1.getBounds();
 		Rectangle rect2 = player2.getBounds();
 
