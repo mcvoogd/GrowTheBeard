@@ -92,7 +92,8 @@ public class GraphicsWindow extends JPanel implements ActionListener{
     {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
-
+        g.scale(getWidth()/1920.0, getHeight()/1080.0);
+        
         if(bootAnimation){
             bootScreen.update(g);
         }

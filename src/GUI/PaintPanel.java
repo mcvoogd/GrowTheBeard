@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class PaintPanel extends JPanel implements ActionListener{
+    private static final int WIDTH = 1920;
+    private static final int HEIGHT = 1080;
+    
     private int startCounter = 0;
     private boolean timerstarted = false;
     Shape s = null;
@@ -119,8 +122,8 @@ public class PaintPanel extends JPanel implements ActionListener{
                                         //
                                         //
                                         // no wait... you can.
-        System.out.println(getWidth());
-        System.out.println(getHeight());
+        System.out.println(WIDTH);
+        System.out.println(HEIGHT);
         System.out.println("WOOOO MAGIC NUMBERS!");
         Shape /*trololo*/ single = new Rectangle2D.Double(50, 50, 885, 450);  // https://youtu.be/H07zYvkNYL8?t=3s
         System.out.println("SO MAGIC! SUCH UNBELIEVABLE!");
@@ -147,14 +150,14 @@ public class PaintPanel extends JPanel implements ActionListener{
         g2d.fill(gallery);
 
         g2d.setColor(Color.YELLOW);
-        g2d.drawString("SinglePlayer!", (float)(single.getBounds().getWidth()/2), (float) (single.getBounds().getHeight()/2));
+        g2d.drawString("SinglePlayer!", (float)(single.getBounds().getHeight()/2), (float) (single.getBounds().getHeight()/2));
     }
     public void drawStart(Graphics2D g2d, String text)
     {
         Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
         GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), text);
         double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
-        s = v.getOutline((float) (getWidth()/2 - width/2), 1800 /2);
+        s = v.getOutline((float) (WIDTH/2 - width/2), 1800 /2);
 
         if(!timerstarted) {
             timerstarted = true;
