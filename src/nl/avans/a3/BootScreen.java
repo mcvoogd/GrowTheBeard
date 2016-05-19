@@ -65,7 +65,7 @@ public class BootScreen extends JPanel{
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize += 0.3;
+                    fontsize += 0.5;
                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
@@ -73,7 +73,7 @@ public class BootScreen extends JPanel{
                 }
                 else
                 {
-                    fontsize -= 0.3;
+                    fontsize -= 0.5;
                     if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
@@ -88,7 +88,7 @@ public class BootScreen extends JPanel{
         if(animationTick <= DOUBLEROTATION / AXE_THROW_SPEED){
             int rotation = animationTick * AXE_THROW_SPEED;
             int x = -DOUBLEROTATION * AXE_THROW_SPEED + animationTick * AXE_THROW_SPEED * AXE_THROW_SPEED + (GraphicsWindow.WIDTH/2 - axe.getWidth(null)/2);
-            int y = GraphicsWindow.HEIGHT/2 - axe.getHeight(null)/2;
+            int y = 540 - axe.getHeight(null)/2;
             g.drawImage(axe, EasyTransformer.rotateAroundCenterWithOffset(axe, rotation, 100, -100, x, y), null);
         }else{
             if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){
@@ -101,13 +101,13 @@ public class BootScreen extends JPanel{
                 if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED + 400 / TEXT_SPEED){
                     float opacity = ((animationTick - DOUBLEROTATION / AXE_THROW_SPEED) - beard.getHeight(null) / BEARD_SPEED) / (400.0f / TEXT_SPEED);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTOFFSET - text.getHeight(null) / 2, null);
+                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTHEIGHTOFFSET - text.getHeight(null) / 2, null);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 }else{
-                    g.drawImage(text, TEXTHEIGHTOFFSET - text.getWidth(null) / 2, TEXTOFFSET - text.getHeight(null) / 2, null);
+                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTHEIGHTOFFSET - text.getHeight(null) / 2, null);
                 }
             }
-            g.drawImage(axe, GraphicsWindow.WIDTH/2-axe.getWidth(null)/2, GraphicsWindow.HEIGHT/2-axe.getHeight(null)/2, null);
+            g.drawImage(axe, (GraphicsWindow.WIDTH/2)-axe.getWidth(null)/2, (GraphicsWindow.HEIGHT/2)-axe.getHeight(null)/2, null);
         }
         animationTick++;
 
