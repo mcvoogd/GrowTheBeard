@@ -1,7 +1,5 @@
 package nl.avans.a3;
 
-import Support.Logger;
-
 import java.awt.*;
 
 public class Main{
