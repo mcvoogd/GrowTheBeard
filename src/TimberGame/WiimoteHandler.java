@@ -53,6 +53,7 @@ public class WiimoteHandler{
         joystickEvents = new JoystickEvent[4];
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
+            //wiimotes[i].setTimeout();
             gForceWiimoteList.add(i, new LinkedList<>());
             orientationWiimoteList.add(i, new LinkedList<>());
             pressedButtons.add(new EnumMap<>(Buttons.class));
@@ -133,6 +134,8 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
+                        ButtonsEvent be = ne.getButtonsEvent();
+                        System.out.println(be.getButtonsJustPressed());
                         JoystickEvent joystickEvent = ne.getNunchukJoystickEvent();
                         storeNunchuckJoystick(finalI, joystickEvent);
                         MotionSensingEvent me = ne.getNunchukMotionSensingEvent();

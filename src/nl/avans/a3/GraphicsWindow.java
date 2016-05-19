@@ -1,6 +1,5 @@
 package nl.avans.a3;
 
-import GUI.BootScreen;
 import Support.Logger;
 import TimberGame.WiimoteHandler;
 
@@ -75,7 +74,7 @@ public class GraphicsWindow extends JPanel implements ActionListener{
                         wiimoteHandler.activateMotionSensing();
                         break;
                     case KeyEvent.VK_ESCAPE:
-                        Logger.instance.log("GW001", "GraphicsWindow::GraphicsWindow", "Program exited by keypress", Logger.LogType.LOG);
+                        Logger.instance.log("GW001", "Program exited by keypress", Logger.LogType.LOG);
                         System.exit(0);
                         break;
                 }
@@ -173,6 +172,5 @@ public class GraphicsWindow extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-
     }
 }

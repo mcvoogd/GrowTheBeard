@@ -1,4 +1,6 @@
-package GUI;
+package nl.avans.a3;
+
+import GUI.EasyTransformer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -6,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BootScreen{
-    private static final int AXE_THROW_SPEED = 4;
+    private static final int AXE_THROW_SPEED = 8;
     private static final int BEARD_SPEED = 8;
     private static final int TEXT_SPEED = 2;
     private int animationTick;
@@ -18,7 +20,8 @@ public class BootScreen{
     private Image axe;
     private Image beard;
     private Image text;
-    
+    private boolean finished = false;
+
     public BootScreen(){
         animationTick = 0;
         try{

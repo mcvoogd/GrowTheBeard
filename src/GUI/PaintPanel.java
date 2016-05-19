@@ -1,6 +1,7 @@
 package GUI;
 
 import TimberGame.WiimoteHandler;
+import nl.avans.a3.BootScreen;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
