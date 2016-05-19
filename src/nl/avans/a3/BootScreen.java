@@ -29,6 +29,13 @@ public class BootScreen extends JPanel{
     private final int MINFONT = 40;
     private final String TEXTAB = "Press A + B to start!";
     private final int YOFFSET = 400;
+    private final int BEARDOFFSET = 860;
+    private final int BEARDHEIGHTOFFSET = 610;
+    private final int TEXTOFFSET = 850;
+    private final int TEXTHEIGHTOFFSET = 590;
+
+    private final int DOUBLEROTATION = 720;
+
 
     public BootScreen(){
         animationTick = 0;
@@ -78,29 +85,29 @@ public class BootScreen extends JPanel{
         g.setColor(Color.WHITE);
         g.fill(s);
 
-        if(animationTick <= 720 / AXE_THROW_SPEED){
+        if(animationTick <= DOUBLEROTATION / AXE_THROW_SPEED){
             int rotation = animationTick * AXE_THROW_SPEED;
-            int x = -720 * AXE_THROW_SPEED + animationTick * AXE_THROW_SPEED * AXE_THROW_SPEED + (960 - axe.getWidth(null)/2);
-            int y = 540 - axe.getHeight(null)/2;
+            int x = -DOUBLEROTATION * AXE_THROW_SPEED + animationTick * AXE_THROW_SPEED * AXE_THROW_SPEED + (GraphicsWindow.WIDTH/2 - axe.getWidth(null)/2);
+            int y = GraphicsWindow.HEIGHT/2 - axe.getHeight(null)/2;
             g.drawImage(axe, EasyTransformer.rotateAroundCenterWithOffset(axe, rotation, 100, -100, x, y), null);
         }else{
-            if(animationTick <= (720 / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){
-                int clipHeight = (animationTick - 720 / AXE_THROW_SPEED) * BEARD_SPEED;
-                g.setClip(860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, 860-beard.getWidth(null)/2, clipHeight);
-                g.drawImage(beard, 860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, null);
-                g.setClip(0, 0, 1920, 1080);
+            if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){
+                int clipHeight = (animationTick - DOUBLEROTATION / AXE_THROW_SPEED) * BEARD_SPEED;
+                g.setClip(BEARDOFFSET-beard.getWidth(null)/2, BEARDHEIGHTOFFSET-beard.getHeight(null)/2, BEARDOFFSET - beard.getWidth(null)/2, clipHeight);
+                g.drawImage(beard, BEARDOFFSET-beard.getWidth(null)/2, BEARDHEIGHTOFFSET-beard.getHeight(null)/2, null);
+                g.setClip(0, 0, GraphicsWindow.WIDTH, GraphicsWindow.HEIGHT);
             }else{
-                g.drawImage(beard, 860-beard.getWidth(null)/2, 610-beard.getHeight(null)/2, null);
-                if(animationTick <= (720 / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED + 400 / TEXT_SPEED){
-                    float opacity = ((animationTick - 720 / AXE_THROW_SPEED) - beard.getHeight(null) / BEARD_SPEED) / (400.0f / TEXT_SPEED);
+                g.drawImage(beard, BEARDOFFSET-beard.getWidth(null)/2, BEARDHEIGHTOFFSET-beard.getHeight(null)/2, null);
+                if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED + 400 / TEXT_SPEED){
+                    float opacity = ((animationTick - DOUBLEROTATION / AXE_THROW_SPEED) - beard.getHeight(null) / BEARD_SPEED) / (400.0f / TEXT_SPEED);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                    g.drawImage(text, 850 - text.getWidth(null) / 2, 590 - text.getHeight(null) / 2, null);
+                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTOFFSET - text.getHeight(null) / 2, null);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 }else{
-                    g.drawImage(text, 850 - text.getWidth(null) / 2, 590 - text.getHeight(null) / 2, null);
+                    g.drawImage(text, TEXTHEIGHTOFFSET - text.getWidth(null) / 2, TEXTOFFSET - text.getHeight(null) / 2, null);
                 }
             }
-            g.drawImage(axe, 960-axe.getWidth(null)/2, 540-axe.getHeight(null)/2, null);
+            g.drawImage(axe, GraphicsWindow.WIDTH/2-axe.getWidth(null)/2, GraphicsWindow.HEIGHT/2-axe.getHeight(null)/2, null);
         }
         animationTick++;
 
