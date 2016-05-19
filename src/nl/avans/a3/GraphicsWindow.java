@@ -1,6 +1,5 @@
 package nl.avans.a3;
 
-import GUI.BootScreen;
 import Support.Logger;
 import TimberGame.WiimoteHandler;
 
@@ -17,42 +16,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GraphicsWindow extends JPanel implements ActionListener{
-    private int startCounter = 0;
-    private boolean timerstarted = false;
-    Shape s = null;
-    private BufferedImage background;
-    private double fontsize = 0;
-    private final int MAXFONT = 50;
-    private final int MINFONT = 40;
-    private Timer timer;
-    private Timer fonttimer;
-    private boolean startmenuactive = true;
-    private boolean choosemenuactive = false;
+public class GraphicsWindow extends JPanel{
+
+    private Timer timer = new Timer(1000/60, e -> repaint());
+    public static final int WIDTH = 1920;
+    public static final int HEIGHT = 1080;
     private WiimoteHandler wiimoteHandler;
     private boolean drawDebug = false;
-    private int startteller = 0;
     private boolean bootAnimation = true;
     private BootScreen bootScreen = new BootScreen();
 
     public GraphicsWindow(/*WiimoteHandler wiimoteHandler*/) {
         setName("Grow the Beard");
         wiimoteHandler = new WiimoteHandler();
-        timer = new Timer(1000/60, e -> {
-            repaint();
-            startteller++;
-            if(startteller > 200) {setStartmenuactive(false);} // SIMULATE PRESSING A + B
-
-        });
         timer.start();
         wiimoteHandler.activateMotionSensing();
-        try {
-            System.out.println("Loading resources...");
-            background = ImageIO.read(new File("start.png"));
-            System.out.println("read succesvol");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         setFocusable(true);
         requestFocus();
@@ -75,7 +53,7 @@ public class GraphicsWindow extends JPanel implements ActionListener{
                         wiimoteHandler.activateMotionSensing();
                         break;
                     case KeyEvent.VK_ESCAPE:
-                        Logger.instance.log("GW001", "GraphicsWindow::GraphicsWindow", "Program exited by keypress", Logger.LogType.LOG);
+                        Logger.instance.log("GW001", "Program exited by keypress", Logger.LogType.LOG);
                         System.exit(0);
                         break;
                 }
@@ -93,18 +71,12 @@ public class GraphicsWindow extends JPanel implements ActionListener{
     {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
-
+        g.scale(getWidth()/1920.0, getHeight()/1080.0);
+        
         if(bootAnimation){
             bootScreen.update(g);
         }
 
-        if(startmenuactive) {
-            //  g.drawImage(background, 0, 0, null);
-            drawStart(g, "Press A + B to start");
-        }else if(choosemenuactive){
-            //fonttimer.stop();
-            drawChooseMenu(g);
-        }
         // always as last
         if(drawDebug){
             wiimoteHandler.drawDebug(g);
@@ -114,65 +86,4 @@ public class GraphicsWindow extends JPanel implements ActionListener{
         Toolkit.getDefaultToolkit().sync();
     }
 
-    public void drawChooseMenu(Graphics2D g2d)
-    {
-        //screensize will be 1920x1080.
-        Shape single = new Rectangle2D.Double(50, 50, 885, 450);
-        Shape multi = new Rectangle2D.Double(1920-100-855, 50, 885, 450);
-        Shape scoreboard = new Rectangle2D.Double(50, 1080-465-100, 885, 450);
-        Shape gallery = new Rectangle2D.Double(1920-100-855, 1080-465-100, 885, 450);
-
-        g2d.fill(single);
-        g2d.fill(multi);
-        g2d.fill(scoreboard);
-        g2d.fill(gallery);
-
-        g2d.setColor(Color.YELLOW);
-        g2d.drawString("SinglePlayer!", (float)(single.getBounds().getWidth()/2), (float) (single.getBounds().getHeight()/2));
-    }
-    public void drawStart(Graphics2D g2d, String text)
-    {
-        Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
-        GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), text);
-        double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
-        s = v.getOutline((float) (getWidth()/2 - width/2), 1800 /2);
-
-        if(!timerstarted) {
-            timerstarted = true;
-            final boolean[] triggered = {false};
-            Timer t = new Timer(1000/60, e -> {
-
-                if(fontsize < MAXFONT && !triggered[0])
-                {
-                    fontsize += 0.3;
-                    if(fontsize >= MAXFONT)
-                    {
-                        triggered[0] = true;
-                    }
-                }
-                else
-                {
-                    fontsize -= 0.3;
-                    if(fontsize <= MINFONT)
-                    {
-                        triggered[0] = false;
-                    }
-                }
-            });
-            t.start();
-        }
-        g2d.setColor(Color.WHITE);
-        g2d.fill(s);
-
-    }
-
-    public void setStartmenuactive(boolean active) {
-        startmenuactive = active;
-        choosemenuactive = !active;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e){
-
-    }
 }

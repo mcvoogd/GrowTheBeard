@@ -53,6 +53,7 @@ public class WiimoteHandler{
         joystickEvents = new JoystickEvent[4];
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
+            //wiimotes[i].setTimeout();
             gForceWiimoteList.add(i, new LinkedList<>());
             orientationWiimoteList.add(i, new LinkedList<>());
             pressedButtons.add(new EnumMap<>(Buttons.class));
@@ -133,6 +134,8 @@ public class WiimoteHandler{
                 public void onExpansionEvent(ExpansionEvent e){
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
+                        ButtonsEvent be = ne.getButtonsEvent();
+                        System.out.println(be.getButtonsJustPressed());
                         JoystickEvent joystickEvent = ne.getNunchukJoystickEvent();
                         storeNunchuckJoystick(finalI, joystickEvent);
                         MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
@@ -286,7 +289,7 @@ public class WiimoteHandler{
 
                 // draw text
                 g.setColor(new Color(255, 255, 255));
-                g.drawString("Wiimote - G-Force", offset + 2, 10);
+                g.drawString("Wiimote " + wiimotes[i].getId() + " - G-Force", offset + 2, 10);
                 g.drawString("Orientation", offset + 2, height + 10);
                 g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
                 g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
@@ -367,7 +370,7 @@ public class WiimoteHandler{
                 g.setColor(new Color(0, 0, 0, 127));
                 g.fillRect(offset, 0, width, height);
                 g.setColor(new Color(255, 255, 255));
-                g.drawString("MotionSensing disabled for Wiimote " + i, offset + 2, 10);
+                g.drawString("MotionSensing disabled for Wiimote " + wiimotes[i].getId(), offset + 2, 10);
                 g.setColor(new Color(255, 0, 0));
                 g.drawString("Press M to force enable on all devices", offset + 2, 20);
             }

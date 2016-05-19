@@ -1,4 +1,4 @@
-package GUI;
+package nl.avans.a3;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -24,4 +24,5 @@ public class EasyTransformer{
         at.translate(-(image.getWidth(null)/2 + xOffset), -(image.getHeight(null)/2 + yOffset));
         return at;
     }
+
 }
