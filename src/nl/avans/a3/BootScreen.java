@@ -33,7 +33,6 @@ public class BootScreen extends JPanel{
     private final int BEARDHEIGHTOFFSET = 610;
     private final int TEXTOFFSET = 850;
     private final int TEXTHEIGHTOFFSET = 590;
-
     private final int DOUBLEROTATION = 720;
 
 
@@ -65,7 +64,7 @@ public class BootScreen extends JPanel{
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize += 0.5;
+                    fontsize += 0.3;
                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
@@ -73,7 +72,7 @@ public class BootScreen extends JPanel{
                 }
                 else
                 {
-                    fontsize -= 0.5;
+                    fontsize -= 0.3;
                     if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
