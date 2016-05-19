@@ -26,7 +26,7 @@ public class Main{
         }*/
         
         DisplayMode oldDisplayMode = screen.getDisplayMode();
-        DisplayMode newDisplayMode = new DisplayMode(1920, 1080, screen.getDisplayMode().getBitDepth(), screen.getDisplayMode().getRefreshRate());
+        DisplayMode newDisplayMode = new DisplayMode(screen.getDisplayMode().getWidth(), screen.getDisplayMode().getHeight(), screen.getDisplayMode().getBitDepth(), screen.getDisplayMode().getRefreshRate());
         
         if(!screen.isFullScreenSupported()){
             Logger.instance.log("MN001", "Fullscreen unsupported on this device", Logger.LogType.ERROR);
