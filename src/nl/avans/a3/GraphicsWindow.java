@@ -10,49 +10,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GraphicsWindow extends JPanel implements ActionListener{
+public class GraphicsWindow extends JPanel{
+
+    private Timer timer = new Timer(1000/60, e -> repaint());
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
-    
-    private int startCounter = 0;
-    private boolean timerstarted = false;
-    Shape s = null;
-    private BufferedImage background;
-    private double fontsize = 0;
-    private final int MAXFONT = 50;
-    private final int MINFONT = 40;
-    private Timer timer;
-    private Timer fonttimer;
-    private boolean startmenuactive = true;
-    private boolean choosemenuactive = false;
     private WiimoteHandler wiimoteHandler;
     private boolean drawDebug = false;
-    private int startteller = 0;
     private boolean bootAnimation = true;
     private BootScreen bootScreen = new BootScreen();
 
     public GraphicsWindow(/*WiimoteHandler wiimoteHandler*/) {
         setName("Grow the Beard");
         wiimoteHandler = new WiimoteHandler();
-        timer = new Timer(1000/60, e -> {
-            repaint();
-            startteller++;
-            if(startteller > 200) {setStartmenuactive(false);} // SIMULATE PRESSING A + B
-
-        });
         timer.start();
         wiimoteHandler.activateMotionSensing();
-        try {
-            System.out.println("Loading resources...");
-            background = ImageIO.read(new File("start.png"));
-            System.out.println("read succesvol");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         setFocusable(true);
         requestFocus();
@@ -107,12 +85,5 @@ public class GraphicsWindow extends JPanel implements ActionListener{
         // fixes stutter on Linux systems
         Toolkit.getDefaultToolkit().sync();
     }
-    public void setStartmenuactive(boolean active) {
-        startmenuactive = active;
-        choosemenuactive = !active;
-    }
 
-    @Override
-    public void actionPerformed(ActionEvent e){
-    }
 }

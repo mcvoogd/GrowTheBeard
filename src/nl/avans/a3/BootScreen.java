@@ -22,13 +22,16 @@ public class BootScreen extends JPanel{
     private Image axe;
     private Image beard;
     private Image text;
-    private boolean finished = false;
 
+    private boolean finished = false;
     private boolean timerstarted = false;
     Shape s = null;
     private double fontsize = 0;
     private final int MAXFONT = 50;
     private final int MINFONT = 40;
+    private final String TEXTAB = "Press A + B to start!";
+    private final int YOFFSET = 400;
+
     public BootScreen(){
         animationTick = 0;
         try{
@@ -45,12 +48,10 @@ public class BootScreen extends JPanel{
 
         g.drawImage(background, 0, 0, null);
 
-        String textAB = "Press A + B to start!";
         Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
-        GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), textAB);
+        GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), TEXTAB);
         double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
-        System.out.println((float) (getWidth()/2 - width/2) + " < width");
-        s = v.getOutline((float) (getWidth()/2 - width/2), 1800 /2);
+        s = v.getOutline((float) (GraphicsWindow.WIDTH/2 - width/2), ((GraphicsWindow.HEIGHT /2) + YOFFSET));
 
         if(!timerstarted) {
             timerstarted = true;
@@ -59,7 +60,7 @@ public class BootScreen extends JPanel{
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize += 0.3;
+                    fontsize += 0.5;
                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
@@ -67,7 +68,7 @@ public class BootScreen extends JPanel{
                 }
                 else
                 {
-                    fontsize -= 0.3;
+                    fontsize -= 0.5;
                     if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
