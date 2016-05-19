@@ -98,13 +98,6 @@ public class GraphicsWindow extends JPanel implements ActionListener{
             bootScreen.update(g);
         }
 
-        if(startmenuactive) {
-            //  g.drawImage(background, 0, 0, null);
-            drawStart(g, "Press A + B to start");
-        }else if(choosemenuactive){
-            //fonttimer.stop();
-            drawChooseMenu(g);
-        }
         // always as last
         if(drawDebug){
             wiimoteHandler.drawDebug(g);
@@ -113,59 +106,6 @@ public class GraphicsWindow extends JPanel implements ActionListener{
         // fixes stutter on Linux systems
         Toolkit.getDefaultToolkit().sync();
     }
-
-    public void drawChooseMenu(Graphics2D g2d)
-    {
-        //screensize will be 1920x1080.
-        Shape single = new Rectangle2D.Double(50, 50, 885, 450);
-        Shape multi = new Rectangle2D.Double(1920-100-855, 50, 885, 450);
-        Shape scoreboard = new Rectangle2D.Double(50, 1080-465-100, 885, 450);
-        Shape gallery = new Rectangle2D.Double(1920-100-855, 1080-465-100, 885, 450);
-
-        g2d.fill(single);
-        g2d.fill(multi);
-        g2d.fill(scoreboard);
-        g2d.fill(gallery);
-
-        g2d.setColor(Color.YELLOW);
-        g2d.drawString("SinglePlayer!", (float)(single.getBounds().getWidth()/2), (float) (single.getBounds().getHeight()/2));
-    }
-    public void drawStart(Graphics2D g2d, String text)
-    {
-        Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
-        GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), text);
-        double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
-        s = v.getOutline((float) (getWidth()/2 - width/2), 1800 /2);
-
-        if(!timerstarted) {
-            timerstarted = true;
-            final boolean[] triggered = {false};
-            Timer t = new Timer(1000/60, e -> {
-
-                if(fontsize < MAXFONT && !triggered[0])
-                {
-                    fontsize += 0.3;
-                    if(fontsize >= MAXFONT)
-                    {
-                        triggered[0] = true;
-                    }
-                }
-                else
-                {
-                    fontsize -= 0.3;
-                    if(fontsize <= MINFONT)
-                    {
-                        triggered[0] = false;
-                    }
-                }
-            });
-            t.start();
-        }
-        g2d.setColor(Color.WHITE);
-        g2d.fill(s);
-
-    }
-
     public void setStartmenuactive(boolean active) {
         startmenuactive = active;
         choosemenuactive = !active;
