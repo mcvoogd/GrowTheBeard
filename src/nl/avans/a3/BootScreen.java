@@ -1,6 +1,5 @@
 package nl.avans.a3;
 
-import TimberGame.WiimoteHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,7 +22,6 @@ public class BootScreen extends JPanel{
     private Image beard;
     private Image text;
 
-    private boolean finished = false;
     private boolean timerstarted = false;
     Shape s = null;
     private double fontsize = 0;
