@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -58,7 +59,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
 
 		inGame = true;
-		player1 = new Player(START_X_PLAYER1, 0, 1);
+		player1 = new Player(START_X_PLAYER1, -206, 1);
 		player2 = new Player(START_X_PLAYER2, 0, 2);
 
 		initWoodBlocks();

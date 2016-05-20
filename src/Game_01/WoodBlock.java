@@ -1,8 +1,10 @@
 package Game_01;
 import Util.Images;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.Timer;
 
@@ -20,7 +22,8 @@ public class WoodBlock extends Sprite {
 
 	private void initWoodBlock() {
 //		loadImage("Sprite3.png");
-		setImage(Images.woodBlock);
+		Image image = Images.woodBlock.getScaledInstance(150, 142, BufferedImage.SCALE_DEFAULT);
+		setImage(image);
 		getDimensions();
 	}
 

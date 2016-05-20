@@ -12,9 +12,9 @@ public class Images {
 
     public Images(){
 
-        woodBlock = readImage("Sprite3");
-        player1 = readImage("Sprite1");
-        player2 = readImage("Sprite2");
+        woodBlock = readImage("images_game1\\wood1");
+        player1 = readImage("images_game1\\person1");
+        player2 = readImage("images_game1\\person2");
 
     }
 

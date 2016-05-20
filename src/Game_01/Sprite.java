@@ -27,7 +27,7 @@ public class Sprite {
 		image = ii.getImage();
 	}
 
-	protected void setImage(BufferedImage image){
+	protected void setImage(Image image){
 		this.image = image;
 	}
 	public Image getImage() {
