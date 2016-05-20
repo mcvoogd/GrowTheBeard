@@ -25,15 +25,15 @@ public class BootScreen extends JPanel{
     private boolean timerstarted = false;
     Shape s = null;
     private double fontsize = 0;
-    private final int MAXFONT = 50;
-    private final int MINFONT = 40;
-    private final String TEXTAB = "Press A + B to start!";
-    private final int YOFFSET = 400;
-    private final int BEARDOFFSET = 860;
-    private final int BEARDHEIGHTOFFSET = 610;
-    private final int TEXTOFFSET = 850;
-    private final int TEXTHEIGHTOFFSET = 590;
-    private final int DOUBLEROTATION = 720;
+    private static final int MAXFONT = 50;
+    private static final int MINFONT = 40;
+    private static final String TEXTAB = "Press A + B to start!";
+    private static final int YOFFSET = 400;
+    private static final int BEARDOFFSET = 860;
+    private static final int BEARDHEIGHTOFFSET = 610;
+    private static final int TEXTOFFSET = 850;
+    private static final int TEXTHEIGHTOFFSET = 590;
+    private static final int DOUBLEROTATION = 720;
 
 
     public BootScreen(){

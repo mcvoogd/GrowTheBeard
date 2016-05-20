@@ -1,7 +1,5 @@
 package nl.avans.a3;
 
-import javafx.scene.transform.Affine;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
