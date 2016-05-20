@@ -141,14 +141,14 @@ public class Player extends Sprite {
 	}
 
 	public void checkWiiMote(WiimoteHandler wiimoteHandler, int id){
+		float pitch = wiimoteHandler.getPitch(id);
 		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_LEFT)){
 			dx = -10;
 		}else if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_RIGHT)){
 			dx = 10;
-		}else if(wiimoteHandler.getPitch(id) > 20){
-			dx = 10;
-		}else if(wiimoteHandler.getPitch(id) < -20){
-			dx = -10;
+		}else if(pitch > .75f || pitch < -.75f){
+			System.out.println(pitch);
+			dx = Math.round(-pitch);
 		}
 		else
 		{
@@ -157,7 +157,7 @@ public class Player extends Sprite {
 
 
 
-		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_UP)){
+		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_A)){
 			if(!falling)
 				jump = true;
 			if(engine == null){
@@ -190,38 +190,38 @@ public class Player extends Sprite {
 			}
 		}
 
-		if(wiimoteHandler.getZDifference(id) > 5){
-			if(!falling)
-				jump = true;
-			if(engine == null){
-
-				engine = new Timer(25, e1 -> {
-					if (jump) {
-						dy = ty;
-						if (ty <= 0) {
-							ty++;
-							System.out.println(ty);
-						}
-						else {
-							jump = false;
-							falling = true;
-						}
-					}
-					else if (falling) {
-						dy = -ty;
-						if (ty > -10) {
-							ty--;
-						}
-						if (yPos > -210) {
-							falling = false;
-							dy = 0;
-							ty = -15;
-						}
-					}
-				});
-				engine.start();
-			}
-		}
+//		if(wiimoteHandler.getZDifference(id) > 0.25){
+//			if(!falling)
+//				jump = true;
+//			if(engine == null){
+//
+//				engine = new Timer(25, e1 -> {
+//					if (jump) {
+//						dy = ty;
+//						if (ty <= 0) {
+//							ty++;
+//							System.out.println(ty);
+//						}
+//						else {
+//							jump = false;
+//							falling = true;
+//						}
+//					}
+//					else if (falling) {
+//						dy = -ty;
+//						if (ty > -10) {
+//							ty--;
+//						}
+//						if (yPos > -210) {
+//							falling = false;
+//							dy = 0;
+//							ty = -15;
+//						}
+//					}
+//				});
+//				engine.start();
+//			}
+//		}
 	}
 
 }

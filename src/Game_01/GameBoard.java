@@ -49,12 +49,15 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private WiimoteHandler wiimoteHandler;
 
+	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
+
 	public GameBoard() {
 		initGameBoard();
 	}
 
 	private void initGameBoard() {
 		new Images();
+		scaleBackground();
 		wiimoteHandler = new WiimoteHandler();
 		wiimoteHandler.SearchWiimotes();
 		wiimoteHandler.activateMotionSensing();
@@ -85,6 +88,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
 		woodBlocks.add(new WoodBlock(40, -800));
+		woodBlocks.add(new WoodBlock(90, -800));
+		woodBlocks.add(new WoodBlock(120, -800));
 	}
 
 	@Override
@@ -93,6 +98,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
 		if (inGame) {
+			g2.drawImage(background, 0, 0, null);
 			Font tf = new Font("Calibri", Font.BOLD, 72);
 			g2.setFont(tf);
 			g2.drawString("Time left: " + time, 750, 50);
@@ -177,7 +183,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		checkCollision();
 		repaint();
 		player1.checkWiiMote(wiimoteHandler, 0);
-//		player2.checkWiiMote(wiimoteHandler, 1);
+		player2.checkWiiMote(wiimoteHandler, 1);
 	}
 
 	private void inGame() {
@@ -247,6 +253,11 @@ public class GameBoard extends JPanel implements ActionListener {
 			player1.keyPressed(e);
 			player2.keyPressed(e);
 		}
+	}
+
+	public void scaleBackground(){
+		Graphics g = background.createGraphics();
+		g.drawImage(Images.game1Background, 0, 0, 1920, 1080, null);
 	}
 
 }
