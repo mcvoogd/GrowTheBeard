@@ -1,4 +1,4 @@
-package TimberGame;
+package nl.avans.a3;
 
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
