@@ -1,4 +1,4 @@
-package Support;
+package nl.avans.a3;
 
 import java.io.*;
 import java.text.SimpleDateFormat;

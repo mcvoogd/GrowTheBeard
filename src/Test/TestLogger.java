@@ -1,6 +1,6 @@
 package Test;
 
-import Support.Logger;
+import nl.avans.a3.Logger;
 
 /**
  * Created by flori on 12-May-16.

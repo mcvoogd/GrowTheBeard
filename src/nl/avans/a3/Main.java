@@ -1,7 +1,5 @@
 package nl.avans.a3;
 
-import Support.Logger;
-
 import java.awt.*;
 
 public class Main{
@@ -14,6 +12,7 @@ public class Main{
     private Main(){
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice screen = ge.getDefaultScreenDevice();
+        Logger.init();
         
         /**
          * Test for available screen sizes and available devices, uncomment code below
