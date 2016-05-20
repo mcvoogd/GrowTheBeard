@@ -145,40 +145,48 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	private void drawPlayers(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
 		if (player1.getVisible() && player2.getVisible()) {
-			g.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
-			g.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
+			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
+			g2.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
 		}
 	}
 
 	private void drawGameEnd(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
 		String s = " WOODBLOCKS!";
 		Font font = new Font("Jokerman", Font.BOLD, 48);
 		FontMetrics fm = getFontMetrics(font);
 
-		g.setColor(Color.BLACK);
-		g.setFont(font);
-		g.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
+		g2.setColor(Color.BLACK);
+		g2.setFont(font);
+		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
 	}
 
 	private void drawGameEndPL1(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
 		String s = " PLAYER 1 WINS!";
 		Font font = new Font("Jokerman", Font.BOLD, 48);
 		FontMetrics fm = getFontMetrics(font);
 
-		g.setColor(Color.BLUE);
-		g.setFont(font);
-		g.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
+		g2.setColor(Color.BLUE);
+		g2.setFont(font);
+		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
 	}
 
 	private void drawGameEndPL2(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
 		String s = " PLAYER 2 WINS!";
 		Font font = new Font("Jokerman", Font.BOLD, 48);
 		FontMetrics fm = getFontMetrics(font);
 
-		g.setColor(Color.GREEN);
-		g.setFont(font);
-		g.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
+		g2.setColor(Color.GREEN);
+		g2.setFont(font);
+		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
 	}
 
 	@Override
