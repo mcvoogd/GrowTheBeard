@@ -416,7 +416,10 @@ public class WiimoteHandler{
     }
 
     public float getPitch(int wiimoteID){
-        return orientationWiimoteList.get(wiimoteID).getLast().getPitch();
+        if(orientationWiimoteList.get(wiimoteID).getLast() != null)
+            return orientationWiimoteList.get(wiimoteID).getLast().getPitch();
+        else
+            return 0;
     }
 
     public float getZDifference(int wiimoteID){
