@@ -13,7 +13,9 @@ public class GraphicsWindow extends JPanel{
     private WiimoteHandler wiimoteHandler;
     private boolean drawDebug = false;
     private boolean bootAnimation = true;
+    private boolean mainmenu = false;
     private BootScreen bootScreen = new BootScreen();
+    private MainMenu mainMenu = new MainMenu();
 
     public GraphicsWindow(/*WiimoteHandler wiimoteHandler*/) {
         setName("Grow the Beard");
@@ -45,6 +47,11 @@ public class GraphicsWindow extends JPanel{
                         Logger.instance.log("GW001", "Program exited by keypress", Logger.LogType.LOG);
                         System.exit(0);
                         break;
+                    case KeyEvent.VK_SPACE:
+                        bootAnimation = false;
+                        mainmenu = true;
+                        break;
+
                 }
             }
 
@@ -64,6 +71,9 @@ public class GraphicsWindow extends JPanel{
         
         if(bootAnimation){
             bootScreen.update(g);
+        }
+        if(mainmenu){
+            mainMenu.update(g);
         }
 
         // always as last

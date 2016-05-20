@@ -64,7 +64,7 @@ public class BootScreen extends JPanel{
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize += 0.3;
+                    fontsize += .5;
                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
@@ -72,7 +72,7 @@ public class BootScreen extends JPanel{
                 }
                 else
                 {
-                    fontsize -= 0.3;
+                    fontsize -= .5;
                     if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
