@@ -86,7 +86,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-
+		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
 		if (inGame) {
 			Font tf = new Font("Calibri", Font.BOLD, 72);
 			g2.setFont(tf);

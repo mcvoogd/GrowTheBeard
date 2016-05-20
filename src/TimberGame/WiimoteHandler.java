@@ -35,6 +35,8 @@ public class WiimoteHandler{
     private GForce[] gForce = new GForce[4];
     private Orientation[] orientation = new Orientation[4];
 
+    private float[][] oldValue = new float[4][3];
+
     private boolean[] connectedNunchucks = new boolean[4];
     
     private LinkedList<LinkedList<GForce>> gForceWiimoteList = new LinkedList<>();
@@ -67,6 +69,7 @@ public class WiimoteHandler{
             bool[i] = true;
             wiimotes[i].setLeds(bool[0], bool[1], bool[2], bool[3]);
             wiimotes[i].activateIRTRacking();
+            wiimotes[i].setAlphaSmoothingValue(1);
             final int finalI = i;  // Java anonymous classes can't handle swag, but can handle final variables.
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
@@ -135,7 +138,6 @@ public class WiimoteHandler{
                     if(e instanceof NunchukEvent){
                         NunchukEvent ne = (NunchukEvent) e;
                         ButtonsEvent be = ne.getButtonsEvent();
-                        System.out.println(be.getButtonsJustPressed());
                         JoystickEvent joystickEvent = ne.getNunchukJoystickEvent();
                         storeNunchuckJoystick(finalI, joystickEvent);
                         MotionSensingEvent me = ne.getNunchukMotionSensingEvent();
@@ -296,6 +298,29 @@ public class WiimoteHandler{
                 g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
                 g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
                 g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
+
+                float newXValue = gForceWiimoteList.get(i).getLast().getX();
+                float newYValue = gForceWiimoteList.get(i).getLast().getY();
+                float newZValue = gForceWiimoteList.get(i).getLast().getZ();
+                float pitch = orientationWiimoteList.get(i).getLast().getPitch();
+                float roll = orientationWiimoteList.get(i).getLast().getRoll();
+                if((oldValue[i][0] - newXValue) > 1.5){
+                    g.setColor(new Color(250,0,0));
+                    g.fillRect(width*2 * i, height * 2, 50, 200);
+                }
+                oldValue[i][0] = newXValue;
+
+                if((oldValue[i][1] - newYValue) > 1.5){
+                    g.setColor(new Color(0, 255, 0));
+                    g.fillRect((width*2 * i) + 50, height * 2, 50, 200);
+                }
+                oldValue[i][1] = newYValue;
+
+                if((oldValue[i][2] - newZValue) > 1.5){
+                    g.setColor(new Color(0, 0, 255));
+                    g.fillRect((width*2 * i) + 100, height * 2, 50, 200);
+                }
+                oldValue[i][2] = newZValue;
 
                 if(isNunchuckConnected(i)){
                     // draw background boxes
