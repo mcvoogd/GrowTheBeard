@@ -39,7 +39,7 @@ public class MainMenu extends JPanel {
         try
         {
             background = ImageIO.read(new File("res/images_menu/menu_background.png"));
-            partyGame = ImageIO.read(new File("res/images_menu/menu_party.png"));
+            partyGame = ImageIO.read(new File("res/images_menu/testimg2.png"));
          //   singleGame = ImageIO.read(new File("filepath voor single"));
             Logger.instance.log("MM003", "Loading images succesvol!", Logger.LogType.LOG);
 
@@ -67,7 +67,7 @@ public class MainMenu extends JPanel {
     public void update(Graphics2D g)
     {
 
-        g.drawImage(background, 0, 0,null);
+        g.drawImage(background, 0, 0, null);
         switch(mode)
         {
             case CHOOSEPARTY : drawParty(g); break;
