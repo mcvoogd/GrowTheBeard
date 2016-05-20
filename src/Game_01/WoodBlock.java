@@ -14,8 +14,9 @@ public class WoodBlock extends Sprite {
 	private int vel = -1;
 	protected boolean blockIsFallen;
 
-	public WoodBlock(int xPos, int yPos) {
+	public WoodBlock(int xPos, int yPos, int vel) {
 		super(xPos, yPos);
+		this.vel = vel;
 		visible = true;
 		initWoodBlock();
 	}

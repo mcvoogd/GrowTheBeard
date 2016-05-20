@@ -49,6 +49,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int START_X_PLAYER2 = 1280;
 
 	private WiimoteHandler wiimoteHandler;
+	private Random rand = new Random();
 
 	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 
@@ -68,7 +69,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
 		inGame = true;
 		player1 = new Player(START_X_PLAYER1, -206, 1);
-		player2 = new Player(START_X_PLAYER2, 0, 2);
+		player2 = new Player(START_X_PLAYER2, -206, 2);
 
 		initWoodBlocks();
 	if (inGame) {
@@ -88,9 +89,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
-		woodBlocks.add(new WoodBlock(40, -800));
-		woodBlocks.add(new WoodBlock(90, -800));
-		woodBlocks.add(new WoodBlock(120, -800));
+		woodBlocks.add(new WoodBlock(40, -800, -getRandom(2,1)));
+		woodBlocks.add(new WoodBlock(90, -800, -getRandom(2,1)));
+		woodBlocks.add(new WoodBlock(120, -800, -getRandom(2,1)));
 	}
 
 	@Override
@@ -208,7 +209,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 				if (w.blockIsFallen) {
 					woodBlocks.remove(i);
-					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800));
+					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800, -getRandom(2,1)));
 				} else {
 					blockIsFallen = true;
 				}
@@ -259,6 +260,10 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void scaleBackground(){
 		Graphics g = background.createGraphics();
 		g.drawImage(Images.game1Background, 0, 0, 1920, 1080, null);
+	}
+
+	public int getRandom(int max, int min){
+		return rand.nextInt((max - min) + 1) + min;
 	}
 
 }
