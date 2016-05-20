@@ -145,11 +145,52 @@ public class Player extends Sprite {
 			dx = -10;
 		}else if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_RIGHT)){
 			dx = 10;
-		}else{
+		}else if(wiimoteHandler.getPitch(id) > 20){
+			dx = 10;
+		}else if(wiimoteHandler.getPitch(id) < -20){
+			dx = -10;
+		}
+		else
+		{
 			dx = 0;
 		}
 
+
+
 		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_UP)){
+			if(!falling)
+				jump = true;
+			if(engine == null){
+
+				engine = new Timer(25, e1 -> {
+					if (jump) {
+						dy = ty;
+						if (ty <= 0) {
+							ty++;
+							System.out.println(ty);
+						}
+						else {
+							jump = false;
+							falling = true;
+						}
+					}
+					else if (falling) {
+						dy = -ty;
+						if (ty > -10) {
+							ty--;
+						}
+						if (yPos > -210) {
+							falling = false;
+							dy = 0;
+							ty = -15;
+						}
+					}
+				});
+				engine.start();
+			}
+		}
+
+		if(wiimoteHandler.getZDifference(id) > 5){
 			if(!falling)
 				jump = true;
 			if(engine == null){
