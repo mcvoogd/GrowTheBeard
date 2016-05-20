@@ -1,4 +1,5 @@
 package Game_01;
+import nl.avans.a3.EasyTransformer;
 import nl.avans.a3.WiimoteHandler;
 import Util.Images;
 
@@ -50,6 +51,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
+	private BufferedImage[] woodImages = new BufferedImage[3];
 
 	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 
@@ -60,6 +62,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private void initGameBoard() {
 		new Images();
 		scaleBackground();
+		addWoodImages();
 		wiimoteHandler = new WiimoteHandler();
 		wiimoteHandler.SearchWiimotes();
 		wiimoteHandler.activateMotionSensing();
@@ -89,9 +92,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
-		woodBlocks.add(new WoodBlock(40, -800, -getRandom(2,1)));
-		woodBlocks.add(new WoodBlock(90, -800, -getRandom(2,1)));
-		woodBlocks.add(new WoodBlock(120, -800, -getRandom(2,1)));
+		woodBlocks.add(new WoodBlock(40, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
+		woodBlocks.add(new WoodBlock(90, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
+		woodBlocks.add(new WoodBlock(120, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
 	}
 
 	@Override
@@ -121,7 +124,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			for (WoodBlock w : woodBlocks) {
 				if (w.getVisible()) {
-					g.drawImage(w.getImage(), w.getX(), w.getY(), this);
+					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null);
+
 				}
 			}
 		}
@@ -209,7 +213,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 				if (w.blockIsFallen) {
 					woodBlocks.remove(i);
-					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800, -getRandom(2,1)));
+					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 				} else {
 					blockIsFallen = true;
 				}
@@ -264,6 +268,12 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public int getRandom(int max, int min){
 		return rand.nextInt((max - min) + 1) + min;
+	}
+
+	public void addWoodImages(){
+		woodImages[0] = Images.woodBlock;
+		woodImages[1] = Images.woodBlock2;
+		woodImages[2] = Images.woodBlock3;
 	}
 
 }

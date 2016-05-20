@@ -12,19 +12,21 @@ public class WoodBlock extends Sprite {
 
 	private Timer timer;
 	private int vel = -1;
+	private int rotation;
 	protected boolean blockIsFallen;
 
-	public WoodBlock(int xPos, int yPos, int vel) {
+	public WoodBlock(int xPos, int yPos, int vel, BufferedImage image, int rotation) {
 		super(xPos, yPos);
 		this.vel = vel;
+		this.rotation = rotation;
 		visible = true;
-		initWoodBlock();
+		initWoodBlock(image);
 	}
 
-	private void initWoodBlock() {
+	private void initWoodBlock(BufferedImage image) {
 //		loadImage("Sprite3.png");
-		Image image = Images.woodBlock.getScaledInstance(150, 142, BufferedImage.SCALE_DEFAULT);
-		setImage(image);
+		Image imageNew = image.getScaledInstance(150, 142, BufferedImage.SCALE_DEFAULT);
+		setImage(imageNew);
 		getDimensions();
 	}
 
@@ -36,8 +38,13 @@ public class WoodBlock extends Sprite {
 					visible = false;
 					blockIsFallen = true;
 				}
+				rotation++;
 			}
 		});
 		timer.start();
+	}
+
+	public int getRotation(){
+		return rotation;
 	}
 }

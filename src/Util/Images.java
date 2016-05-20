@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Images {
 
-    public static BufferedImage woodBlock;
+    public static BufferedImage woodBlock, woodBlock2, woodBlock3;
     public static BufferedImage player1;
     public static BufferedImage player2;
     public static BufferedImage game1Background;
@@ -14,6 +14,8 @@ public class Images {
     public Images(){
 
         woodBlock = readImage("images_game1\\wood1");
+        woodBlock2 = readImage("images_game1\\wood2");
+        woodBlock3 = readImage("images_game1\\wood3");
         player1 = readImage("images_game1\\person1");
         player2 = readImage("images_game1\\person2");
         game1Background = readImage("images_game1\\background");
