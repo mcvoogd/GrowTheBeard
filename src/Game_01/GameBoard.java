@@ -1,4 +1,5 @@
 package Game_01;
+import TimberGame.WiimoteHandler;
 import Util.Images;
 
 import java.awt.Color;
@@ -47,17 +48,21 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int START_X_PLAYER1 = 640;
 	private final int START_X_PLAYER2 = 1280;
 
+	private WiimoteHandler wiimoteHandler;
+
 	public GameBoard() {
 		initGameBoard();
 	}
 
 	private void initGameBoard() {
 		new Images();
+		wiimoteHandler = new WiimoteHandler();
+		wiimoteHandler.SearchWiimotes();
+		wiimoteHandler.activateMotionSensing();
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
-
 		inGame = true;
 		player1 = new Player(START_X_PLAYER1, -206, 1);
 		player2 = new Player(START_X_PLAYER2, 0, 2);
@@ -172,6 +177,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		updateWoodBlocks();
 		checkCollision();
 		repaint();
+		player1.checkWiiMote(wiimoteHandler, 0);
+//		player2.checkWiiMote(wiimoteHandler, 1);
 	}
 
 	private void inGame() {

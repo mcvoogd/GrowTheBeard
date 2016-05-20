@@ -420,9 +420,14 @@ public class WiimoteHandler{
      */
     public boolean getIsButtonPressed(int wiimoteID, Buttons button){
         // store current value in var, then change value to false so the button has been read
-        boolean returnVal = pressedButtons.get(wiimoteID).get(button);
-        pressedButtons.get(wiimoteID).put(button, false);
-        return returnVal;
+        if(pressedButtons.get(wiimoteID).get(button) != null){
+            boolean returnVal = pressedButtons.get(wiimoteID).get(button);
+            pressedButtons.get(wiimoteID).put(button, false);
+            return returnVal;
+        }else{
+            return  false;
+        }
+
     }
 
     /**
@@ -433,7 +438,12 @@ public class WiimoteHandler{
      * @return the stored value for the given wiimote and corresponding button
      */
     public boolean getIsButtonDown(int wiimoteID, Buttons button){
-        return heldButtons.get(wiimoteID).get(button);
+        if(heldButtons.get(wiimoteID).get(button) != null){
+
+            return heldButtons.get(wiimoteID).get(button);
+        }else{
+            return  false;
+        }
     }
 
     private void setNunchuckConnected(int nunchuck, boolean value){
