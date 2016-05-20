@@ -73,7 +73,6 @@ public class GameBoard extends JPanel implements ActionListener {
         });
 		timeLeft.start();
 	}
-
 		timer = new Timer(1000/60, this);
 		timer.start();
 	}
@@ -87,11 +86,20 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-
+		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
 		if (inGame) {
 			Font tf = new Font("Calibri", Font.BOLD, 72);
 			g2.setFont(tf);
-			g2.drawString("Time left: " + time, 1000, 1000);
+			g2.drawString("Time left: " + time, 750, 50);
+
+			Font pf = new Font("Calibri", Font.PLAIN, 48);
+			g2.setFont(pf);
+			g2.setColor(new Color(0x161BFF));
+			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1000);
+			g2.setColor(new Color(0x2CE21C));
+			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1000);
+
+			g2.setColor(Color.BLACK);
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
 			g2.draw(new Line2D.Double(0, 0, 1920, 0));
@@ -106,14 +114,14 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 
 		if (!inGame) {
-			if (player1Win) {
+			if (scorePlayer1 > scorePlayer2) {
 				drawGameEndPL1(g);
 			}
-			if (player2Win) {
+			if (scorePlayer2 > scorePlayer1) {
 				drawGameEndPL2(g);
 			}
-			else {
-				drawGameEnd(g);
+			else{
+				//drawGameEnd(g);
 			}
 		}
 		Toolkit.getDefaultToolkit().sync();
@@ -179,18 +187,18 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	private void updateWoodBlocks() {
-		for (int i = 0; i < woodBlocks.size(); i++) {
-			WoodBlock w = woodBlocks.get(i);
-			if (w.getVisible()) {
-				w.move();
+			for (int i = 0; i < woodBlocks.size(); i++) {
+				WoodBlock w = woodBlocks.get(i);
+				if (w.getVisible()) {
+					w.move();
+				}
+				if (w.blockIsFallen) {
+					woodBlocks.remove(i);
+					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800));
+				} else {
+					blockIsFallen = true;
+				}
 			}
-			if (w.blockIsFallen) {
-				woodBlocks.remove(i);
-				woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800));
-			} else {
-				blockIsFallen = true;
-			}
-		}
 	}
 
 	private void checkCollision() {
@@ -201,14 +209,16 @@ public class GameBoard extends JPanel implements ActionListener {
 			Rectangle rect1 = wb.getBounds();
 
 			if (rect3.intersects(rect1)) {
-				player1.setVisible(false);
-				inGame = false;
-				player2Win = true;
+				scorePlayer1--;
+				if (scorePlayer1 < 0) {
+					scorePlayer1 = 0;
+				}
 			}
 			if (rect2.intersects(rect1)) {
-				player2.setVisible(false);
-				inGame = false;
-				player1Win = true;
+				scorePlayer2--;
+				if (scorePlayer2 < 0) {
+					scorePlayer2 = 0;
+				}
 			}
 		}
 	}
