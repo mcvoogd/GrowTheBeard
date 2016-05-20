@@ -411,6 +411,19 @@ public class WiimoteHandler{
         heldButtons.get(wiimoteID).put(button, value);
     }
 
+    public float getRoll(int wiimoteID){
+        return orientationWiimoteList.get(wiimoteID).getLast().getRoll();
+    }
+
+    public float getPitch(int wiimoteID){
+        return orientationWiimoteList.get(wiimoteID).getLast().getPitch();
+    }
+
+    public float getZDifference(int wiimoteID){
+        float newZValue = gForceWiimoteList.get(wiimoteID).getLast().getZ();
+        return oldValue[wiimoteID][2] - newZValue;
+    }
+
     /**
      * Returns if the button of wiimote has been pressed.
      * 
