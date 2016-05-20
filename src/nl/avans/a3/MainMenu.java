@@ -84,8 +84,10 @@ public class MainMenu extends JPanel {
         {
             rotatePartyTimer.start();
         }
-       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2 + 20, PARTYBOARDX, PARTYBOARDY), null);
-
+       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, -55,
+               -partyGame.getHeight()/2 , PARTYBOARDX, PARTYBOARDY), null);
+       g.setColor(Color.DARK_GRAY);
+       g.fillOval(PARTYBOARDX + 280, PARTYBOARDY - 10, 50, 50); //TODO spijker image.!
     }
 
     public void setMode(Mode mode)
