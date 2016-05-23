@@ -219,7 +219,7 @@ public class WiimoteHandler{
     /**
      * Draws sensor data from the wiimotes on screen.
      * 
-     * @param g Graphics component to draw on
+     * @param g Graphics2D component to draw on
      */
     @SuppressWarnings("Duplicates")
     public void drawDebug(Graphics2D g){
