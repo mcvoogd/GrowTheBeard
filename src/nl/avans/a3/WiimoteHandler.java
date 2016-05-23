@@ -36,7 +36,6 @@ public class WiimoteHandler{
     private Orientation[] orientation = new Orientation[4];
 
     private float[][] oldValue = new float[4][3];
-
     private boolean[] connectedNunchucks = new boolean[4];
     
     private LinkedList<LinkedList<GForce>> gForceWiimoteList = new LinkedList<>();
