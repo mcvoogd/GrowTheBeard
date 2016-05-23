@@ -60,6 +60,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	private void initGameBoard() {
+
 		new Images();
 		scaleBackground();
 		addWoodImages();
