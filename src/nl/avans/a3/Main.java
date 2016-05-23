@@ -10,9 +10,9 @@ public class Main{
     }
     
     private Main(){
+        Logger.init();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice screen = ge.getDefaultScreenDevice();
-        Logger.init();
         
         /**
          * Test for available screen sizes and available devices, uncomment code below
@@ -42,6 +42,7 @@ public class Main{
             frame.toFront();
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
+            //noinspection InfiniteLoopStatement
             while(true){
                 Thread.sleep(1);  // keeps screen in fullscreen
             }

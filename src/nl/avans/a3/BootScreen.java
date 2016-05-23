@@ -39,12 +39,12 @@ public class BootScreen extends JPanel{
     public BootScreen(){
         animationTick = 0;
         try{
-            background = ImageIO.read(new File("res/boot_bg.png"));
-            axe = ImageIO.read(new File("res/boot_axe.png"));
-            beard = ImageIO.read(new File("res/boot_beard.png"));
-            text = ImageIO.read(new File("res/boot_text.png"));
+            background = ImageIO.read(new File("res/splash/background.png"));
+            axe = ImageIO.read(new File("res/splash/axe.png"));
+            beard = ImageIO.read(new File("res/splash/beard.png"));
+            text = ImageIO.read(new File("res/splash/logo_text.png"));
         }catch(IOException e){
-            e.printStackTrace();
+            Logger.instance.log(e);
         }
     }
 

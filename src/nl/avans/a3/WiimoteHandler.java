@@ -455,10 +455,9 @@ public class WiimoteHandler{
      */
     public boolean getIsButtonDown(int wiimoteID, Buttons button){
         if(heldButtons.get(wiimoteID).get(button) != null){
-
             return heldButtons.get(wiimoteID).get(button);
         }else{
-            return  false;
+            return false;
         }
     }
 

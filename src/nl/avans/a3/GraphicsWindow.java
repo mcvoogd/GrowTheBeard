@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 
 public class GraphicsWindow extends JPanel{
 
-    private Timer timer = new Timer(1000/60, e -> repaint());
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     private WiimoteHandler wiimoteHandler;
@@ -20,6 +19,7 @@ public class GraphicsWindow extends JPanel{
     public GraphicsWindow(/*WiimoteHandler wiimoteHandler*/) {
         setName("Grow the Beard");
         wiimoteHandler = new WiimoteHandler();
+        Timer timer = new Timer(1000 / 60, e -> repaint());
         timer.start();
         wiimoteHandler.activateMotionSensing();
 
@@ -28,7 +28,7 @@ public class GraphicsWindow extends JPanel{
         addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent e){
-
+                
             }
 
             @Override
@@ -51,13 +51,12 @@ public class GraphicsWindow extends JPanel{
                         bootAnimation = false;
                         mainmenu = true;
                         break;
-
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e){
-
+                
             }
         });
     }
@@ -71,8 +70,7 @@ public class GraphicsWindow extends JPanel{
         
         if(bootAnimation){
             bootScreen.update(g);
-        }
-        if(mainmenu){
+        } else if(mainmenu){
             mainMenu.update(g);
         }
 
