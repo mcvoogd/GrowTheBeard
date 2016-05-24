@@ -1,10 +1,8 @@
 package nl.avans.a3;
 
-import javax.swing.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 public class Logger
 {
@@ -34,6 +32,7 @@ public class Logger
     private Logger()
     {
         consoleStream = System.out;
+        //noinspection ResultOfMethodCallIgnored
         new File("runtime_data/").mkdir(); // ensuring the runtime_data folder exits
         try {
             logStream = new PrintStream(new File("runtime_data/log_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date())) + ".txt"); // creating a file for the log
@@ -45,17 +44,17 @@ public class Logger
         synchronized (System.out)
         {
             System.setOut(new PrintStream(new OutputStream() {
-            @Override
-            public void write(byte[] b) { }
-
-            public void write(byte[] b, int off, int len) // put rhe sysout message into a log
-            {
-                if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
-            }
-
-            @Override
-            public void write(int b) throws IOException {}
-        }));
+                @Override
+                public void write(byte[] b) { }
+    
+                public void write(byte[] b, int off, int len) // put rhe sysout message into a log
+                {
+                    if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
+                }
+    
+                @Override
+                public void write(int b) throws IOException {}
+            }));
         }
     }
 
@@ -123,7 +122,8 @@ public class Logger
         // logs the log with the cale's code path
         log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
     }
-/**
+    
+    /**
      *
      * @Deprecated the log method has been replaced by a log method that generates the code path itself, just remove the codePath argument and you're good to go
      * @param code the unique code that identifies the log (maybe left empty)
@@ -164,7 +164,7 @@ public class Logger
      */
     private synchronized void checkInitilazation()
     {
-        if (initialized == true) return;
+        if (initialized) return;
         init();
         log("LO004", "the logger is not properly initialized", LogType.WARNING);
     }
