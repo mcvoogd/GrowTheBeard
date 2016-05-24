@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-public class Sprite {
+class Sprite {
 	protected int xPos, yPos;
 	protected boolean visible;
 	protected int width, height;

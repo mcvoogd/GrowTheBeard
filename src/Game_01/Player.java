@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.Timer;
 
-public class Player extends Sprite {
+class Player extends Sprite {
 
 	private int dx, dy;
 	private int ty = -15;

@@ -3,9 +3,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class GameFrame extends JFrame {
+class GameFrame extends JFrame {
 	
-	public GameFrame() {
+	private GameFrame() {
 		initGameFrame();
 	}
 
