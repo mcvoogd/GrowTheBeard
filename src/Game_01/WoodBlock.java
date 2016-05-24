@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-public class WoodBlock extends Sprite {
+class WoodBlock extends Sprite {
 
 	private Timer timer;
 	private int vel = -1;
