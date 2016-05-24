@@ -1,6 +1,7 @@
 package Util;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -30,6 +31,13 @@ public class Images {
         }
 
         return null;
+    }
+
+    public static BufferedImage rescaleImage(int width, int height, BufferedImage image){
+        BufferedImage imageNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = imageNew.createGraphics();
+        g2.drawImage(image, 0, 0, width, height, null);
+        return imageNew;
     }
 }
 

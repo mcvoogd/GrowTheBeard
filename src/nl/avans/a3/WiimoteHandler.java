@@ -426,6 +426,14 @@ public class WiimoteHandler{
         return oldValue[wiimoteID][2] - newZValue;
     }
 
+    public void activateRumble(int wiiMoteID){
+        wiimotes[wiiMoteID].activateRumble();
+    }
+
+    public void deactivateRumble(int wiiMoteID){
+        wiimotes[wiiMoteID].deactivateRumble();
+    }
+
     /**
      * Returns if the button of wiimote has been pressed.
      * 

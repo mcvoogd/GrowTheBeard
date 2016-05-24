@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -48,12 +49,15 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private final int START_X_PLAYER1 = 640;
 	private final int START_X_PLAYER2 = 1280;
+	private final int PLAYER_Y = -100;
 
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
 	private BufferedImage[] woodImages = new BufferedImage[3];
 
 	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
+	private boolean player1Rumble, player2Rumble;
+	private int rumbleCounter1, rumbleCounter2;
 
 	public GameBoard() {
 		initGameBoard();
@@ -72,8 +76,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
 		inGame = true;
-		player1 = new Player(START_X_PLAYER1, -206, 1);
-		player2 = new Player(START_X_PLAYER2, -206, 2);
+		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1);
+		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2);
 
 		initWoodBlocks();
 	if (inGame) {
@@ -119,7 +123,6 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2.setColor(Color.BLACK);
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
-			g2.draw(new Line2D.Double(0, 0, 1920, 0));
 			g2.translate(0, -40);
 			drawPlayers(g);
 
@@ -132,6 +135,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 
 		if (!inGame) {
+			wiimoteHandler.deactivateRumble(0);
+			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
 				drawGameEndPL1(g);
 			}
@@ -196,6 +201,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		updatePlayer();
 		updateWoodBlocks();
 		checkCollision();
+		checkRumble();
 		repaint();
 		player1.checkWiiMote(wiimoteHandler, 0);
 		player2.checkWiiMote(wiimoteHandler, 1);
@@ -222,7 +228,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 				if (w.blockIsFallen) {
 					woodBlocks.remove(i);
-					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -800, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+					woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 				} else {
 					blockIsFallen = true;
 				}
@@ -232,22 +238,35 @@ public class GameBoard extends JPanel implements ActionListener {
 	private void checkCollision() {
 		Rectangle rect3 = player1.getBounds();
 		Rectangle rect2 = player2.getBounds();
-
-		for (WoodBlock wb : woodBlocks) {
-			Rectangle rect1 = wb.getBounds();
-
+		Iterator<WoodBlock> it = woodBlocks.iterator();
+		while(it.hasNext()) {
+			WoodBlock woodBlock = it.next();
+			Rectangle rect1 = woodBlock.getBounds();
+			boolean hit = false;
 			if (rect3.intersects(rect1)) {
 				scorePlayer1--;
+				hit = true;
+				rumble(0);
 				if (scorePlayer1 < 0) {
 					scorePlayer1 = 0;
 				}
 			}
 			if (rect2.intersects(rect1)) {
 				scorePlayer2--;
+				hit = true;
+				rumble(1);
 				if (scorePlayer2 < 0) {
 					scorePlayer2 = 0;
 				}
 			}
+
+			if(hit){
+				it.remove();
+			}
+
+		}
+		while(woodBlocks.size() < 4){
+			woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 		}
 	}
 
@@ -285,4 +304,37 @@ public class GameBoard extends JPanel implements ActionListener {
 		woodImages[2] = Images.woodBlock3;
 	}
 
+	public void rumble(int player){
+		wiimoteHandler.activateRumble(player);
+		if(player == 0){
+			player1Rumble = true;
+		}else if(player == 1) {
+			player2Rumble = true;
+		}
+	}
+
+	public void checkRumble(){
+		if(player1Rumble){
+			rumbleCounter1++;
+			if(rumbleCounter1 > 25){
+				player1Rumble = false;
+				rumbleCounter1 = 0;
+			}
+		}
+
+		if(player2Rumble){
+			rumbleCounter2++;
+			if(rumbleCounter2 > 25){
+				player2Rumble = false;
+				rumbleCounter2 = 0;
+			}
+		}
+
+		if(!player1Rumble){
+			wiimoteHandler.deactivateRumble(0);
+		}
+		if(!player2Rumble){
+			wiimoteHandler.deactivateRumble(1);
+		}
+	}
 }

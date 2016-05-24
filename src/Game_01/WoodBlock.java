@@ -29,7 +29,7 @@ public class WoodBlock extends Sprite {
 
 	private void initWoodBlock(BufferedImage image) {
 //		loadImage("Sprite3.png");
-		Image imageNew = image.getScaledInstance(150, 142, BufferedImage.SCALE_DEFAULT);
+		Image imageNew = image.getScaledInstance(75, 121, BufferedImage.SCALE_DEFAULT);
 		setImage(imageNew);
 		getDimensions();
 	}

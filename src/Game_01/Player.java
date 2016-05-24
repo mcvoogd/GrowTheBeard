@@ -16,9 +16,11 @@ public class Player extends Sprite {
 	private boolean jump = false, falling = false;
 	private Timer engine;
 	private float pitchDeadzone = 10f;
+	private int floor;
 
 	public Player(int xPos, int yPos, int number) {
 		super(xPos, yPos);
+		floor = yPos;
 		this.number = number;
 		initPlayer();
 	}
@@ -148,7 +150,6 @@ public class Player extends Sprite {
 		}else if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_RIGHT)){
 			dx = 10;
 		}else if(pitch > pitchDeadzone || pitch < -pitchDeadzone){
-			System.out.println(pitch);
 			dx = Math.round(-pitch/2);
 		}
 		else
@@ -180,7 +181,7 @@ public class Player extends Sprite {
 						if (ty > -10) {
 							ty--;
 						}
-						if (yPos > -210) {
+						if (yPos > floor) {
 							falling = false;
 							dy = 0;
 							ty = -15;
