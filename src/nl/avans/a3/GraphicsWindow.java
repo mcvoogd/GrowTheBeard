@@ -55,14 +55,14 @@ public class GraphicsWindow extends JPanel{
                         break;
                     case KeyEvent.VK_A :
                         if(mainMenu.getMode() != MainMenu.Mode.CHOOSEPARTY) {
-                            mainMenu.setRotation(0);
+                            //mainMenu.setRotation(0);
                             mainMenu.setTriggered(!mainMenu.getTriggered());
                             mainMenu.setMode(MainMenu.Mode.CHOOSEPARTY);
                         }
                         break;
                     case KeyEvent.VK_D :
                         if(mainMenu.getMode() != MainMenu.Mode.CHOOSESINGLE) {
-                            mainMenu.setRotation(0);
+                            //mainMenu.setRotation(0);
                             mainMenu.setTriggered(!mainMenu.getTriggered());
                             mainMenu.setMode(MainMenu.Mode.CHOOSESINGLE);
                         }

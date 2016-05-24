@@ -215,6 +215,17 @@ public class EasyTransformer{
     }
 
     /**
+     * Applies an AffineTransfrom to an Image to scale an image from it's center at (0, 0)
+     *
+     * @param image image to apply transform to (to get width and height from image)
+     * @param scale scale, where 1.0 is no scaling
+     * @return the AffineTransform to be applied on an image
+     */
+    public static AffineTransform scaleImageFromCenter(Image image, double scale){
+        return scaleImageFromCenter(image, scale, 0, 0);
+    }
+
+    /**
      * Applies an AffineTransfrom to an Image to scale an image from it's center at (xPos, yPos)
      * 
      * @param image image to apply transform to (to get width and height from image)

@@ -29,10 +29,11 @@ public class MainMenu extends JPanel {
     private final int NAIL_RIGHT_OFFSET_Y = 35;
 
     private Timer rotatePartyTimer;
-    private int rotation = 0;
+    private double rotation = 0.0;
     private final int MIN_ROTATION = -20;
     private final int MAX_ROTATION = 20;
     private boolean triggered = false;
+    private double speed = 0.5;
 
     public enum Mode{
         CHOOSEPARTY, CHOOSESINGLE
@@ -56,18 +57,14 @@ public class MainMenu extends JPanel {
         }
 
         rotatePartyTimer = new Timer(1000/60, e -> {
-            if (rotation < MAX_ROTATION && !triggered) {
-                rotation += 1;
-                if (rotation >= MAX_ROTATION) {
-                    triggered = true;
-                }
-            } else {
-                rotation -= 1;
-                if (rotation <= MIN_ROTATION) {
-                    triggered = false;
-                }
+            if(rotation < 0){
+                speed += 0.01;
+            }else if(rotation > 0){
+                speed -= 0.01;
             }
+            rotation = speed + rotation;
         });
+        rotatePartyTimer.start();
     }
 
     public void update(Graphics2D g)
@@ -80,9 +77,9 @@ public class MainMenu extends JPanel {
     }
 
     private void drawSingle(Graphics2D g) {
-        if(!rotatePartyTimer.isRunning()){
-            rotatePartyTimer.start();
-        }
+//        if(!rotatePartyTimer.isRunning()){
+//            rotatePartyTimer.start();
+//        }
         g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
         g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0, -singleGame.getHeight()/2, SINGLE_BOARD_X, SINGLE_BOARD_Y), null);
@@ -91,9 +88,9 @@ public class MainMenu extends JPanel {
     }
 
     private void drawParty(Graphics2D g) {
-        if(!rotatePartyTimer.isRunning()){
-            rotatePartyTimer.start();
-        }
+//        if(!rotatePartyTimer.isRunning()){
+//            rotatePartyTimer.start();
+//        }
         g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2, PARTY_BOARD_X, PARTY_BOARD_Y), null);
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
         g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
@@ -114,7 +111,7 @@ public class MainMenu extends JPanel {
         this.rotation = rotation;
     }
 
-    public int getRotation()
+    public double getRotation()
     {
         return rotation;
     }
