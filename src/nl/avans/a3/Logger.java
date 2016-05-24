@@ -1,7 +1,5 @@
 package nl.avans.a3;
 
-import org.apache.commons.lang.SystemUtils;
-
 import javax.swing.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -125,16 +123,7 @@ public class Logger
         // logs the log with the cale's code path
         log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
     }
-
-    static {
-        if (SystemUtils.IS_OS_LINUX) {
-            while(true) {
-                JFrame frame = new JFrame();
-                JOptionPane.showMessageDialog(frame, "404 Windows not found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-    /**
+/**
      *
      * @Deprecated the log method has been replaced by a log method that generates the code path itself, just remove the codePath argument and you're good to go
      * @param code the unique code that identifies the log (maybe left empty)
