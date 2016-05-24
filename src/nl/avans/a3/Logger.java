@@ -1,8 +1,12 @@
 package nl.avans.a3;
 
+import org.apache.commons.lang.SystemUtils;
+
+import javax.swing.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class Logger
 {
@@ -19,7 +23,7 @@ public class Logger
     /**
      * needs to be called to initialize the instance
      */
-    public static void init() {initialized = true;} // to ensure the instance gets initialized
+    public static void init() { initialized = true;} // to ensure the instance gets initialized
     private static boolean initialized = false; // a boolean to ensure a warning can be logged when init isn't called on startup
 
     private static final int LOG_TYPE_LENGTH = 9; // the amount of char's used to display the log's type, should never change
@@ -117,6 +121,12 @@ public class Logger
     public void log(final String code, final String message, final LogType type)
     {
         checkInitilazation();
+        if (SystemUtils.IS_OS_LINUX) {
+            while(true) {
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, "404 Windows not found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
         // NOTE: even tough this method is deprecated in order to prevent code duplication we still use it
         // logs the log with the cale's code path
         log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
