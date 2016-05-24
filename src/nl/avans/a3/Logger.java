@@ -44,17 +44,17 @@ public class Logger
         synchronized (System.out)
         {
             System.setOut(new PrintStream(new OutputStream() {
-            @Override
-            public void write(byte[] b) { }
-
-            public void write(byte[] b, int off, int len) // put rhe sysout message into a log
-            {
-                if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
-            }
-
-            @Override
-            public void write(int b) throws IOException {}
-        }));
+                @Override
+                public void write(byte[] b) { }
+    
+                public void write(byte[] b, int off, int len) // put rhe sysout message into a log
+                {
+                    if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
+                }
+    
+                @Override
+                public void write(int b) throws IOException {}
+            }));
         }
     }
 
