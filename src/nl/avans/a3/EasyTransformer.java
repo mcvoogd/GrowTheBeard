@@ -23,7 +23,7 @@ public class EasyTransformer{
      * @param rotation in degrees
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotateAroundCenter(Image image, float rotation){
+    public static AffineTransform rotateAroundCenter(Image image, double rotation){
         return rotateAroundCenter(image, rotation, 0, 0);
     }
 
@@ -49,7 +49,7 @@ public class EasyTransformer{
      * @param yPos position on screen
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotateAroundCenter(Image image, float rotation, int xPos, int yPos){
+    public static AffineTransform rotateAroundCenter(Image image, double rotation, int xPos, int yPos){
         return rotateAroundCenterWithOffset(image, rotation, 0, 0, xPos, yPos);
     }
 
@@ -75,7 +75,7 @@ public class EasyTransformer{
      * @param yOffset from center of image
      * @return the AffineTransform to be applied on an image
      */
-    public  static AffineTransform rotateAroundCenterWithOffset(Image image, float rotation, int xOffset, int yOffset){
+    public  static AffineTransform rotateAroundCenterWithOffset(Image image, double rotation, int xOffset, int yOffset){
         return rotateAroundCenterWithOffset(image, rotation, xOffset, yOffset, 0, 0);
     }
 
@@ -91,7 +91,7 @@ public class EasyTransformer{
      * @return the AffineTransform to be applied on an image
      */
     public static AffineTransform rotateAroundCenterWithOffset(Image image, int rotation, int xOffset, int yOffset, int xPos, int yPos){
-        return rotateAroundCenterWithOffset(image, (float)rotation, xOffset, yOffset, xPos, yPos);
+        return rotateAroundCenterWithOffset(image, (double)rotation, xOffset, yOffset, xPos, yPos);
     }
 
     /**
@@ -105,7 +105,7 @@ public class EasyTransformer{
      * @param yPos position on screen
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotateAroundCenterWithOffset(Image image, float rotation, int xOffset, int yOffset, int xPos, int yPos){
+    public static AffineTransform rotateAroundCenterWithOffset(Image image, double rotation, int xOffset, int yOffset, int xPos, int yPos){
         AffineTransform at = new AffineTransform();
         at.translate(xPos, yPos);
         at.translate(image.getWidth(null)/2 + xOffset, image.getHeight(null)/2 + yOffset);
@@ -130,7 +130,7 @@ public class EasyTransformer{
      * @param rotation in degrees
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotate(float rotation){
+    public static AffineTransform rotate(double rotation){
         return rotate(rotation, 0, 0);
     }
 
@@ -154,7 +154,7 @@ public class EasyTransformer{
      * @param yPos position on screen
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotate(float rotation, int xPos, int yPos){
+    public static AffineTransform rotate(double rotation, int xPos, int yPos){
         return rotateWithOffset(rotation, 0, 0, xPos, yPos);
     }
 
@@ -178,7 +178,7 @@ public class EasyTransformer{
      * @param yOffset from top
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotateWithOffset(float rotation, int xOffset, int yOffset){
+    public static AffineTransform rotateWithOffset(double rotation, int xOffset, int yOffset){
         return rotateWithOffset(rotation, xOffset, yOffset, 0, 0);
     }
 
@@ -193,7 +193,7 @@ public class EasyTransformer{
      * @return the AffineTransform to be applied on an image
      */
     public static AffineTransform rotateWithOffset(int rotation, int xOffset, int yOffset, int xPos, int yPos){
-        return rotateWithOffset((float) rotation, xOffset, yOffset, xPos, yPos);
+        return rotateWithOffset((double) rotation, xOffset, yOffset, xPos, yPos);
     }
 
     /**
@@ -206,11 +206,20 @@ public class EasyTransformer{
      * @param yPos position on screen
      * @return the AffineTransform to be applied on an image
      */
-    public static AffineTransform rotateWithOffset(float rotation, int xOffset, int yOffset, int xPos, int yPos){
+    public static AffineTransform rotateWithOffset(double rotation, int xOffset, int yOffset, int xPos, int yPos){
         AffineTransform at = new AffineTransform();
         at.translate(xPos + xOffset, yPos + yOffset);
         at.rotate(Math.toRadians(rotation));
         at.translate(-xOffset, -yOffset);
+        return at;
+    }
+    
+    public static AffineTransform scaleImageFromCenter(Image image, double scale, int xPos, int yPos){
+        AffineTransform at = new AffineTransform();
+        at.translate(xPos, yPos);
+        at.translate(image.getWidth(null)/2, image.getHeight(null)/2);
+        at.scale(scale, scale);
+        at.translate(-image.getWidth(null)/2, -image.getHeight(null)/2);
         return at;
     }
 }

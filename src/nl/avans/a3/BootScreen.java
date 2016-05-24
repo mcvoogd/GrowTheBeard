@@ -1,6 +1,8 @@
 package nl.avans.a3;
 
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,13 +22,14 @@ public class BootScreen extends JPanel{
     private Image background;
     private Image axe;
     private Image beard;
+    private Image logoText;
     private Image text;
 
     private boolean timerstarted = false;
     Shape s = null;
     private double fontsize = 0;
-    private static final int MAXFONT = 50;
-    private static final int MINFONT = 40;
+    private static final double MAXFONT = 1.5;
+    private static final double MINFONT = 1.0;
     private static final String TEXTAB = "Press A + B to start!";
     private static final int YOFFSET = 400;
     private static final int BEARDOFFSET = 860;
@@ -34,15 +37,15 @@ public class BootScreen extends JPanel{
     private static final int TEXTOFFSET = 850;
     private static final int TEXTHEIGHTOFFSET = 590;
     private static final int DOUBLEROTATION = 720;
-
-
+    
     public BootScreen(){
         animationTick = 0;
         try{
             background = ImageIO.read(new File("res/splash/background.png"));
             axe = ImageIO.read(new File("res/splash/axe.png"));
             beard = ImageIO.read(new File("res/splash/beard.png"));
-            text = ImageIO.read(new File("res/splash/logo_text.png"));
+            logoText = ImageIO.read(new File("res/splash/logo_text.png"));
+            text = ImageIO.read(new File("res/splash/text.png"));
         }catch(IOException e){
             Logger.instance.log(e);
         }
@@ -52,11 +55,7 @@ public class BootScreen extends JPanel{
 
         g.drawImage(background, 0, 0, null);
 
-        Font f = getFont().deriveFont(Font.BOLD, (float) fontsize);
-        GlyphVector v = f.createGlyphVector(getFontMetrics(f).getFontRenderContext(), TEXTAB);
-        double width = v.getPixelBounds(getFontMetrics(f).getFontRenderContext(), 0, 0).getWidth();
-        s = v.getOutline((float) (GraphicsWindow.WIDTH/2 - width/2), ((GraphicsWindow.HEIGHT /2) + YOFFSET));
-
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, fontsize, GraphicsWindow.WIDTH/2 - text.getWidth(null)/2, GraphicsWindow.HEIGHT/2 + YOFFSET), null);
         if(!timerstarted) {
             timerstarted = true;
             final boolean[] triggered = {false};
@@ -64,7 +63,7 @@ public class BootScreen extends JPanel{
 
                 if(fontsize < MAXFONT && !triggered[0])
                 {
-                    fontsize += .5;
+                    fontsize += 0.01;
                     if(fontsize >= MAXFONT)
                     {
                         triggered[0] = true;
@@ -72,7 +71,7 @@ public class BootScreen extends JPanel{
                 }
                 else
                 {
-                    fontsize -= .5;
+                    fontsize -= 0.01;
                     if(fontsize <= MINFONT)
                     {
                         triggered[0] = false;
@@ -81,8 +80,6 @@ public class BootScreen extends JPanel{
             });
             t.start();
         }
-        g.setColor(Color.WHITE);
-        g.fill(s);
 
         if(animationTick <= DOUBLEROTATION / AXE_THROW_SPEED){
             int rotation = animationTick * AXE_THROW_SPEED;
@@ -100,15 +97,14 @@ public class BootScreen extends JPanel{
                 if(animationTick <= (DOUBLEROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED + 400 / TEXT_SPEED){
                     float opacity = ((animationTick - DOUBLEROTATION / AXE_THROW_SPEED) - beard.getHeight(null) / BEARD_SPEED) / (400.0f / TEXT_SPEED);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTHEIGHTOFFSET - text.getHeight(null) / 2, null);
+                    g.drawImage(logoText, TEXTOFFSET - logoText.getWidth(null) / 2, TEXTHEIGHTOFFSET - logoText.getHeight(null) / 2, null);
                     g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 }else{
-                    g.drawImage(text, TEXTOFFSET - text.getWidth(null) / 2, TEXTHEIGHTOFFSET - text.getHeight(null) / 2, null);
+                    g.drawImage(logoText, TEXTOFFSET - logoText.getWidth(null) / 2, TEXTHEIGHTOFFSET - logoText.getHeight(null) / 2, null);
                 }
             }
             g.drawImage(axe, (GraphicsWindow.WIDTH/2)-axe.getWidth(null)/2, (GraphicsWindow.HEIGHT/2)-axe.getHeight(null)/2, null);
         }
         animationTick++;
-
     }
 }
