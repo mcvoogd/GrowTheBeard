@@ -24,7 +24,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-class GameBoard extends JPanel implements ActionListener {
+public class GameBoard extends JPanel implements ActionListener {
 
 	private Timer timer;
 	private Timer endTimer;
