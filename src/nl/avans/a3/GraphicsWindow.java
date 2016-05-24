@@ -1,5 +1,7 @@
 package nl.avans.a3;
 
+import Game_01.GameBoard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -65,6 +67,12 @@ public class GraphicsWindow extends JPanel{
                             mainMenu.setMode(MainMenu.Mode.CHOOSESINGLE);
                         }
                         break;
+                    case KeyEvent.VK_S :
+                        if(mainMenu.getMode() == MainMenu.Mode.CHOOSESINGLE)
+                        {
+                            mainmenu = false;
+                            new GameBoard();
+                        }
 
                 }
             }
