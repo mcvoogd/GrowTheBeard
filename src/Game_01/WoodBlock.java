@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -14,6 +15,9 @@ public class WoodBlock extends Sprite {
 	private int vel = -1;
 	private int rotation;
 	protected boolean blockIsFallen;
+	private Random rand = new Random();
+	private int rotationChance = getRandom(20,5);
+	private int rotationCounter;
 
 	public WoodBlock(int xPos, int yPos, int vel, BufferedImage image, int rotation) {
 		super(xPos, yPos);
@@ -38,7 +42,11 @@ public class WoodBlock extends Sprite {
 					visible = false;
 					blockIsFallen = true;
 				}
-				rotation++;
+				rotationCounter++;
+				if(rotationCounter > rotationChance){
+					rotation++;
+					rotationCounter = 0;
+				}
 			}
 		});
 		timer.start();
@@ -46,5 +54,9 @@ public class WoodBlock extends Sprite {
 
 	public int getRotation(){
 		return rotation;
+	}
+
+	public int getRandom(int max, int min){
+		return rand.nextInt((max - min) + 1) + min;
 	}
 }
