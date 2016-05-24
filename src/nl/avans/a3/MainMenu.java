@@ -8,9 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by kevin on 20/05/2016.
- */
 public class MainMenu extends JPanel {
 
     private BufferedImage background;
@@ -41,9 +38,9 @@ public class MainMenu extends JPanel {
         Logger.instance.log("MM001", "MainMenu entered", Logger.LogType.LOG);
         try
         {
-            background = ImageIO.read(new File("res/images_menu/menu_background.png"));
-            partyGame = ImageIO.read(new File("res/images_menu/menu_party.png"));
-            singleGame = ImageIO.read(new File("res/images_menu/menu_single.png"));
+            background = ImageIO.read(new File("res/menu/background.png"));
+            partyGame = ImageIO.read(new File("res/menu/party.png"));
+            singleGame = ImageIO.read(new File("res/menu/single.png"));
             Logger.instance.log("MM003", "Loading images succesvol!", Logger.LogType.LOG);
 
         } catch (IOException e) {
@@ -83,12 +80,10 @@ public class MainMenu extends JPanel {
         {
             rotatePartyTimer.start();
         }
-        g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, 0, 0,
-                -partyGame.getHeight()/2 , PARTYBOARDX, PARTYBOARDY), null);
+        g.drawImage(partyGame, PARTYBOARDX, PARTYBOARDY, null);
         g.setColor(Color.DARK_GRAY);
         g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
-        g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0,
-                -singleGame.getHeight()/2 , SINGLEBOARDX, SINGLEBOARDY), null);
+        g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0, -singleGame.getHeight()/2, SINGLEBOARDX, SINGLEBOARDY), null);
         g.setColor(Color.DARK_GRAY);
         g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
 
@@ -99,12 +94,10 @@ public class MainMenu extends JPanel {
         {
             rotatePartyTimer.start();
         }
-       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0,
-               -partyGame.getHeight()/2 , PARTYBOARDX, PARTYBOARDY), null);
+       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2, PARTYBOARDX, PARTYBOARDY), null);
        g.setColor(Color.DARK_GRAY);
        g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
-       g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, 0, 0,
-               -singleGame.getHeight()/2 , SINGLEBOARDX, SINGLEBOARDY), null);
+       g.drawImage(singleGame, SINGLEBOARDX, SINGLEBOARDY, null);
        g.setColor(Color.DARK_GRAY);
        g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
 
