@@ -115,7 +115,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image at (0, 0)
+     * Applies an AffineTransform to an Image to rotate it at (0, 0)
      * 
      * @param rotation in degrees
      * @return the AffineTransform to be applied on an image
@@ -125,7 +125,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image at (0, 0)
+     * Applies an AffineTransform to an Image to rotate it at (0, 0)
      *
      * @param rotation in degrees
      * @return the AffineTransform to be applied on an image
@@ -135,7 +135,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image at (xPos, yPos)
+     * Applies an AffineTransform to an Image to rotate it at (xPos, yPos)
      * 
      * @param rotation in degrees
      * @param xPos position on screen
@@ -147,7 +147,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image at (xPos, yPos)
+     * Applies an AffineTransform to an Image to rotate it at (xPos, yPos)
      *
      * @param rotation in degrees
      * @param xPos position on screen
@@ -159,7 +159,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image around xOffset and yOffset at (0, 0)
+     * Applies an AffineTransform to an Image to rotate it around xOffset and yOffset at (0, 0)
      * 
      * @param rotation in degrees
      * @param xOffset from left
@@ -171,7 +171,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image around xOffset and yOffset at (0, 0)
+     * Applies an AffineTransform to an Image to rotate it around xOffset and yOffset at (0, 0)
      *
      * @param rotation in degrees
      * @param xOffset from left
@@ -183,7 +183,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image around xOffset and yOffset at (xPos, yPos)
+     * Applies an AffineTransform to an Image to rotate it around xOffset and yOffset at (xPos, yPos)
      * 
      * @param rotation in degrees
      * @param xOffset from left
@@ -197,7 +197,7 @@ public class EasyTransformer{
     }
 
     /**
-     * Applies an AffineTransform to an Image around xOffset and yOffset at (xPos, yPos)
+     * Applies an AffineTransform to an Image to rotate it around xOffset and yOffset at (xPos, yPos)
      *
      * @param rotation in degrees
      * @param xOffset from left
@@ -213,7 +213,16 @@ public class EasyTransformer{
         at.translate(-xOffset, -yOffset);
         return at;
     }
-    
+
+    /**
+     * Applies an AffineTransfrom to an Image to scale an image from it's center at (xPos, yPos)
+     * 
+     * @param image image to apply transform to (to get width and height from image)
+     * @param scale scale, where 1.0 is no scaling
+     * @param xPos position on screen
+     * @param yPos position on screen
+     * @return the AffineTransform to be applied on an image
+     */
     public static AffineTransform scaleImageFromCenter(Image image, double scale, int xPos, int yPos){
         AffineTransform at = new AffineTransform();
         at.translate(xPos, yPos);
