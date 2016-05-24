@@ -13,6 +13,9 @@ public class MainMenu extends JPanel {
     private BufferedImage background;
     private BufferedImage partyGame;
     private BufferedImage singleGame;
+    private BufferedImage leftNail;
+    private BufferedImage rightNail;
+
 
     private final int PARTYBOARDX = 260;
     private final int PARTYBOARDY = 290;
@@ -38,6 +41,10 @@ public class MainMenu extends JPanel {
             background = ImageIO.read(new File("res/menu/background.png"));
             partyGame = ImageIO.read(new File("res/menu/party.png"));
             singleGame = ImageIO.read(new File("res/menu/single.png"));
+            leftNail = ImageIO.read(new File("res/menu/nail1.png"));
+            rightNail = ImageIO.read(new File("res/menu/nail2.png"));
+
+
             Logger.instance.log("MM003", "Loading images succesvol!", Logger.LogType.LOG);
         } catch (IOException e) {
             Logger.instance.log("MM002", "Loading images failed", Logger.LogType.ERROR);
@@ -72,11 +79,10 @@ public class MainMenu extends JPanel {
             rotatePartyTimer.start();
         }
         g.drawImage(partyGame, PARTYBOARDX, PARTYBOARDY, null);
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(leftNail, PARTYBOARDX + 345, PARTYBOARDY - 55, null);
         g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0, -singleGame.getHeight()/2, SINGLEBOARDX, SINGLEBOARDY), null);
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(rightNail, SINGLEBOARDX + 205, SINGLEBOARDY - 35, null);
+
     }
 
     private void drawParty(Graphics2D g) {
@@ -84,14 +90,40 @@ public class MainMenu extends JPanel {
             rotatePartyTimer.start();
         }
         g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2, PARTYBOARDX, PARTYBOARDY), null);
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(leftNail, PARTYBOARDX + 345, PARTYBOARDY - 55, null);
         g.drawImage(singleGame, SINGLEBOARDX, SINGLEBOARDY, null);
-        g.setColor(Color.DARK_GRAY);
-        g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(rightNail, SINGLEBOARDX + 205, SINGLEBOARDY - 35, null);
+
+     //   g.setColor(Color.DARK_GRAY);
+    //    g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
     }
 
     public void setMode(Mode mode){
        this.mode = mode;
+    }
+
+    public Mode getMode()
+    {
+        return mode;
+    }
+
+    public void setRotation(int rotation)
+    {
+        this.rotation = rotation;
+    }
+
+    public int getRotation()
+    {
+        return rotation;
+    }
+
+    public void setTriggered(boolean triggered)
+    {
+        this.triggered = triggered;
+    }
+
+    public boolean getTriggered()
+    {
+        return triggered;
     }
 }
