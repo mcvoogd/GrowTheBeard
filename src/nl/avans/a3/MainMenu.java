@@ -16,18 +16,37 @@ public class MainMenu extends JPanel {
     private BufferedImage leftNail;
     private BufferedImage rightNail;
 
+    private final int PARTY_BOARD_X = 270;
+    private final int PARTY_BOARD_Y = 290;
 
-    private final int PARTYBOARDX = 260;
-    private final int PARTYBOARDY = 290;
+    private final int SINGLE_BOARD_X = 1290;
+    private final int SINGLE_BOARD_Y = 220;
 
-    private final int SINGLEBOARDX = 1290;
-    private final int SINGLEBOARDY = 220;
+    private final int NAIL_LEFT_OFFSET_X = 340;
+    private final int NAIL_LEFT_OFFSET_Y = 65;
+
+    private final int NAIL_RIGHT_OFFSET_X = 200;
+    private final int NAIL_RIGHT_OFFSET_Y = 35;
 
     private Timer rotatePartyTimer;
     private int rotation = 0;
     private final int MINROTATION = -20;
     private final int MAXROTATION = 20;
     private boolean triggered = false;
+
+    public void resetRotation() {
+        while(rotation != 0)
+        {
+            if(rotation > 0)
+            {
+                rotation--;
+            }
+            if(rotation < 0)
+            {
+                rotation++;
+            }
+        }
+    }
 
     public enum Mode{
         CHOOSEPARTY, CHOOSESINGLE
@@ -78,10 +97,10 @@ public class MainMenu extends JPanel {
         if(!rotatePartyTimer.isRunning()){
             rotatePartyTimer.start();
         }
-        g.drawImage(partyGame, PARTYBOARDX, PARTYBOARDY, null);
-        g.drawImage(leftNail, PARTYBOARDX + 345, PARTYBOARDY - 55, null);
-        g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0, -singleGame.getHeight()/2, SINGLEBOARDX, SINGLEBOARDY), null);
-        g.drawImage(rightNail, SINGLEBOARDX + 205, SINGLEBOARDY - 35, null);
+        g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
+        g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
+        g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0, -singleGame.getHeight()/2, SINGLE_BOARD_X, SINGLE_BOARD_Y), null);
+        g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
 
     }
 
@@ -89,13 +108,10 @@ public class MainMenu extends JPanel {
         if(!rotatePartyTimer.isRunning()){
             rotatePartyTimer.start();
         }
-        g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2, PARTYBOARDX, PARTYBOARDY), null);
-        g.drawImage(leftNail, PARTYBOARDX + 345, PARTYBOARDY - 55, null);
-        g.drawImage(singleGame, SINGLEBOARDX, SINGLEBOARDY, null);
-        g.drawImage(rightNail, SINGLEBOARDX + 205, SINGLEBOARDY - 35, null);
-
-     //   g.setColor(Color.DARK_GRAY);
-    //    g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0, -partyGame.getHeight()/2, PARTY_BOARD_X, PARTY_BOARD_Y), null);
+        g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
+        g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
+        g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
     }
 
     public void setMode(Mode mode){
