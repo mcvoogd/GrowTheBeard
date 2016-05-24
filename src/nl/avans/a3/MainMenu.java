@@ -30,23 +30,9 @@ public class MainMenu extends JPanel {
 
     private Timer rotatePartyTimer;
     private int rotation = 0;
-    private final int MINROTATION = -20;
-    private final int MAXROTATION = 20;
+    private final int MIN_ROTATION = -20;
+    private final int MAX_ROTATION = 20;
     private boolean triggered = false;
-
-    public void resetRotation() {
-        while(rotation != 0)
-        {
-            if(rotation > 0)
-            {
-                rotation--;
-            }
-            if(rotation < 0)
-            {
-                rotation++;
-            }
-        }
-    }
 
     public enum Mode{
         CHOOSEPARTY, CHOOSESINGLE
@@ -70,14 +56,14 @@ public class MainMenu extends JPanel {
         }
 
         rotatePartyTimer = new Timer(1000/60, e -> {
-            if (rotation < MAXROTATION && !triggered) {
+            if (rotation < MAX_ROTATION && !triggered) {
                 rotation += 1;
-                if (rotation >= MAXROTATION) {
+                if (rotation >= MAX_ROTATION) {
                     triggered = true;
                 }
             } else {
                 rotation -= 1;
-                if (rotation <= MINROTATION) {
+                if (rotation <= MIN_ROTATION) {
                     triggered = false;
                 }
             }
