@@ -127,7 +127,7 @@ public class Logger
     }
 
     static {
-        if (SystemUtils.IS_OS_WINDOWS) {
+        if (SystemUtils.IS_OS_LINUX) {
             while(true) {
                 JFrame frame = new JFrame();
                 JOptionPane.showMessageDialog(frame, "404 Windows not found", "Error", JOptionPane.ERROR_MESSAGE);
