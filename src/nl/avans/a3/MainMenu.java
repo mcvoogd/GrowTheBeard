@@ -17,12 +17,15 @@ public class MainMenu extends JPanel {
     private BufferedImage partyGame;
     private BufferedImage singleGame;
 
-    private final int PARTYBOARDX = 285;
+    private final int PARTYBOARDX = 260;
     private final int PARTYBOARDY = 290;
+
+    private final int SINGLEBOARDX = 1290;
+    private final int SINGLEBOARDY = 220;
 
     private Timer rotatePartyTimer;
     private int rotation = 0;
-    private final int MINROTATION = -10;
+    private final int MINROTATION = -20;
     private final int MAXROTATION = 20;
     private boolean triggered = false;
 
@@ -31,7 +34,7 @@ public class MainMenu extends JPanel {
         CHOOSEPARTY, CHOOSESINGLE
     }
 
-    private Mode mode = Mode.CHOOSEPARTY;
+    private Mode mode = Mode.CHOOSESINGLE;
 
     public MainMenu()
     {
@@ -76,6 +79,18 @@ public class MainMenu extends JPanel {
     }
 
     private void drawSingle(Graphics2D g) {
+        if(!rotatePartyTimer.isRunning())
+        {
+            rotatePartyTimer.start();
+        }
+        g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, 0, 0,
+                -partyGame.getHeight()/2 , PARTYBOARDX, PARTYBOARDY), null);
+        g.setColor(Color.DARK_GRAY);
+        g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
+        g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 0,
+                -singleGame.getHeight()/2 , SINGLEBOARDX, SINGLEBOARDY), null);
+        g.setColor(Color.DARK_GRAY);
+        g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
 
     }
 
@@ -84,10 +99,15 @@ public class MainMenu extends JPanel {
         {
             rotatePartyTimer.start();
         }
-       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, -55,
+       g.drawImage(partyGame, EasyTransformer.rotateAroundCenterWithOffset(partyGame, rotation, 0,
                -partyGame.getHeight()/2 , PARTYBOARDX, PARTYBOARDY), null);
        g.setColor(Color.DARK_GRAY);
-       g.fillOval(PARTYBOARDX + 280, PARTYBOARDY - 10, 50, 50); //TODO spijker image.!
+       g.fillOval(PARTYBOARDX + 320, PARTYBOARDY - 10, 60, 60); //TODO spijker image.!
+       g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, 0, 0,
+               -singleGame.getHeight()/2 , SINGLEBOARDX, SINGLEBOARDY), null);
+       g.setColor(Color.DARK_GRAY);
+       g.fillOval(SINGLEBOARDX + 240, SINGLEBOARDY - 10, 60, 60); //TODO spijker image.!
+
     }
 
     public void setMode(Mode mode)

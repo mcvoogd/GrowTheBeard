@@ -51,6 +51,13 @@ public class GraphicsWindow extends JPanel{
                         bootAnimation = false;
                         mainmenu = true;
                         break;
+                    case KeyEvent.VK_A :
+                        mainMenu.setMode(MainMenu.Mode.CHOOSEPARTY);
+                        break;
+                    case KeyEvent.VK_D :
+                        mainMenu.setMode(MainMenu.Mode.CHOOSESINGLE);
+                        break;
+
                 }
             }
 
