@@ -6,3 +6,8 @@ LO004,W,Logger::checkInitilaztion,the logger is not properly initialized ,if the
 ,,,,
 GraphicsWindow,GW,,,
 GW001,L,GraphicsWindow::GraphicsWindow,Program Exited by keypress,
+,,,,
+MainMenu,MM,,,
+MM001,L,MainMenu::MainMenu,MainMenu entered!,
+MM002,E,MainMenu::MainMenu,Loading images failed!,
+MM003,L,MainMenu::MainMenu,Loading images succesvol!,

@@ -40,7 +40,7 @@ public class MainMenu extends JPanel {
         {
             background = ImageIO.read(new File("res/images_menu/menu_background.png"));
             partyGame = ImageIO.read(new File("res/images_menu/menu_party.png"));
-         //   singleGame = ImageIO.read(new File("filepath voor single"));
+            singleGame = ImageIO.read(new File("res/images_menu/menu_single.png"));
             Logger.instance.log("MM003", "Loading images succesvol!", Logger.LogType.LOG);
 
         } catch (IOException e) {
