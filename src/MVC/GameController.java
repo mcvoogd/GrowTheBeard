@@ -18,8 +18,10 @@ public class GameController {
         this.refreshTimer = new Timer(1000/60, e ->
         {
             model.getGameModelInterface().update();
+            model.getGameViewInterface().update();
 
         });
+        refreshTimer.start();
         //central timer
 
     }

@@ -51,7 +51,6 @@ public class BootScreenView implements GameViewInterface {
     }
     @Override
     public void draw(Graphics2D g) {
-        System.out.println("drawing boot");
         g.drawImage(background, 0, 0, null);
 
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, GraphicsWindow.WIDTH/2 - text.getWidth(null)/2, GraphicsWindow.HEIGHT/2 + Y_OFFSET), null);

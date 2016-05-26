@@ -4,13 +4,15 @@ import nl.avans.a3.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GameView implements ModelListener {
 
     private GameController controller;
     private GameModel model;
     private JFrame frame = new JFrame("Grow the Beard!");
-    private PaintPanel panel = new PaintPanel();
+    private PaintPanel panel;
     private GameViewInterface viewInterface;
 
 
@@ -18,10 +20,12 @@ public class GameView implements ModelListener {
     {
         this.model = model;
         this.controller = controller;
-        initFrame();
+        panel = new PaintPanel(model.getGameViewInterface());
         Timer repainter = new Timer(1000/60, e->panel.repaint());
         repainter.start();
         setViewInterface(model.getGameViewInterface());
+
+        initFrame();
     }
 
     private void initFrame() {
@@ -49,7 +53,7 @@ public class GameView implements ModelListener {
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
             //noinspection InfiniteLoopStatement
-            while(true){
+             while(true){
                 Thread.sleep(1);  // keeps screen in fullscreen
             }
         }catch(Exception e){
@@ -63,6 +67,7 @@ public class GameView implements ModelListener {
     public void setViewInterface(GameViewInterface viewInterface) //just a setter.
     {
         this.viewInterface = viewInterface;
+        panel.setGameViewInterface(viewInterface);
     }
 
     @Override
@@ -77,17 +82,5 @@ public class GameView implements ModelListener {
 
         }
     }
-
-
-    class PaintPanel extends JPanel
-{
-    public void paintComponent(Graphics g2)
-    {
-        super.paintComponent(g2);
-        Graphics2D g = (Graphics2D) g2;
-        if(viewInterface != null)
-        viewInterface.draw(g);
-    }
-}
 
 }
