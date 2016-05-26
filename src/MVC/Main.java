@@ -12,7 +12,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Main mvcmain = new Main();
+        new Main();
     }
 
     /**
