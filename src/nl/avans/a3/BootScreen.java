@@ -52,7 +52,7 @@ public class BootScreen extends JPanel{
         g.drawImage(background, 0, 0, null);
 
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, GraphicsWindow.WIDTH/2 - text.getWidth(null)/2, GraphicsWindow.HEIGHT/2 + Y_OFFSET), null);
-        
+
         textScale += change;
         if(textScale > MAX_SCALE){
             change = -CHANGE_SPEED;
