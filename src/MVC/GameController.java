@@ -2,15 +2,25 @@ package MVC;
 
 import nl.avans.a3.WiimoteHandler;
 
+import javax.swing.*;
+
+
 public class GameController {
 
     private GameModel model;
     private WiimoteHandler handler;
+    private Timer refreshTimer;
 
-    public GameController(GameModel model, WiimoteHandler handler)
+    public GameController(GameModel model)
     {
         this.model = model;
-        this.handler = handler;
+        this.handler = new WiimoteHandler();
+        this.refreshTimer = new Timer(1000/60, e ->
+        {
+            model.update();
+        });
+        //central timer
+
     }
 
     /**
@@ -21,6 +31,8 @@ public class GameController {
     {
         this.model = model;
     }
+
+
 
 
 

@@ -1,14 +1,17 @@
 package MVC;
 
-import javax.swing.*;
+import java.awt.*;
 
-public class GameModel {
+public class GameModel implements GameModelInterface {
 
 
-    public GameModel(JPanel panel)
+    public GameModel()
     {
 
     }
 
+    @Override
+    public void update() {
 
+    }
 }
