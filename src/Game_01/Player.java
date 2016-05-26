@@ -10,17 +10,19 @@ import javax.swing.Timer;
 
 class Player extends Sprite {
 
-	private int dx, dy;
-	private int ty = -15;
+	private int dx, dy, dxCollision;
+	private int ty = -50;
 	private int number;
 	private boolean jump = false, falling = false;
 	private Timer engine;
 	private float pitchDeadzone = 10f;
 	private int floor;
+	private GameBoard gameBoard;
 
-	public Player(int xPos, int yPos, int number) {
+	public Player(int xPos, int yPos, int number, GameBoard gameBoard) {
 		super(xPos, yPos);
 		floor = yPos;
+		this.gameBoard = gameBoard;
 		this.number = number;
 		initPlayer();
 	}
@@ -49,9 +51,13 @@ class Player extends Sprite {
 	}
 	
 	void move() {
+		int oldX = xPos;
+		int oldY = yPos;
 		xPos += dx;
 		yPos += dy;
-
+		if(gameBoard.getPlayerCollision()){
+			xPos += dxCollision;
+		}
 		if (xPos < 1) {
 			xPos = 1;
 		}
@@ -168,8 +174,7 @@ class Player extends Sprite {
 					if (jump) {
 						dy = ty;
 						if (ty <= 0) {
-							ty++;
-							System.out.println(ty);
+							ty += 3;
 						}
 						else {
 							jump = false;
@@ -178,19 +183,21 @@ class Player extends Sprite {
 					}
 					else if (falling) {
 						dy = -ty;
-						if (ty > -10) {
-							ty--;
+						if (ty > -30) {
+							ty -= 6;
 						}
 						if (yPos > floor) {
 							falling = false;
 							dy = 0;
-							ty = -15;
+							ty = -50;
 						}
 					}
 				});
 				engine.start();
 			}
 		}
+
+
 
 //		if(wiimoteHandler.getZDifference(id) > 0.25){
 //			if(!falling)
@@ -226,4 +233,11 @@ class Player extends Sprite {
 //		}
 	}
 
+	public int getDx(){
+		return dx;
+	}
+
+	public void setDx(int dx){
+		dxCollision = dx;
+	}
 }

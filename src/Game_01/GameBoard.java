@@ -57,7 +57,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 	private boolean player1Rumble, player2Rumble;
-	private int rumbleCounter1, rumbleCounter2;
+	private int rumbleCounter1, rumbleCounter2, rumbleTime = 5;
+
+	private ArrayList<Particle> particles;
+	private boolean playerCollision = false;
 
 	public GameBoard() {
 		initGameBoard();
@@ -76,30 +79,31 @@ public class GameBoard extends JPanel implements ActionListener {
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
 		inGame = true;
-		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1);
-		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2);
+		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
+		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
+		particles = new ArrayList<>();
 
 		initWoodBlocks();
-	if (inGame) {
-		endTimer = new Timer(30000, e -> inGame = !inGame);
-		endTimer.start();
+		if (inGame) {
+			endTimer = new Timer(30000, e -> inGame = !inGame);
+			endTimer.start();
 
-		timeLeft = new Timer(1000, e -> {
-            time--;
-            scorePlayer1++;
-            scorePlayer2++;
-        });
-		timeLeft.start();
-	}
+			timeLeft = new Timer(1000, e -> {
+				time--;
+				scorePlayer1++;
+				scorePlayer2++;
+			});
+			timeLeft.start();
+		}
 		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
-		woodBlocks.add(new WoodBlock(40, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(90, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(120, -800, -getRandom(2,1), woodImages[getRandom(2,0)], getRandom(360,0)));
+		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 	}
 
 	@Override
@@ -109,16 +113,21 @@ public class GameBoard extends JPanel implements ActionListener {
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
 		if (inGame) {
 			g2.drawImage(background, 0, 0, null);
-			Font tf = new Font("Calibri", Font.BOLD, 72);
+			Font tf = new Font("Verdana", Font.BOLD, 72);
+			FontMetrics ft = g2.getFontMetrics(tf);
+
+			g2.setColor(new Color(95, 37, 0, 150));
+			g2.fillRect(0, 980, 1920, 100);
+			g2.setColor(new Color(20, 251, 13, 150));
 			g2.setFont(tf);
-			g2.drawString("Time left: " + time, 750, 50);
+			g2.drawString("Time: " + time, 960 - (ft.stringWidth("Time: " + time)/2), 1050);
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
 			g2.setColor(new Color(0x161BFF));
-			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1000);
+			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
 			g2.setColor(new Color(0x2CE21C));
-			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1000);
+			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1050);
 
 			g2.setColor(Color.BLACK);
 			g2.translate(0, 850);
@@ -131,6 +140,10 @@ public class GameBoard extends JPanel implements ActionListener {
 					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null);
 
 				}
+			}
+
+			for(Particle p : particles){
+				p.draw(g2);
 			}
 		}
 
@@ -202,6 +215,14 @@ public class GameBoard extends JPanel implements ActionListener {
 		updateWoodBlocks();
 		checkCollision();
 		checkRumble();
+		Iterator<Particle> pI = particles.iterator();
+		while(pI.hasNext()){
+			Particle p = pI.next();
+			p.update();
+			if(p.getLife() > 10){
+				pI.remove();
+			}
+		}
 		repaint();
 		player1.checkWiiMote(wiimoteHandler, 0);
 		player2.checkWiiMote(wiimoteHandler, 1);
@@ -261,12 +282,35 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 
 			if(hit){
+				for(int i = 0; i < 10; i++){
+					particles.add(new Particle(woodBlock.getX(), woodBlock.getY(), i*36));
+				}
 				it.remove();
+
 			}
 
 		}
 		while(woodBlocks.size() < 4){
 			woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+		}
+
+		if(rect3.intersects(rect2)){
+			playerCollision = true;
+			int dxPlayer1 = player1.getDx();
+			int dxPlayer2 = player2.getDx();
+			if(dxPlayer1 < 0){
+				dxPlayer1 = -dxPlayer1;
+			}
+			if(dxPlayer2 < 0){
+				dxPlayer2 = -dxPlayer2;
+			}
+			if(dxPlayer1 > dxPlayer2){
+				player2.setDx(player1.getDx());
+			}else{
+				player1.setDx(player2.getDx());
+			}
+		}else{
+			playerCollision = false;
 		}
 	}
 
@@ -316,7 +360,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public void checkRumble(){
 		if(player1Rumble){
 			rumbleCounter1++;
-			if(rumbleCounter1 > 25){
+			if(rumbleCounter1 > rumbleTime){
 				player1Rumble = false;
 				rumbleCounter1 = 0;
 			}
@@ -324,7 +368,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		if(player2Rumble){
 			rumbleCounter2++;
-			if(rumbleCounter2 > 25){
+			if(rumbleCounter2 > rumbleTime){
 				player2Rumble = false;
 				rumbleCounter2 = 0;
 			}
@@ -336,5 +380,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		if(!player2Rumble){
 			wiimoteHandler.deactivateRumble(1);
 		}
+	}
+
+	public boolean getPlayerCollision(){
+		return  playerCollision;
 	}
 }
