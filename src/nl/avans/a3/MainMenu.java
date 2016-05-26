@@ -52,20 +52,17 @@ public class MainMenu extends JPanel {
         } catch (IOException e) {
             Logger.instance.log("MM002", "Loading images failed", Logger.LogType.ERROR);
         }
-
-        Timer rotatePartyTimer = new Timer(1000 / 60, e -> {
-            if(rotation < 0){
-                speed += 0.01;
-            }else if(rotation > 0){
-                speed -= 0.01;
-            }
-            rotation += speed;
-        });
-        rotatePartyTimer.start();
     }
 
     public void update(Graphics2D g)
     {
+
+        if(rotation < 0){
+            speed += 0.01;
+        }else if(rotation > 0){
+            speed -= 0.01;
+        }
+        rotation += speed;
         g.drawImage(background, 0, 0, null);
         switch(mode){
             case CHOOSEPARTY : drawParty(g); break;

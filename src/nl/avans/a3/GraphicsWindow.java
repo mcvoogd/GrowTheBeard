@@ -87,6 +87,8 @@ public class GraphicsWindow extends JPanel{
     {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
+        RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHints(renderingHints);
         g.scale(getWidth()/1920.0, getHeight()/1080.0);
         
         if(bootAnimation){
