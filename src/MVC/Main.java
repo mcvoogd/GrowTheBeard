@@ -22,7 +22,7 @@ public class Main {
     public Main()
     {
         Logger.init();
-        model = new GameModel();
+        model = new GameModel(new BootScreen(), new BootScreenView());
         controller = new GameController(model);
         view = new GameView(controller, model);
     }

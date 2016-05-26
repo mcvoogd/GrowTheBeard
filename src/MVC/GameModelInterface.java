@@ -10,5 +10,6 @@ public interface GameModelInterface {
     }
 
     public void update(); //central timer calls this logic update every N times.
+    public void setListener(ModelListener listener);
 
 }

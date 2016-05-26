@@ -17,7 +17,8 @@ public class GameController {
         this.handler = new WiimoteHandler();
         this.refreshTimer = new Timer(1000/60, e ->
         {
-            model.update();
+            model.getGameModelInterface().update();
+
         });
         //central timer
 
@@ -31,10 +32,5 @@ public class GameController {
     {
         this.model = model;
     }
-
-
-
-
-
 }
 

@@ -7,7 +7,7 @@ public class MainMenu implements GameModelInterface {
     private double rotation = 0.0;
     private boolean triggered = false;
     private double speed = 0.5;
-
+    private ModelListener listener;
     private Mode mode = Mode.CHOOSESINGLE;
 
     public enum Mode{
@@ -22,6 +22,14 @@ public class MainMenu implements GameModelInterface {
             speed -= 0.01;
         }
         rotation += speed;
+    }
+
+    @Override
+    public void setListener(ModelListener listener) {
+        if(listener != null)
+        {
+            this.listener = listener;
+        }
     }
 
     public void setMode(Mode mode){
