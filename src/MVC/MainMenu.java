@@ -8,10 +8,10 @@ public class MainMenu implements GameModelInterface {
     private boolean triggered = false;
     private double speed = 0.5;
     private ModelListener listener;
-    private Mode mode = Mode.CHOOSESINGLE;
+    private Mode mode = Mode.CHOOSE_PARTY;
 
     public enum Mode{
-        CHOOSEPARTY, CHOOSESINGLE
+        CHOOSE_PARTY, CHOOSE_SINGLE
     }
 
     @Override

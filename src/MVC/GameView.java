@@ -49,7 +49,7 @@ public class GameView implements ModelListener {
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
             //noinspection InfiniteLoopStatement
-            while(true){
+            while(true){  // TODO fix lockup here
                 Thread.sleep(1);  // keeps screen in fullscreen
             }
         }catch(Exception e){
@@ -85,8 +85,9 @@ public class GameView implements ModelListener {
     {
         super.paintComponent(g2);
         Graphics2D g = (Graphics2D) g2;
-        if(viewInterface != null)
-        viewInterface.draw(g);
+        if(viewInterface != null){
+            viewInterface.draw(g);
+        }
     }
 }
 
