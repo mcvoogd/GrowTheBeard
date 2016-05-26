@@ -4,8 +4,6 @@ import nl.avans.a3.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class GameView implements ModelListener {
 
@@ -39,7 +37,6 @@ public class GameView implements ModelListener {
 
         if(!screen.isFullScreenSupported()){
             Logger.instance.log("MN001", "Fullscreen unsupported on this device", Logger.LogType.ERROR);
-
             System.exit(1);
         }
 
@@ -55,7 +52,7 @@ public class GameView implements ModelListener {
             screen.setDisplayMode(newDisplayMode);
             //noinspection InfiniteLoopStatement
             while(true){
-                Thread.sleep(1);  // keeps screen in fullscreen
+                Thread.sleep(100);  // keeps screen in fullscreen
             }
         }catch(Exception e){
             Logger.instance.log(e);

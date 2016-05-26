@@ -6,8 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class PaintPanel extends JPanel {
-
     private GameViewInterface gameViewInterface;
+    
     public PaintPanel(GameViewInterface gameViewInterface)
     {
         this.gameViewInterface = gameViewInterface;
@@ -37,12 +37,11 @@ public class PaintPanel extends JPanel {
         requestFocus();
     }
 
-    public void setGameViewInterface(GameViewInterface newGameViewInterface)
-    {
+    public void setGameViewInterface(GameViewInterface newGameViewInterface){
         this.gameViewInterface = newGameViewInterface;
     }
-    public void paintComponent(Graphics g2)
-    {
+    
+    public void paintComponent(Graphics g2){
         super.paintComponent(g2);
 
         Graphics2D g = (Graphics2D) g2;
@@ -52,5 +51,8 @@ public class PaintPanel extends JPanel {
 
         if(gameViewInterface!= null)
             gameViewInterface.draw(g);
+
+        // fixes stutter on Linux systems
+        Toolkit.getDefaultToolkit().sync();
     }
 }
