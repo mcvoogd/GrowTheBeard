@@ -39,6 +39,7 @@ public class GameView implements ModelListener {
 
         if(!screen.isFullScreenSupported()){
             Logger.instance.log("MN001", "Fullscreen unsupported on this device", Logger.LogType.ERROR);
+
             System.exit(1);
         }
 
