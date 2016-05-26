@@ -53,7 +53,7 @@ public class GameView implements ModelListener {
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
             //noinspection InfiniteLoopStatement
-             while(true){
+            while(true){
                 Thread.sleep(1);  // keeps screen in fullscreen
             }
         }catch(Exception e){

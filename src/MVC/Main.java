@@ -16,8 +16,8 @@ public class Main {
     }
 
     /**
-     * Create MVC.
-     * Init logger.
+     * Create MVC
+     * Init logger
      */
     public Main()
     {
@@ -26,6 +26,4 @@ public class Main {
         controller = new GameController(model);
         view = new GameView(controller, model);
     }
-
-
 }
