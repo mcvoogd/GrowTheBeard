@@ -7,6 +7,6 @@ import java.awt.*;
  */
 public interface View extends ModelListener{
     public void start();
-    public void draw(Graphics2D graphics2D);
+    public void draw(Graphics2D graphics2D, Dimension resolution);
     public void close();
 }

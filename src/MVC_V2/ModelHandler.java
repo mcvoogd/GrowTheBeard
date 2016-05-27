@@ -22,15 +22,19 @@ public class ModelHandler implements ModelListener {
         // TODO set the first model
     }
 
-    public void changeModel(Model newModel)
+    public void changeModel(NewModel event)
     {
-        Model oldModel = model;
-        model = newModel;
-
+        model = event.newModel;
+        event.oldModel.close();
+        dispatchEvent(event);
+        model.start();
     }
 
     @Override
     public void onModelEvent(ModelEvent event) {
-
+        if (event instanceof NewModel)
+            changeModel((NewModel)event);
+        else
+            dispatchEvent(event);
     }
 }
