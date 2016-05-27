@@ -43,7 +43,7 @@ public class Logger
         // creating a new sysout that redirects to the logger
         synchronized (System.out)
         {
-            System.setOut(new PrintStream(new OutputStream() {
+         /*   System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(byte[] b) { }
     
@@ -54,7 +54,7 @@ public class Logger
     
                 @Override
                 public void write(int b) throws IOException {}
-            }));
+            }));*/
         }
     }
 

@@ -13,8 +13,8 @@ public class Main {
             Logger.init();
             ControllerHandler controllerHandler = new ControllerHandler();
             ViewHandler viewHandler = new ViewHandler(controllerHandler);
-
-
+            ModelHandler.instance.start();
+            viewHandler.startTimer();
         }catch (Exception e)
         {
             Logger.instance.log(e);

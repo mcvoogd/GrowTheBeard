@@ -35,6 +35,7 @@ public class GraphicsWindow extends JPanel{
 
             @Override
             public void keyPressed(KeyEvent e){
+                System.out.println(e.getKeyCode());
                 switch(e.getKeyCode()){
                     case KeyEvent.VK_F3:
                         drawDebug = !drawDebug;

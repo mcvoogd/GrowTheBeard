@@ -19,14 +19,17 @@ public class ModelHandler implements ModelListener {
 
     public void start()
     {
-        // TODO set the first model
+        //start with boot.
+        changeModel(new NewModel(null, new BootModel()));
     }
 
     public void changeModel(NewModel event)
     {
         model = event.newModel;
-        event.oldModel.close();
-        dispatchEvent(event);
+        if(event.oldModel != null) {
+            event.oldModel.close();
+        }
+            dispatchEvent(event);
         model.start();
     }
 

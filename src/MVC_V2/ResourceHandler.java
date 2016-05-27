@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class ResourceHandler {
     private static HashMap<String, Image> imageHashMap = new HashMap<>();
 
-    public final Image getImage(String imageKey)
+    public static final Image getImage(String imageKey)
     {
         if (imageKey == null)
         {
@@ -41,7 +41,7 @@ public class ResourceHandler {
         return image;
     }
 
-    public void unloadImage(String imageKey)
+    public static void unloadImage(String imageKey)
     {
         if (imageKey == null) Logger.instance.log("RH001", "image can't be null", Logger.LogType.ERROR);
         else if (imageHashMap.containsKey(imageKey) == false) Logger.instance.log("RH004", "image ("+imageKey+") is not loaded", Logger.LogType.WARNING);
