@@ -11,7 +11,7 @@ MainMenu,MM,,,
 MM001,L,MainMenu::MainMenu,MainMenu entered!,
 MM002,E,MainMenu::MainMenu,Loading images failed!,
 MM003,L,MainMenu::MainMenu,Loading images succesvol!,
-
+,,,,
 ResourceHandler, RH,,,
 RH001, E, ResourceHandler::getImage, image can't be null,
 RH002, E, ResourceHandler::getImage(imageKey), image (<imageKey>) doesn't exist,
