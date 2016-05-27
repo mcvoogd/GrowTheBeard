@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class GameModel implements ModelListener{
 
-    private GameModelInterface gameModelInterface;
-    private GameViewInterface gameViewInterface;
+    private ModelInterface modelInterface;
+    private ViewInterface viewInterface;
     private ArrayList<ModelListener> modelListeners;
 
-    public GameModel(GameModelInterface gameModelInterface, GameViewInterface gameViewInterface)
+    public GameModel(ModelInterface modelInterface, ViewInterface viewInterface)
     {
-        this.gameModelInterface = gameModelInterface;
-        this.gameViewInterface = gameViewInterface;
+        this.modelInterface = modelInterface;
+        this.viewInterface = viewInterface;
     }
 
     public void registerModelListener(ModelListener listener)
@@ -34,17 +34,17 @@ public class GameModel implements ModelListener{
         }
     }
 
-    public void changeModel(GameModelInterface newInterface)
+    public void changeModel(ModelInterface newInterface)
     {
-        GameModelInterface temp = this.gameModelInterface;
-        this.gameModelInterface = newInterface;
+        ModelInterface temp = this.modelInterface;
+        this.modelInterface = newInterface;
         dispatchMessage(new NewModel(newInterface, temp));
     }
 
-    public GameViewInterface getGameViewInterface() {
-        return gameViewInterface;
+    public ViewInterface getViewInterface() {
+        return viewInterface;
     }
-    public GameModelInterface getGameModelInterface(){return gameModelInterface;}
+    public ModelInterface getModelInterface(){return modelInterface;}
 
     @Override
     public void onModelEvent(ModelEvent e) {

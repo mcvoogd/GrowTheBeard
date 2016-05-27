@@ -9,7 +9,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class BootScreenView implements GameViewInterface {
+public class BootScreenView implements ViewInterface{
     private static final int AXE_THROW_SPEED = 8;
     private static final int BEARD_SPEED = 8;
     private static final int TEXT_SPEED = 2;

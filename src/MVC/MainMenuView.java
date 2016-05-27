@@ -5,7 +5,7 @@ import nl.avans.a3.EasyTransformer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class MainMenuView implements GameViewInterface {
+public class MainMenuView implements ViewInterface{
 
     private BufferedImage background;
     private BufferedImage partyGame;

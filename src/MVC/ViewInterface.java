@@ -2,7 +2,7 @@ package MVC;
 
 import java.awt.*;
 
-public interface GameViewInterface {
+public interface ViewInterface{
 
     void draw(Graphics2D g);
     void update();

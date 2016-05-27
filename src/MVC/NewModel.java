@@ -2,20 +2,20 @@ package MVC;
 
 public class NewModel extends ModelEvent{
 
-    private GameModelInterface newInterface, oldInterface;
+    private ModelInterface newInterface, oldInterface;
 
-    public NewModel(GameModelInterface newInterface, GameModelInterface oldInterface)
+    public NewModel(ModelInterface newInterface, ModelInterface oldInterface)
     {
         this.newInterface = newInterface;
         this.oldInterface = oldInterface;
     }
 
-    public GameModelInterface getNewInterface()
+    public ModelInterface getNewInterface()
     {
         return newInterface;
     }
 
-    public GameModelInterface getOldInterface()
+    public ModelInterface getOldInterface()
     {
         return oldInterface;
     }

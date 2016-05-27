@@ -11,17 +11,17 @@ public class GameView implements ModelListener {
     private GameModel model;
     private JFrame frame = new JFrame("Grow the Beard!");
     private PaintPanel panel;
-    private GameViewInterface viewInterface;
+    private ViewInterface viewInterface;
 
 
     public GameView(GameController controller, GameModel model)
     {
         this.model = model;
         this.controller = controller;
-        panel = new PaintPanel(model.getGameViewInterface());
+        panel = new PaintPanel(model.getViewInterface());
         Timer repainter = new Timer(1000/60, e->panel.repaint());
         repainter.start();
-        setViewInterface(model.getGameViewInterface());
+        setViewInterface(model.getViewInterface());
 
         initFrame();
     }
@@ -62,10 +62,10 @@ public class GameView implements ModelListener {
         }
     }
 
-    public void setViewInterface(GameViewInterface viewInterface) //just a setter.
+    public void setViewInterface(ViewInterface viewInterface) //just a setter.
     {
         this.viewInterface = viewInterface;
-        panel.setGameViewInterface(viewInterface);
+        panel.setViewInterface(viewInterface);
     }
 
     @Override

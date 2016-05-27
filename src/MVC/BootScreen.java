@@ -1,6 +1,6 @@
 package MVC;
 
-public class BootScreen implements GameModelInterface{
+public class BootScreen implements ModelInterface{
 
     private ModelListener listener;
     @Override

@@ -1,8 +1,6 @@
 package MVC;
 
-import java.awt.image.BufferedImage;
-
-public class MainMenu implements GameModelInterface {
+public class MainMenu implements ModelInterface{
 
     private double rotation = 0.0;
     private boolean triggered = false;
