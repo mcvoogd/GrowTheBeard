@@ -10,7 +10,8 @@ public class Images {
     public static BufferedImage woodBlock, woodBlock2, woodBlock3;
     public static BufferedImage player1;
     public static BufferedImage player2;
-    public static BufferedImage game1Background;
+    public static BufferedImage game1Background, banner;
+    public static BufferedImage game1Winscreen;
     public static BufferedImage particle;
 
     public Images(){
@@ -19,8 +20,10 @@ public class Images {
         woodBlock3 = readImage("images_game1\\wood3");
         player1 = readImage("images_game1\\person1");
         player2 = readImage("images_game1\\person2");
-        game1Background = readImage("images_game1\\background");
+        game1Background = readImage("images_game1\\background2");
         particle = readImage("images_game1\\particle");
+        game1Winscreen = readImage("images_game1\\winscreen");
+        banner = readImage("images_game1\\banner");
 
     }
 

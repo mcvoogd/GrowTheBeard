@@ -32,12 +32,12 @@ class Player extends Sprite {
 		if (number == 1) {
 			imagesPlayer1 = new  BufferedImage[4];
 			//loadImage("Sprite1.png");
-			Image image = Images.player1.getScaledInstance(150 * 4, 246, BufferedImage.SCALE_DEFAULT);
-			BufferedImage bufferedImage = new BufferedImage(150 * 4, 246, BufferedImage.TYPE_INT_ARGB);
+			Image image = Images.player1.getScaledInstance(168 * 4, 246, BufferedImage.SCALE_DEFAULT);
+			BufferedImage bufferedImage = new BufferedImage(168 * 4, 246, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = bufferedImage.createGraphics();
 			g2.drawImage(image, 0, 0, null);
 			for(int i = 0; i < 4; i++){
-				imagesPlayer1[i] = bufferedImage.getSubimage(150 * i, 0, 150, 246);
+				imagesPlayer1[i] = bufferedImage.getSubimage(168 * i, 0, 150, 246);
 			}
 			setImage(imagesPlayer1[0]);
 			getDimensions();
@@ -45,12 +45,12 @@ class Player extends Sprite {
 		if (number == 2) {
 			imagesPlayer2 = new BufferedImage[4];
 			//loadImage("Sprite2.png");
-			Image image = Images.player2.getScaledInstance(150 * 4, 246, BufferedImage.SCALE_DEFAULT);
-			BufferedImage bufferedImage = new BufferedImage(150 * 4, 246, BufferedImage.TYPE_INT_ARGB);
+			Image image = Images.player2.getScaledInstance(168 * 4, 246, BufferedImage.SCALE_DEFAULT);
+			BufferedImage bufferedImage = new BufferedImage(168 * 4, 246, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = bufferedImage.createGraphics();
 			g2.drawImage(image, 0, 0, null);
 			for(int i = 0; i < 4; i++){
-				imagesPlayer2[i] = bufferedImage.getSubimage(150 * i, 0, 150, 246);
+				imagesPlayer2[i] = bufferedImage.getSubimage(168 * i, 0, 168, 246);
 			}
 			setImage(imagesPlayer2[0]);
 			getDimensions();
