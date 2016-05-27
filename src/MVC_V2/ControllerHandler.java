@@ -16,6 +16,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
+
         updateControllerTimer = new Timer(1000/60, e -> controller.update());
     }
 
