@@ -1,10 +1,7 @@
 package MVC_V2;
 
 import nl.avans.a3.EasyTransformer;
-import nl.avans.a3.Logger;
-
 import java.awt.*;
-import java.io.IOException;
 
 public class MainMenuView implements View {
 
@@ -59,11 +56,11 @@ public class MainMenuView implements View {
         switch(mode){
             case CHOOSE_PARTY:
                 g.drawImage(partyGame, EasyTransformer.rotateWithOffset(rotation, 350, 10, PARTY_BOARD_X, PARTY_BOARD_Y), null);
-                g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
+                g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
                 break;
             case CHOOSE_SINGLE:
-                g.drawImage(partyGame, EasyTransformer.rotateWithOffset(rotation, 350, 10, PARTY_BOARD_X, PARTY_BOARD_Y), null);
-                g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
+                g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
+                g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 5, -204, SINGLE_BOARD_X, SINGLE_BOARD_Y), null);
                 break;
         }
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
@@ -78,6 +75,18 @@ public class MainMenuView implements View {
 
     @Override
     public void onModelEvent(ModelEvent event) {
+        if(event instanceof MainMenuEvent)
+        {
+            changeMode();
+        }
+    }
 
+    public void changeMode()
+    {
+        switch (mode)
+        {
+            case CHOOSE_PARTY: mode = Mode.CHOOSE_SINGLE; break;
+            case CHOOSE_SINGLE: mode = Mode.CHOOSE_PARTY; break;
+        }
     }
 }

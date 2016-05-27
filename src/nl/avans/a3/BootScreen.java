@@ -87,3 +87,4 @@ public class BootScreen extends JPanel{
         animationTick++;
     }
 }
+ 

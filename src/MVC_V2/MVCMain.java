@@ -5,7 +5,7 @@ import nl.avans.a3.Logger;
 /**
  * Created by FlorisBob on 27-May-16.
  */
-public class Main {
+public class MVCMain {
     public static void main(String[] args)
     {
         try
