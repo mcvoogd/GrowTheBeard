@@ -12,11 +12,13 @@ public class ViewHandler implements ModelListener {
     private View view;
     private JFrame frame;
 
-    public ViewHandler()
+    public ViewHandler(ControllerHandler controllerHandler)
     {
         ModelHandler.instance.addListener(this);
         frame = new JFrame("Grow the porn");
         frame.setSize(new Dimension(600, 800));
+        // TODO do this properly
+        frame.addKeyListener(controllerHandler);
         frame.setContentPane(new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {
@@ -26,7 +28,10 @@ public class ViewHandler implements ModelListener {
                 if (view != null) view.draw(g2, new Dimension(getWidth(), getHeight()));
             }
         });
+        frame.setVisible(true);
     }
+
+
 
     @Override
     public void onModelEvent(ModelEvent event) {
@@ -38,7 +43,7 @@ public class ViewHandler implements ModelListener {
         }
         else
         {
-            view.onModelEvent(event);
+            if (view != null) view.onModelEvent(event);
         }
     }
 
