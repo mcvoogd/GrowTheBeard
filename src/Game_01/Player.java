@@ -18,6 +18,7 @@ class Player extends Sprite {
 	private float pitchDeadzone = 10f;
 	private int floor;
 	private GameBoard gameBoard;
+	private BufferedImage[] imagesPlayer1, imagesPlayer2;
 
 	public Player(int xPos, int yPos, int number, GameBoard gameBoard) {
 		super(xPos, yPos);
@@ -29,15 +30,29 @@ class Player extends Sprite {
 	
 	private void initPlayer() {
 		if (number == 1) {
+			imagesPlayer1 = new  BufferedImage[4];
 			//loadImage("Sprite1.png");
-			Image image = Images.player1.getScaledInstance(150, 246, BufferedImage.SCALE_DEFAULT);
-			setImage(image);
+			Image image = Images.player1.getScaledInstance(150 * 4, 246, BufferedImage.SCALE_DEFAULT);
+			BufferedImage bufferedImage = new BufferedImage(150 * 4, 246, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = bufferedImage.createGraphics();
+			g2.drawImage(image, 0, 0, null);
+			for(int i = 0; i < 4; i++){
+				imagesPlayer1[i] = bufferedImage.getSubimage(150 * i, 0, 150, 246);
+			}
+			setImage(imagesPlayer1[0]);
 			getDimensions();
 		}
 		if (number == 2) {
+			imagesPlayer2 = new BufferedImage[4];
 			//loadImage("Sprite2.png");
-			Image image = Images.player2.getScaledInstance(150, 246, BufferedImage.SCALE_DEFAULT);
-			setImage(image);
+			Image image = Images.player2.getScaledInstance(150 * 4, 246, BufferedImage.SCALE_DEFAULT);
+			BufferedImage bufferedImage = new BufferedImage(150 * 4, 246, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = bufferedImage.createGraphics();
+			g2.drawImage(image, 0, 0, null);
+			for(int i = 0; i < 4; i++){
+				imagesPlayer2[i] = bufferedImage.getSubimage(150 * i, 0, 150, 246);
+			}
+			setImage(imagesPlayer2[0]);
 			getDimensions();
 		}
 	}
@@ -64,6 +79,7 @@ class Player extends Sprite {
 		if (xPos > 1870) {
 			xPos = 1870;
 		}
+		setPlayerImage();
 	}
 
 	void keyPressed(KeyEvent e) {
@@ -239,5 +255,37 @@ class Player extends Sprite {
 
 	public void setDx(int dx){
 		dxCollision = dx;
+	}
+
+	public void setPlayerImage(){
+		if(number == 1){
+			if(ty == -50){
+				setImage(imagesPlayer1[0]);
+			}
+			if(ty > -50){
+				setImage(imagesPlayer1[1]);
+			}
+			if(ty > -40){
+				setImage(imagesPlayer1[2]);
+			}
+			if(ty > -30){
+				setImage(imagesPlayer1[3]);
+			}
+		}
+		if(number == 2){
+			if(ty == -50){
+				setImage(imagesPlayer2[0]);
+			}
+			if(ty > -50){
+				setImage(imagesPlayer2[1]);
+			}
+			if(ty > -40){
+				setImage(imagesPlayer2[2]);
+			}
+			if(ty > -30){
+				setImage(imagesPlayer2[3]);
+			}
+		}
+
 	}
 }
