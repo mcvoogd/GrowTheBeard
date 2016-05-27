@@ -1,5 +1,11 @@
-package MVC;
+package MVC.main_mvc_classes;
 
+import MVC.game_models.MainMenu;
+import MVC.game_views.MainMenuView;
+import MVC.interfaces_listener.ModelEvent;
+import MVC.interfaces_listener.ModelListener;
+import MVC.interfaces_listener.NewModel;
+import MVC.interfaces_listener.ViewInterface;
 import nl.avans.a3.Logger;
 
 import javax.swing.*;
@@ -9,21 +15,24 @@ public class GameView implements ModelListener {
 
     private GameController controller;
     private GameModel model;
-    private JFrame frame = new JFrame("Grow the Beard!");
     private PaintPanel panel;
     private ViewInterface viewInterface;
+    private Frame frame;
 
 
     public GameView(GameController controller, GameModel model)
     {
+        frame = new Frame();
+        frame.addKeyListener(controller);
         this.model = model;
         this.controller = controller;
         panel = new PaintPanel(model.getViewInterface());
         Timer repainter = new Timer(1000/60, e->panel.repaint());
         repainter.start();
         setViewInterface(model.getViewInterface());
-
+        model.registerModelListener(this);
         initFrame();
+
     }
 
     private void initFrame() {
@@ -41,7 +50,7 @@ public class GameView implements ModelListener {
         }
 
         try{
-            Frame frame = new Frame();
+            frame.addKeyListener(controller);
             frame.add(panel);
             frame.setTitle("Grow the Beard");
             frame.setAutoRequestFocus(true);
@@ -77,8 +86,12 @@ public class GameView implements ModelListener {
             {
                 setViewInterface(new MainMenuView());
             }
-
         }
+    }
+
+    public Frame getFrame()
+    {
+        return frame;
     }
 
 }

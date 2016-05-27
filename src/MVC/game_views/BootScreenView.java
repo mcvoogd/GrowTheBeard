@@ -1,5 +1,7 @@
-package MVC;
+package MVC.game_views;
 
+import MVC.interfaces_listener.ModelEvent;
+import MVC.interfaces_listener.ViewInterface;
 import nl.avans.a3.EasyTransformer;
 import nl.avans.a3.GraphicsWindow;
 import nl.avans.a3.Logger;
@@ -9,7 +11,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class BootScreenView implements ViewInterface{
+public class BootScreenView implements ViewInterface {
     private static final int AXE_THROW_SPEED = 8;
     private static final int BEARD_SPEED = 8;
     private static final int TEXT_SPEED = 2;
@@ -48,6 +50,7 @@ public class BootScreenView implements ViewInterface{
         }catch(IOException e){
             Logger.instance.log(e);
         }
+
     }
     @Override
     public void draw(Graphics2D g) {
@@ -91,5 +94,10 @@ public class BootScreenView implements ViewInterface{
         }else if(textScale < MIN_SCALE){
             change = CHANGE_SPEED;
         }
+    }
+
+    @Override
+    public void onModelEvent(ModelEvent e) {
+
     }
 }

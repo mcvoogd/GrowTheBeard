@@ -1,4 +1,4 @@
-package MVC;
+package MVC.interfaces_listener;
 
 public interface ModelInterface{
 
@@ -9,4 +9,5 @@ public interface ModelInterface{
 
     void update(); //central timer calls this logic update every N times.
     void setListener(ModelListener listener);
+
 }

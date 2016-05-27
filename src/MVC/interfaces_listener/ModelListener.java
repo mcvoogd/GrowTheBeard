@@ -1,4 +1,4 @@
-package MVC;
+package MVC.interfaces_listener;
 
 public interface ModelListener {
 

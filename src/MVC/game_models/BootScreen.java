@@ -1,11 +1,14 @@
-package MVC;
+package MVC.game_models;
 
-public class BootScreen implements ModelInterface{
+import MVC.interfaces_listener.ModelEvent;
+import MVC.interfaces_listener.ModelInterface;
+import MVC.interfaces_listener.ModelListener;
+
+public class BootScreen implements ModelInterface {
 
     private ModelListener listener;
     @Override
     public void update() {
-
     }
 
     @Override

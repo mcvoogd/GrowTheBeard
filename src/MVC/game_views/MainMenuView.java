@@ -1,5 +1,7 @@
-package MVC;
+package MVC.game_views;
 
+import MVC.interfaces_listener.ModelEvent;
+import MVC.interfaces_listener.ViewInterface;
 import nl.avans.a3.EasyTransformer;
 import nl.avans.a3.Logger;
 
@@ -9,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MainMenuView implements ViewInterface{
+public class MainMenuView implements ViewInterface {
 
     private BufferedImage background;
     private BufferedImage partyGame;
@@ -29,8 +31,13 @@ public class MainMenuView implements ViewInterface{
     private static final int NAIL_RIGHT_OFFSET_X = 200;
     private static final int NAIL_RIGHT_OFFSET_Y = 35;
 
-    private double rotation = 0.0;
+    private double rotation = 5;
     private double speed = 0.5;
+
+    @Override
+    public void onModelEvent(ModelEvent e) {
+
+    }
 
     public enum Mode{
         CHOOSE_PARTY, CHOOSE_SINGLE

@@ -1,6 +1,9 @@
-package MVC;
+package MVC.game_models;
 
-public class MainMenu implements ModelInterface{
+import MVC.interfaces_listener.ModelInterface;
+import MVC.interfaces_listener.ModelListener;
+
+public class MainMenu implements ModelInterface {
 
     private double rotation = 0.0;
     private boolean triggered = false;
@@ -8,6 +11,10 @@ public class MainMenu implements ModelInterface{
     private ModelListener listener;
     private Mode mode = Mode.CHOOSE_PARTY;
 
+    public MainMenu()
+    {
+
+    }
     public enum Mode{
         CHOOSE_PARTY, CHOOSE_SINGLE
     }

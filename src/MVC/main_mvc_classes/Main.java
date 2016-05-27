@@ -1,7 +1,8 @@
-package MVC;
+package MVC.main_mvc_classes;
 
+import MVC.game_models.BootScreen;
+import MVC.game_views.BootScreenView;
 import nl.avans.a3.Logger;
-import nl.avans.a3.WiimoteHandler;
 
 public class Main {
     public static void main(String[] args) {
