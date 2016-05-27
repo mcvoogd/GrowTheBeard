@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	private void initGameBoard() {
-
+//		test();
 		new Images();
 		scaleBackground();
 		addWoodImages();
@@ -85,7 +86,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		initWoodBlocks();
 		if (inGame) {
-			endTimer = new Timer(30000, e -> inGame = !inGame);
+			endTimer = new Timer(time * 1000, e -> inGame = !inGame);
 			endTimer.start();
 
 			timeLeft = new Timer(1000, e -> {
@@ -113,14 +114,26 @@ public class GameBoard extends JPanel implements ActionListener {
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
 		if (inGame) {
 			g2.drawImage(background, 0, 0, null);
-			Font tf = new Font("Verdana", Font.BOLD, 72);
+			AffineTransform oldFrom = g2.getTransform();
+			g2.translate(0, 850);
+			g2.translate(-1, -1);
+			g2.translate(0, -40);
+			for (WoodBlock w : woodBlocks) {
+				if (w.getVisible()) {
+					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null);
+
+				}
+			}
+			g2.setTransform(oldFrom);
+			Font tf = new Font("Verdana", Font.BOLD, 68);
 			FontMetrics ft = g2.getFontMetrics(tf);
 
-			g2.setColor(new Color(95, 37, 0, 150));
-			g2.fillRect(0, 980, 1920, 100);
-			g2.setColor(new Color(20, 251, 13, 150));
+			g2.drawImage(Images.rescaleImage(1920,160, Images.banner), 0, 930, null);
+			g2.setColor(new Color(159, 44, 22));
 			g2.setFont(tf);
-			g2.drawString("Time: " + time, 960 - (ft.stringWidth("Time: " + time)/2), 1050);
+			g2.drawString("" + time, 960 - (ft.stringWidth("" + time)/2) + 90, 1030);
+
+
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
@@ -133,14 +146,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
 			g2.translate(0, -40);
+
 			drawPlayers(g);
 
-			for (WoodBlock w : woodBlocks) {
-				if (w.getVisible()) {
-					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null);
 
-				}
-			}
 
 			for(Particle p : particles){
 				p.draw(g2);
@@ -151,10 +160,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			wiimoteHandler.deactivateRumble(0);
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
-				drawGameEndPL1(g);
+				drawGameEnd(g, 1);
 			}
 			if (scorePlayer2 > scorePlayer1) {
-				drawGameEndPL2(g);
+				drawGameEnd(g, 2);
 			}
 			else{
 				//drawGameEnd(g);
@@ -172,40 +181,27 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	private void drawGameEnd(Graphics g) {
+	private void drawGameEnd(Graphics g, int player) {
 		Graphics2D g2 = (Graphics2D) g;
-
-		String s = " WOODBLOCKS!";
-		Font font = new Font("Jokerman", Font.BOLD, 48);
+		g2.drawImage(Images.game1Winscreen.getScaledInstance(1920, 1080, BufferedImage.SCALE_DEFAULT), 0, 0, null);
+		Font font = new Font("Sansserif", Font.BOLD, 360);
 		FontMetrics fm = getFontMetrics(font);
-
-		g2.setColor(Color.BLACK);
 		g2.setFont(font);
-		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
-	}
+		String s = "DRAW";
+		if(player == 1){
+			s = "WINNER";
+			g2.setColor(new Color(50, 200, 55));
+			g2.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+		}
+		if(player == 2){
+			s = "WINNER";
+			g2.setColor(new Color(200, 50, 50));
+			g2.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+		}
+		g2.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
+		g2.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
 
-	private void drawGameEndPL1(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
 
-		String s = " PLAYER 1 WINS!";
-		Font font = new Font("Jokerman", Font.BOLD, 48);
-		FontMetrics fm = getFontMetrics(font);
-
-		g2.setColor(Color.BLUE);
-		g2.setFont(font);
-		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
-	}
-
-	private void drawGameEndPL2(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-
-		String s = " PLAYER 2 WINS!";
-		Font font = new Font("Jokerman", Font.BOLD, 48);
-		FontMetrics fm = getFontMetrics(font);
-
-		g2.setColor(Color.GREEN);
-		g2.setFont(font);
-		g2.drawString(s, (500 - fm.stringWidth(s)) / 2, 400 / 2);
 	}
 
 	@Override
@@ -384,5 +380,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public boolean getPlayerCollision(){
 		return  playerCollision;
+	}
+
+	public void test(){
+		time = 5;
+		scorePlayer2 = 100;
 	}
 }
