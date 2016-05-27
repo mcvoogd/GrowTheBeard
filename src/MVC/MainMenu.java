@@ -1,17 +1,15 @@
 package MVC;
 
-import java.awt.image.BufferedImage;
-
-public class MainMenu implements GameModelInterface {
+public class MainMenu implements ModelInterface{
 
     private double rotation = 0.0;
     private boolean triggered = false;
     private double speed = 0.5;
-
-    private Mode mode = Mode.CHOOSESINGLE;
+    private ModelListener listener;
+    private Mode mode = Mode.CHOOSE_PARTY;
 
     public enum Mode{
-        CHOOSEPARTY, CHOOSESINGLE
+        CHOOSE_PARTY, CHOOSE_SINGLE
     }
 
     @Override
@@ -22,6 +20,14 @@ public class MainMenu implements GameModelInterface {
             speed -= 0.01;
         }
         rotation += speed;
+    }
+
+    @Override
+    public void setListener(ModelListener listener) {
+        if(listener != null)
+        {
+            this.listener = listener;
+        }
     }
 
     public void setMode(Mode mode){

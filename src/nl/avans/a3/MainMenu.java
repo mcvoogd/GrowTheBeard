@@ -69,7 +69,7 @@ public class MainMenu extends JPanel {
             case CHOOSESINGLE : drawSingle(g); break;
         }
     }
-
+    
     private void drawSingle(Graphics2D g) {
         g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);

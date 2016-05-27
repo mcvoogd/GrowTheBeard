@@ -1,22 +1,28 @@
 package MVC;
 
-import nl.avans.a3.GraphicsWindow;
 import nl.avans.a3.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameView {
+public class GameView implements ModelListener {
 
     private GameController controller;
     private GameModel model;
     private JFrame frame = new JFrame("Grow the Beard!");
-    private JPanel panel = new JPanel();
+    private PaintPanel panel;
+    private ViewInterface viewInterface;
+
 
     public GameView(GameController controller, GameModel model)
     {
         this.model = model;
         this.controller = controller;
+        panel = new PaintPanel(model.getViewInterface());
+        Timer repainter = new Timer(1000/60, e->panel.repaint());
+        repainter.start();
+        setViewInterface(model.getViewInterface());
+
         initFrame();
     }
 
@@ -46,7 +52,7 @@ public class GameView {
             screen.setDisplayMode(newDisplayMode);
             //noinspection InfiniteLoopStatement
             while(true){
-                Thread.sleep(1);  // keeps screen in fullscreen
+                Thread.sleep(100);  // keeps screen in fullscreen
             }
         }catch(Exception e){
             Logger.instance.log(e);
@@ -56,13 +62,23 @@ public class GameView {
         }
     }
 
-
-class PaintPanel extends JPanel
-{
-    public void paintComponent(Graphics g2)
+    public void setViewInterface(ViewInterface viewInterface) //just a setter.
     {
-        super.paintComponent(g2);
-        Graphics2D g = (Graphics2D) g2;
+        this.viewInterface = viewInterface;
+        panel.setViewInterface(viewInterface);
     }
-}
+
+    @Override
+    public void onModelEvent(ModelEvent e) {
+        if(e instanceof NewModel)
+        {
+            NewModel newModel = (NewModel) e;
+            if(newModel.getNewInterface() instanceof MainMenu)
+            {
+                setViewInterface(new MainMenuView());
+            }
+
+        }
+    }
+
 }

@@ -14,7 +14,6 @@ public class Images {
     public static BufferedImage particle;
 
     public Images(){
-
         woodBlock = readImage("images_game1\\wood1");
         woodBlock2 = readImage("images_game1\\wood2");
         woodBlock3 = readImage("images_game1\\wood3");
