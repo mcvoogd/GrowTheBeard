@@ -20,7 +20,5 @@ public class MVCMain {
         {
             Logger.instance.log(e);
         }
-
-        Logger.instance.log("MV002", "program end", Logger.LogType.LOG);
     }
 }

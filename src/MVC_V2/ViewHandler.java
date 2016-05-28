@@ -2,6 +2,7 @@ package MVC_V2;
 
 import nl.avans.a3.GraphicsWindow;
 import nl.avans.a3.Logger;
+import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ public class ViewHandler implements ModelListener {
     public ViewHandler(ControllerHandler controllerHandler)
     {
         ModelHandler.instance.addListener(this);
-
+        Logger.instance.log("VH003", "ViewHandler created", Logger.LogType.DEBUG);
         try{
 
             frame = new JFrame("Grow the Beard");
@@ -97,6 +98,7 @@ public class ViewHandler implements ModelListener {
         {
             if (view != null) view.close();
             view = selectedView(((NewModel)event).newModel);
+            Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
             view.start();
         }
         else
@@ -121,6 +123,7 @@ public class ViewHandler implements ModelListener {
 
     public void startTimer()
     {
+        Logger.instance.log("VH002", "timer started", Logger.LogType.LOG);
         repainter.start();
     }
 }

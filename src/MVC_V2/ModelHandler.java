@@ -1,6 +1,7 @@
 package MVC_V2;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import nl.avans.a3.Logger;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,12 @@ import java.util.ArrayList;
  */
 public class ModelHandler implements ModelListener {
     public ArrayList<ModelListener> listeners = new ArrayList<>();
-    public void addListener(ModelListener listener) {if (listener != null && listeners.contains(listener) == false) listeners.add(listener);}
+    public void addListener(ModelListener listener) {
+        if (listener != null && listeners.contains(listener) == false) {
+            listeners.add(listener);
+            Logger.instance.log("MH002", Thread.currentThread().getStackTrace()[2].getClassName() + " is attached to ModelHandler", Logger.LogType.DEBUG);
+        }
+    }
     public void removeListener(ModelListener listener) {if (listener != null && listeners.contains(listener)) listeners.remove(listener);}
     private void dispatchEvent(ModelEvent event) {listeners.forEach(modelListener -> modelListener.onModelEvent(event));}
 
@@ -25,6 +31,7 @@ public class ModelHandler implements ModelListener {
 
     public void changeModel(NewModel event)
     {
+        Logger.instance.log("MH001", "model changed from ("+((event.oldModel == null) ? "" : event.oldModel.getClass().getName())+") to ("+event.newModel.getClass().getName()+")", Logger.LogType.DEBUG);
         model = event.newModel;
         if(event.oldModel != null) {
             event.oldModel.close();
