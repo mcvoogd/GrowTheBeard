@@ -11,6 +11,7 @@ public class MVCMain {
         try
         {
             Logger.init();
+            Logger.instance.log("MV001", "program start", Logger.LogType.LOG);
             ControllerHandler controllerHandler = new ControllerHandler();
             ViewHandler viewHandler = new ViewHandler(controllerHandler);
             ModelHandler.instance.start();
@@ -19,5 +20,7 @@ public class MVCMain {
         {
             Logger.instance.log(e);
         }
+
+        Logger.instance.log("MV002", "program end", Logger.LogType.LOG);
     }
 }
