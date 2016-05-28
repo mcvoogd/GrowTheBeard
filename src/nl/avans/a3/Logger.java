@@ -2,6 +2,7 @@ package nl.avans.a3;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Logger
@@ -44,18 +45,21 @@ public class Logger
         // creating a new sysout that redirects to the logger
         synchronized (System.out)
         {
-         /*   System.setOut(new PrintStream(new OutputStream() {
+          System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(byte[] b) { }
-    
+
                 public void write(byte[] b, int off, int len) // put rhe sysout message into a log
                 {
-                    if (b[0] != '\r' && b[0] != '\n') Logger.instance.log(null, "sysout", new String(b), LogType.LOG);
+                    if (b[0] != '\r' && b[0] != '\n')
+                    {
+                        Logger.instance.log(null, "sysout", new String(Arrays.copyOfRange(b, off, len)), LogType.LOG);
+                    }
                 }
-    
+
                 @Override
                 public void write(int b) throws IOException {}
-            }));*/
+            }));
         }
     }
 
