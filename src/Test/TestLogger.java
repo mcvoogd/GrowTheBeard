@@ -21,8 +21,10 @@ public class TestLogger {
         Logger.instance.log("TC006", null, Logger.LogType.ERROR);
         Logger.instance.log("TC007", "I think I can break the rules", Logger.LogType.NOTHING);
 
+        Logger.instance.log("TC009", "debug info", Logger.LogType.DEBUG);
         Logger.instance.log("TC008", "stack trace test", Logger.LogType.WARNING);
         System.out.print(true);
         System.out.print("heyhey");
+
     }
 }

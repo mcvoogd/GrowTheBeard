@@ -38,6 +38,7 @@ public class ResourceHandler {
         }
 
         imageHashMap.put(imageKey, image);
+        Logger.instance.log("RH005", "image ("+imageKey+") has been loaded", Logger.LogType.DEBUG);
         return image;
     }
 
@@ -45,12 +46,13 @@ public class ResourceHandler {
     {
         if (imageKey == null) Logger.instance.log("RH001", "image can't be null", Logger.LogType.ERROR);
         else if (imageHashMap.containsKey(imageKey) == false) Logger.instance.log("RH004", "image ("+imageKey+") is not loaded", Logger.LogType.WARNING);
-        else imageHashMap.remove(imageKey);
+        else { imageHashMap.remove(imageKey); Logger.instance.log("RH006", "image ("+imageKey+") has been unloaded", Logger.LogType.DEBUG);}
     }
 
     public void dump()
     {
         imageHashMap.clear();
+        Logger.instance.log("RH007", "resources have been dumped", Logger.LogType.DEBUG);
     }
 
 }

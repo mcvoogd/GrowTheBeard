@@ -8,7 +8,7 @@ public class Logger
 {
     public enum LogType
     {
-        LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTHING(4); // NOTE: the nothing type is used for the filter and should not used as a log type
+        DEBUG(0), LOG(0), WARNING(1), ERROR(2), EXCEPTION(3), NOTHING(4); // NOTE: the nothing type is used for the filter and should not used as a log type
 
         protected final int typeN; // A number to filter logs the higher te number to higher it's priority is
         LogType(int n) {typeN = n;}
@@ -37,8 +37,8 @@ public class Logger
         try {
             logStream = new PrintStream(new File("runtime_data/log_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date())) + ".txt"); // creating a file for the log
         } catch (FileNotFoundException e) {log(e);}
-        setConsoleLevel(LogType.LOG);
-        setLogLevel(LogType.LOG);
+        setConsoleLevel(LogType.DEBUG);
+        setLogLevel(LogType.DEBUG);
 
         // creating a new sysout that redirects to the logger
         synchronized (System.out)
