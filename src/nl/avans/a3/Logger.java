@@ -125,15 +125,12 @@ public class Logger
     }
     
     /**
-     *
-     * @Deprecated the log method has been replaced by a log method that generates the code path itself, just remove the codePath argument and you're good to go
      * @param code the unique code that identifies the log (maybe left empty)
      * @param codePath a code path to the log (used to find the code that calls the log)
      * @param message the message that will be logged
      * @param type the type of the log
      */
-    @Deprecated()
-    public void log(final String code, final String codePath, final String message, final LogType type)
+    private void log(final String code, final String codePath, final String message, final LogType type)
     {
         // logs a warning if the message is empty
         if (message == null || message.trim().equals("")) log("LO002", "are you sure you want to log an empty message", LogType.WARNING);
