@@ -25,6 +25,7 @@ public class Logger
     private static final int LOG_TYPE_LENGTH = 9; // the amount of char's used to display the log's type, should never change
     private static final int CODE_LENGTH = 5; // the amount of char's used to display the log's LogType, should never change
     private static final int CODE_PATH_LENGTH = 70; // the amount of char's used to display the code path
+    private static final int DATE_TIME_LENGTH = 23; // the amount of char's used to display the date and the time
 
     private PrintStream consoleStream, logStream; // the logger's outputs
     private LogType consoleLevel, logLevel; // the logger's outputs' filters
@@ -140,7 +141,7 @@ public class Logger
         if (type == LogType.NOTHING) {log("LC003", "the log type cannot be NOTHING, code("+code+") message("+message+")", LogType.ERROR); return;}
 
         // start of the log string the current date and time
-        String combinedMessage = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()) + " ";
+        String combinedMessage = toSize(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()), DATE_TIME_LENGTH) + " ";
 
         // adds the log type
         combinedMessage += toSize(type.toString(), LOG_TYPE_LENGTH) + " ";
