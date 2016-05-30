@@ -1,11 +1,10 @@
 package nl.avans.a3;
 
+import com.opencsv.CSVReader;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Logger
 {
@@ -22,7 +21,7 @@ public class Logger
     /**
      * needs to be called to initialize the instance
      */
-    public static void init() { initialized = true;} // to ensure the instance gets initialized
+    public static void init() { if (initialized == false) setupLogBuilders(); initialized = true; } // to ensure the instance gets initialized
     private static boolean initialized = false; // a boolean to ensure a warning can be logged when init isn't called on startup
 
     private static final int LOG_TYPE_LENGTH = 9; // the amount of char's used to display the log's type, should never change
@@ -173,6 +172,8 @@ public class Logger
         log("LO004", "the logger is not properly initialized", LogType.WARNING);
     }
 
+    private static HashMap<String, LogMessageBuilder> messageMap;
+
     /**
      *
      * @param code the unique code that identifies the log (maybe left empty)
@@ -180,12 +181,47 @@ public class Logger
      */
     protected void log(final String code, final String... arguments)
     {
+        if (messageMap == null) return;
+        if (messageMap.containsKey(code) == false) {log("LO005", "the code ("+code+") has not been loaded", LogType.ERROR); return;} // TODO switch to the current method
+        LogMessageBuilder builder = messageMap.get(code);
+        log(code, builder.argumentsToMessage(arguments), builder.logType);
+    }
 
+    private static void setupLogBuilders()
+    {
+        File file = new File("Supporting Documents/Testing/error and warning codes.csv");
+        if (file.exists() == false) {Logger.instance.log("LO006", "log code file does not exist", LogType.EXCEPTION); return;}
+        messageMap = new HashMap<>();
+
+        try {
+            CSVReader reader = new CSVReader(new FileReader(file));
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null)
+            {
+                if (nextLine[0].trim().equals("") || nextLine[3].trim().equals("")) continue;
+                LogType logType = LogType.DEBUG;
+                switch (nextLine[1].trim().charAt(0))
+                {
+                    case 'L':
+                        logType = LogType.LOG;
+                        break;
+                    case 'W':
+                        logType = logType.WARNING;
+                        break;
+                    case 'E':
+                        logType = logType.ERROR;
+                        break;
+                }
+                messageMap.put(nextLine[0].trim(), new LogMessageBuilder(nextLine[3].trim(), logType, nextLine[4].trim()));
+            }
+        } catch (IOException e) {
+            Logger.instance.log(e);
+        }
     }
 
     private static class LogMessageBuilder
     {
-        class LogMessageBuildException extends Exception
+        class LogMessageBuildException extends RuntimeException
         {
             LogMessageBuildException(String message)
             {
@@ -193,12 +229,16 @@ public class Logger
             }
         }
 
+        final LogType logType;
+        final String comment;
         private ArrayList<String> messageConstruct = new ArrayList<>();
         boolean argumentAtStart = false;
         int correctArgumentCount =0;
 
-        LogMessageBuilder(String message) throws LogMessageBuildException
+        LogMessageBuilder(String message, LogType logType, String comment) throws LogMessageBuildException
         {
+            this.logType = logType;
+            this.comment = comment;
             StringTokenizer tokenizer = new StringTokenizer(message, "<>", true);
             boolean inArgument = false;
             boolean first = true;
@@ -261,15 +301,17 @@ public class Logger
             System.out.print("heyhey");
 
             try {
-                Logger.LogMessageBuilder test = new Logger.LogMessageBuilder("<start>some <arg1>l<arg3> simple test, info (<arg2>)   <end>");
+                Logger.LogMessageBuilder test = new Logger.LogMessageBuilder("<start>some <arg1>l<arg3> simple test, info (<arg2>)   <end>", LogType.LOG, null);
                 System.out.println(test.argumentsToMessage("START", "3", "4", "3.14f", "END"));
-                Logger.LogMessageBuilder test2 = new Logger.LogMessageBuilder("<1> fgdfg <2> jgkfgj");
-                Logger.LogMessageBuilder test3 = new Logger.LogMessageBuilder("gjfhghfhg<1>jgdgd<2>");
-                Logger.LogMessageBuilder test4 = new Logger.LogMessageBuilder("<fh>fdjdjgjd<jfk>");
+                Logger.LogMessageBuilder test2 = new Logger.LogMessageBuilder("<1> fgdfg <2> jgkfgj", LogType.LOG, null);
+                Logger.LogMessageBuilder test3 = new Logger.LogMessageBuilder("gjfhghfhg<1>jgdgd<2>", LogType.LOG, null);
+                Logger.LogMessageBuilder test4 = new Logger.LogMessageBuilder("<fh>fdjdjgjd<jfk>", LogType.LOG, null);
                 System.out.println(test2.argumentsToMessage("START", "MIDDLE"));
                 System.out.println(test3.argumentsToMessage("MIDDLE", "END"));
                 System.out.println(test4.argumentsToMessage("START", "END"));
 
+                Logger.instance.log("GW001");
+                Logger.instance.log("RH002", "SomeImageKey");
             } catch (Logger.LogMessageBuilder.LogMessageBuildException e) {
                 Logger.instance.log(e);
             }
