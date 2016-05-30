@@ -16,7 +16,6 @@ public class ControllerHandler implements ModelListener, KeyListener {
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
-
         updateControllerTimer = new Timer(1000/60, e -> controller.update());
     }
 
@@ -58,6 +57,10 @@ public class ControllerHandler implements ModelListener, KeyListener {
         if(model instanceof MainMenuModel)
         {
             return new MainMenuController((MainMenuModel) model);
+        }
+        if(model instanceof WoodDodgingModel)
+        {
+            return new WoodDodgingController((WoodDodgingModel) model);
         }
         return null;
     }

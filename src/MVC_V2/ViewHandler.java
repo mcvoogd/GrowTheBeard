@@ -114,10 +114,14 @@ public class ViewHandler implements ModelListener {
 
            return new BootView();
        }
-        if(model instanceof MainMenuModel)
-        {
-            return new MainMenuView();
-        }
+      if(model instanceof MainMenuModel)
+    {
+        return new MainMenuView();
+    }
+    if(model instanceof WoodDodgingModel)
+    {
+        return new WoodDodgingView();
+    }
         return null;
     }
 
