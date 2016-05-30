@@ -2,8 +2,10 @@ package nl.avans.a3;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class Logger
 {
@@ -31,7 +33,7 @@ public class Logger
     private PrintStream consoleStream, logStream; // the logger's outputs
     private LogType consoleLevel, logLevel; // the logger's outputs' filters
 
-    private Logger()
+    public Logger()
     {
         consoleStream = System.out;
         //noinspection ResultOfMethodCallIgnored
@@ -49,7 +51,7 @@ public class Logger
                 @Override
                 public void write(byte[] b) { }
 
-                public void write(byte[] b, int off, int len) // put rhe sysout message into a log
+                public void write(byte[] b, int off, int len) // put rhe sysout messageConstruct into a log
                 {
                     if (b[0] != '\r' && b[0] != '\n')
                     {
@@ -109,20 +111,20 @@ public class Logger
      */
     public void log(Exception e)
     {
-        checkInitilazation();
+        checkInitialisation();
         if (e == null) log("LO001", "Exception can't be null", LogType.ERROR);
         else log(null, e.getStackTrace()[0].toString(), e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
     }
 
     /**
-     * logs a message
+     * logs a messageConstruct
      * @param code the unique code that identifies the log (maybe left empty)
-     * @param message the message that will be logged
+     * @param message the messageConstruct that will be logged
      * @param type the type of the log
      */
     public void log(final String code, final String message, final LogType type)
     {
-        checkInitilazation();
+        checkInitialisation();
         // NOTE: even tough this method is deprecated in order to prevent code duplication we still use it
         // logs the log with the cale's code path
         log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
@@ -131,15 +133,15 @@ public class Logger
     /**
      * @param code the unique code that identifies the log (maybe left empty)
      * @param codePath a code path to the log (used to find the code that calls the log)
-     * @param message the message that will be logged
+     * @param message the messageConstruct that will be logged
      * @param type the type of the log
      */
     private void log(final String code, final String codePath, final String message, final LogType type)
     {
-        // logs a warning if the message is empty
-        if (message == null || message.trim().equals("")) log("LO002", "are you sure you want to log an empty message", LogType.WARNING);
+        // logs a warning if the messageConstruct is empty
+        if (message == null || message.trim().equals("")) log("LO002", "are you sure you want to log an empty messageConstruct", LogType.WARNING);
         // logs an error if the log if invalid and returns
-        if (type == LogType.NOTHING) {log("LC003", "the log type cannot be NOTHING, code("+code+") message("+message+")", LogType.ERROR); return;}
+        if (type == LogType.NOTHING) {log("LC003", "the log type cannot be NOTHING, code("+code+") messageConstruct("+message+")", LogType.ERROR); return;}
 
         // start of the log string the current date and time
         String combinedMessage = toSize(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()), DATE_TIME_LENGTH) + " ";
@@ -150,7 +152,7 @@ public class Logger
         combinedMessage += toSize(code, CODE_LENGTH) + " ";
         // adds the code path
         combinedMessage += toSize(codePath, CODE_PATH_LENGTH, ')') + " ";
-        // adds the message
+        // adds the messageConstruct
         combinedMessage += message;
 
         synchronized (this)
@@ -164,10 +166,118 @@ public class Logger
      * checks if the log has been properly initialized and logs a warning if it hasn't
      * the danger of not properly initializing the logger is that some sysout's could be missed
      */
-    private synchronized void checkInitilazation()
+    private synchronized void checkInitialisation()
     {
         if (initialized) return;
         init();
         log("LO004", "the logger is not properly initialized", LogType.WARNING);
+    }
+
+    /**
+     *
+     * @param code the unique code that identifies the log (maybe left empty)
+     * @param arguments the arguments the code expects
+     */
+    protected void log(final String code, final String... arguments)
+    {
+
+    }
+
+    private static class LogMessageBuilder
+    {
+        class LogMessageBuildException extends Exception
+        {
+            LogMessageBuildException(String message)
+            {
+                super(message);
+            }
+        }
+
+        private ArrayList<String> messageConstruct = new ArrayList<>();
+        boolean argumentAtStart = false;
+        int correctArgumentCount =0;
+
+        LogMessageBuilder(String message) throws LogMessageBuildException
+        {
+            StringTokenizer tokenizer = new StringTokenizer(message, "<>", true);
+            boolean inArgument = false;
+            boolean first = true;
+            while (tokenizer.hasMoreTokens())
+            {
+                String token = tokenizer.nextToken();
+                switch (token) {
+                    case "<":
+                        if (first) argumentAtStart = true;
+                        if (inArgument) throw new LogMessageBuildException("previus argument was not called");
+                        inArgument = true;
+                        break;
+                    case ">":
+                        if (inArgument == false) throw new LogMessageBuildException("no argument started");
+                        correctArgumentCount++;
+                        inArgument = false;
+                        break;
+                    default:
+                        if (inArgument == false) messageConstruct.add(token);
+                        break;
+                }
+                first = false;
+            }
+        }
+
+        String argumentsToMessage(final String... arguments) throws LogMessageBuildException
+        {
+            if (arguments.length != correctArgumentCount) throw new LogMessageBuildException("not all arguments were supplied");
+
+            String message = "";
+            int argumentIndex = 0;
+            if (argumentAtStart) message = arguments[argumentIndex++];
+            for (String aMessageConstruct : messageConstruct) {
+                message += aMessageConstruct;
+                if (argumentIndex < arguments.length) message += arguments[argumentIndex++];
+            }
+            return message;
+        }
+    }
+
+    public static void test()
+    {
+        try {
+            System.out.println("the main");
+            Logger.instance.log("TC001", "Hello World", Logger.LogType.ERROR);
+            Logger.instance.log(null, "testLog", Logger.LogType.LOG);
+            Logger.instance.log("TC002", "10", Logger.LogType.WARNING);
+            Logger.instance.log("TC003", "10.0", Logger.LogType.WARNING);
+            System.out.println("hey, how are you");
+            Logger.instance.log(new IndexOutOfBoundsException("use the size of your array fuckers"));
+            Logger.instance.log(null);
+            Logger.instance.log("TC004", "    ", Logger.LogType.ERROR);
+            Logger.instance.log("TC005", "", Logger.LogType.ERROR);
+            Logger.instance.log("TC006", null, Logger.LogType.ERROR);
+            Logger.instance.log("TC007", "I think I can break the rules", Logger.LogType.NOTHING);
+
+            Logger.instance.log("TC009", "debug info", Logger.LogType.DEBUG);
+            Logger.instance.log("TC008", "stack trace test", Logger.LogType.WARNING);
+            System.out.print(true);
+            System.out.print("heyhey");
+
+            try {
+                Logger.LogMessageBuilder test = new Logger.LogMessageBuilder("<start>some <arg1>l<arg3> simple test, info (<arg2>)   <end>");
+                System.out.println(test.argumentsToMessage("START", "3", "4", "3.14f", "END"));
+                Logger.LogMessageBuilder test2 = new Logger.LogMessageBuilder("<1> fgdfg <2> jgkfgj");
+                Logger.LogMessageBuilder test3 = new Logger.LogMessageBuilder("gjfhghfhg<1>jgdgd<2>");
+                Logger.LogMessageBuilder test4 = new Logger.LogMessageBuilder("<fh>fdjdjgjd<jfk>");
+                System.out.println(test2.argumentsToMessage("START", "MIDDLE"));
+                System.out.println(test3.argumentsToMessage("MIDDLE", "END"));
+                System.out.println(test4.argumentsToMessage("START", "END"));
+
+            } catch (Logger.LogMessageBuilder.LogMessageBuildException e) {
+                Logger.instance.log(e);
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.instance.log(e);
+            e.printStackTrace();
+        }
     }
 }
