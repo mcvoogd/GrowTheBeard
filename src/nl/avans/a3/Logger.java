@@ -54,7 +54,7 @@ public class Logger
                 {
                     if (b[0] != '\r' && b[0] != '\n')
                     {
-                        Logger.instance.log(null, "sysout", new String(Arrays.copyOfRange(b, off, len)), LogType.LOG);
+                        Logger.instance.log(null, "sysout", new String(Arrays.copyOfRange(b, off, len)), LogType.DEBUG);
                     }
                 }
 
@@ -179,8 +179,14 @@ public class Logger
      * @param code the unique code that identifies the log (maybe left empty)
      * @param arguments the arguments the code expects
      */
-    protected void log(final String code, final String... arguments)
+    public void log(final String code, final String... arguments)
     {
+        if (code != null && code.trim().equals("sysout")) {
+            String message = "";
+            for (String argument : arguments)
+                message += argument;
+            log(code, message, LogType.DEBUG);
+        }
         if (messageMap == null) return;
         if (messageMap.containsKey(code) == false) {log("LO005", "the code ("+code+") has not been loaded", LogType.ERROR); return;} // TODO switch to the current method
         LogMessageBuilder builder = messageMap.get(code);
