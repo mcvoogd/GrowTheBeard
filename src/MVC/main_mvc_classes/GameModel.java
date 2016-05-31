@@ -61,8 +61,4 @@ public class GameModel implements ModelListener {
             changeModel(((NewModel) e).getNewInterface());
         }
     }
-
-
-
-
 }

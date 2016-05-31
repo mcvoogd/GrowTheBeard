@@ -21,7 +21,7 @@ public class Logger
     /**
      * needs to be called to initialize the instance
      */
-    public static void init() { if (initialized == false) setupLogBuilders(); initialized = true; } // to ensure the instance gets initialized
+    public static void init() { if (!initialized) setupLogBuilders(); initialized = true; } // to ensure the instance gets initialized
     private static boolean initialized = false; // a boolean to ensure a warning can be logged when init isn't called on startup
 
     private static final int LOG_TYPE_LENGTH = 9; // the amount of char's used to display the log's type, should never change

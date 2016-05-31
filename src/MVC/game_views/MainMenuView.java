@@ -62,7 +62,7 @@ public class MainMenuView implements ViewInterface {
         g.drawImage(background, 0, 0, null);
         switch(mode){
             case CHOOSE_PARTY:
-                g.drawImage(partyGame, EasyTransformer.rotateWithOffset(rotation, 350, 10, PARTY_BOARD_X, PARTY_BOARD_Y), null);
+                g.drawImage(singleGame, EasyTransformer.rotateAroundCenterWithOffset(singleGame, rotation, 5, -204, SINGLE_BOARD_X, SINGLE_BOARD_Y), null);
                 g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
                 break;
             case CHOOSE_SINGLE:
