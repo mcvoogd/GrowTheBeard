@@ -111,7 +111,7 @@ public class Logger
     public void log(Exception e)
     {
         checkInitialisation();
-        if (e == null) log("LO001", "Exception can't be null", LogType.ERROR);
+        if (e == null) log("LO001");
         else log(null, e.getStackTrace()[0].toString(), e.getClass().getCanonicalName() + ", " + e.getMessage(), LogType.EXCEPTION);
     }
 
@@ -138,9 +138,9 @@ public class Logger
     private void log(final String code, final String codePath, final String message, final LogType type)
     {
         // logs a warning if the messageConstruct is empty
-        if (message == null || message.trim().equals("")) log("LO002", "are you sure you want to log an empty messageConstruct", LogType.WARNING);
+        if (message == null || message.trim().equals("")) log("LO002");
         // logs an error if the log if invalid and returns
-        if (type == LogType.NOTHING) {log("LC003", "the log type cannot be NOTHING, code("+code+") messageConstruct("+message+")", LogType.ERROR); return;}
+        if (type == LogType.NOTHING) {log("LC003", code ,message); return;}
 
         // start of the log string the current date and time
         String combinedMessage = toSize(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SS").format(new Date()), DATE_TIME_LENGTH) + " ";
@@ -169,7 +169,7 @@ public class Logger
     {
         if (initialized) return;
         init();
-        log("LO004", "the logger is not properly initialized", LogType.WARNING);
+        log("LO004");
     }
 
     private static HashMap<String, LogMessageBuilder> messageMap;
@@ -189,7 +189,7 @@ public class Logger
             return;
         }
         if (messageMap == null) return;
-        if (messageMap.containsKey(code) == false) {log("LO005", "the code ("+code+") has not been loaded", LogType.ERROR); return;} // TODO switch to the current method
+        if (messageMap.containsKey(code) == false) {log("LO005", code); return;}
         LogMessageBuilder builder = messageMap.get(code);
         log(code, builder.argumentsToMessage(arguments), builder.logType);
     }
@@ -197,7 +197,7 @@ public class Logger
     private static void setupLogBuilders()
     {
         File file = new File("Supporting Documents/Testing/error and warning codes.csv");
-        if (file.exists() == false) {Logger.instance.log("LO006", "log code file does not exist", LogType.EXCEPTION); return;}
+        if (file.exists() == false) {Logger.instance.log("LO006"); return;}
         messageMap = new HashMap<>();
 
         try {
