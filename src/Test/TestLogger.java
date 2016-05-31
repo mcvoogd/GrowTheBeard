@@ -1,9 +1,6 @@
 package Test;
 
-import MVC_V2.Logger;
-import sun.rmi.runtime.Log;
-
-import java.util.Random;
+import MVC_V2.util.Logger;
 
 /**
  * Created by flori on 12-May-16.

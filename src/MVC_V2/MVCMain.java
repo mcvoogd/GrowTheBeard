@@ -1,6 +1,11 @@
 package MVC_V2;
 
 
+import MVC_V2.mvcHandlers.ControllerHandler;
+import MVC_V2.mvcHandlers.ModelHandler;
+import MVC_V2.mvcHandlers.ViewHandler;
+import MVC_V2.util.Logger;
+
 public class MVCMain {
     public static void main(String[] args){
         try{
