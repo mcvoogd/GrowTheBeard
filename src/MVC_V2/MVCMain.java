@@ -1,6 +1,5 @@
 package MVC_V2;
 
-import nl.avans.a3.Logger;
 
 public class MVCMain {
     public static void main(String[] args){

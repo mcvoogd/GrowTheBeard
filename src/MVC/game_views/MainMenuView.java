@@ -2,8 +2,8 @@ package MVC.game_views;
 
 import MVC.interfaces_listener.ModelEvent;
 import MVC.interfaces_listener.ViewInterface;
-import nl.avans.a3.EasyTransformer;
-import nl.avans.a3.Logger;
+import MVC_V2.EasyTransformer;
+import MVC_V2.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

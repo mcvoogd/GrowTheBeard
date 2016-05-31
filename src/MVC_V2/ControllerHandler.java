@@ -58,10 +58,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         {
             return new MainMenuController((MainMenuModel) model, wiimoteHandler);
         }
-        if(model instanceof WoodDodgingModel)
-        {
-            return new WoodDodgingController((WoodDodgingModel) model, wiimoteHandler);
-        }
+
         return null;
     }
 }

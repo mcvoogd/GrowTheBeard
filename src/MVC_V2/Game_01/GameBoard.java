@@ -1,6 +1,6 @@
 package MVC_V2.Game_01;
+import MVC_V2.EasyTransformer;
 import MVC_V2.WiimoteHandler;
-import nl.avans.a3.EasyTransformer;
 import Util.Images;
 
 import java.awt.Color;

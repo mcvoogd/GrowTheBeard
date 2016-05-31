@@ -1,6 +1,5 @@
 package MVC_V2;
 
-import nl.avans.a3.EasyTransformer;
 import java.awt.*;
 
 public class MainMenuView implements View {

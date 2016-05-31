@@ -1,6 +1,6 @@
 package Test;
 
-import nl.avans.a3.Logger;
+import MVC_V2.Logger;
 import sun.rmi.runtime.Log;
 
 import java.util.Random;

@@ -1,7 +1,5 @@
 package MVC_V2;
 
-import nl.avans.a3.EasyTransformer;
-import nl.avans.a3.GraphicsWindow;
 
 import java.awt.*;
 
@@ -68,7 +66,7 @@ public class BootView implements View {
                     if(animationTick <= DOUBLE_ROTATION / AXE_THROW_SPEED){
                         int rotation = animationTick * AXE_THROW_SPEED;
                         int x = -DOUBLE_ROTATION * AXE_THROW_SPEED + animationTick * AXE_THROW_SPEED * AXE_THROW_SPEED + (WIDTH/2 - axe.getWidth(null)/2);
-                        int y = GraphicsWindow.HEIGHT/2 - axe.getHeight(null)/2;
+                        int y = HEIGHT/2 - axe.getHeight(null)/2;
                         g.drawImage(axe, EasyTransformer.rotateAroundCenterWithOffset(axe, rotation, 100, -100, x, y), null);
                     }else{
                         if(animationTick <= (DOUBLE_ROTATION / AXE_THROW_SPEED) + beard.getHeight(null) / BEARD_SPEED){

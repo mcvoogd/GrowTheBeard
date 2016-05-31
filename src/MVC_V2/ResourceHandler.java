@@ -6,7 +6,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import nl.avans.a3.Logger;
 
 /**
  * Created by FlorisBob on 27-May-16.

@@ -1,6 +1,5 @@
 package MVC_V2;
 
-import nl.avans.a3.Logger;
 
 import javax.swing.*;
 import java.awt.*;

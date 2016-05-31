@@ -2,10 +2,6 @@ package MVC.game_views;
 
 import MVC.interfaces_listener.ModelEvent;
 import MVC.interfaces_listener.ViewInterface;
-import nl.avans.a3.EasyTransformer;
-import nl.avans.a3.GraphicsWindow;
-import nl.avans.a3.Logger;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
