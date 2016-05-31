@@ -1,6 +1,6 @@
 package Test;
 
-import MVC_V2.util.Logger;
+import nl.avans.a3.util.Logger;
 
 /**
  * Created by flori on 12-May-16.
