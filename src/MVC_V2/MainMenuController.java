@@ -14,10 +14,11 @@ public class MainMenuController implements Controller {
     }
     @Override
     public void update() {
-            if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A))
-            {
+        if(wiimoteHandler.isWiiMotesConnected()) {
+            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
                 ModelHandler.instance.onModelEvent(new MainMenuEvent());
             }
+        }
     }
 
     @Override
