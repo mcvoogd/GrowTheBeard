@@ -1,14 +1,15 @@
-package Game_01;
-
-import Util.Images;
+package MVC_V2.Game_01_Objects;
+import Game_01.GameBoard;
 import nl.avans.a3.WiimoteHandler;
+import Util.Images;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-class Player extends MVC_V2.Game_01_Objects.Sprite {
+import javax.swing.Timer;
+
+public class Player extends Sprite {
 
 	private int dx, dy, dxCollision;
 	private int ty = -50;

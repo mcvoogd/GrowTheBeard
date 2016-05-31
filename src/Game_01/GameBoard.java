@@ -1,4 +1,7 @@
 package Game_01;
+import MVC_V2.Game_01_Objects.Particle;
+import MVC_V2.Game_01_Objects.Player;
+import MVC_V2.Game_01_Objects.WoodBlock;
 import nl.avans.a3.EasyTransformer;
 import nl.avans.a3.WiimoteHandler;
 import Util.Images;
@@ -16,7 +19,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;

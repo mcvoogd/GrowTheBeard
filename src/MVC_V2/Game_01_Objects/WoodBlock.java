@@ -1,13 +1,14 @@
-package Game_01;
+package MVC_V2.Game_01_Objects;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-class WoodBlock extends MVC_V2.Game_01_Objects.Sprite {
+import javax.swing.Timer;
+
+public class WoodBlock extends Sprite {
 
 	private Timer timer;
 	private int vel = -1;

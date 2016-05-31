@@ -1,9 +1,11 @@
-package Game_01;
+package MVC_V2.Game_01_Objects;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
 
-class Sprite {
+public class Sprite {
 	protected int xPos, yPos;
 	protected boolean visible;
 	protected int width, height;
