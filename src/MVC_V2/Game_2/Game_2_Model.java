@@ -1,7 +1,6 @@
 package MVC_V2.game_2;
 
 import MVC_V2.mvcInterfaces.Model;
-import MVC_V2.util.ResourceHandler;
 
 public class Game_2_Model implements Model {
     private float pitch;
