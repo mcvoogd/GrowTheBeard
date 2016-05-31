@@ -18,15 +18,15 @@ public class ResourceHandler {
     {
         if (imageKey == null)
         {
-           Logger.instance.log("RH001", "image can't be null", Logger.LogType.ERROR);
+           Logger.instance.log("RH001");
             return null;
         }
 
         if (imageHashMap.containsKey(imageKey)) return imageHashMap.get(imageKey);
 
         File imageFile = new File(imageKey);
-        if (imageFile.exists() == false) {Logger.instance.log("RH002", "image (" + imageKey + ") doesn't exist", Logger.LogType.ERROR); return null;}
-        if (imageFile.canRead() == false) {Logger.instance.log("RH003", "image (" + imageKey + ") canot be red", Logger.LogType.ERROR); return null;}
+        if (imageFile.exists() == false) {Logger.instance.log("RH002", imageKey); return null;}
+        if (imageFile.canRead() == false) {Logger.instance.log("RH003", imageKey); return null;}
 
         Image image = null;
 
@@ -38,21 +38,21 @@ public class ResourceHandler {
         }
 
         imageHashMap.put(imageKey, image);
-        Logger.instance.log("RH005", "image ("+imageKey+") has been loaded", Logger.LogType.DEBUG);
+        Logger.instance.log("RH005", imageKey);
         return image;
     }
 
     public static void unloadImage(String imageKey)
     {
-        if (imageKey == null) Logger.instance.log("RH001", "image can't be null", Logger.LogType.ERROR);
-        else if (imageHashMap.containsKey(imageKey) == false) Logger.instance.log("RH004", "image ("+imageKey+") is not loaded", Logger.LogType.WARNING);
-        else { imageHashMap.remove(imageKey); Logger.instance.log("RH006", "image ("+imageKey+") has been unloaded", Logger.LogType.DEBUG);}
+        if (imageKey == null) Logger.instance.log("RH001");
+        else if (imageHashMap.containsKey(imageKey) == false) Logger.instance.log("RH004", imageKey);
+        else { imageHashMap.remove(imageKey); Logger.instance.log("RH006", imageKey);}
     }
 
     public void dump()
     {
         imageHashMap.clear();
-        Logger.instance.log("RH007", "resources have been dumped", Logger.LogType.DEBUG);
+        Logger.instance.log("RH007");
     }
 
 }

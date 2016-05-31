@@ -191,7 +191,7 @@ public class Logger
         if (messageMap == null) return;
         if (messageMap.containsKey(code) == false) {log("LO005", code); return;}
         LogMessageBuilder builder = messageMap.get(code);
-        log(code, builder.argumentsToMessage(arguments), builder.logType);
+        log(code, Thread.currentThread().getStackTrace()[2].toString(), builder.argumentsToMessage(arguments), builder.logType);
     }
 
     private static void setupLogBuilders()
