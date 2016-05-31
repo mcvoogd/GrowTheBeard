@@ -7,7 +7,7 @@ class BootController implements Controller {
     private boolean aPressed = false;
     private boolean bPressed = false;
     private BootModel bootModel;
-    private WiimoteHandler wiimoteHandler;
+    private WiimoteHandler wiimoteHandler = null;
 
     public BootController(BootModel model, WiimoteHandler wiimoteHandler)
     {
@@ -48,5 +48,10 @@ class BootController implements Controller {
             bootModel.onABPressed();
         }
         aPressed = bPressed = false;
+        if(wiimoteHandler.isWiiMotesConnected()) {
+            if (wiimoteHandler.getIsButtonDown(0, WiimoteHandler.Buttons.KEY_A) && wiimoteHandler.getIsButtonDown(0, WiimoteHandler.Buttons.KEY_B)) {
+                bootModel.onABPressed();
+            }
+        }
     }
 }
