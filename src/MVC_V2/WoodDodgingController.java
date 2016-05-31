@@ -5,9 +5,11 @@ import java.awt.event.KeyEvent;
 public class WoodDodgingController implements Controller {
 
     private Model model;
+    private WiimoteHandler wiimoteHandler;
 
-    public WoodDodgingController(WoodDodgingModel model) {
+    public WoodDodgingController(WoodDodgingModel model, WiimoteHandler wiimoteHandler) {
         this.model = model;
+        this.wiimoteHandler = wiimoteHandler;
     }
 
     @Override

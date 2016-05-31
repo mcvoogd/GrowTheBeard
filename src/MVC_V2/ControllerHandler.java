@@ -1,7 +1,5 @@
 package MVC_V2;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,11 +10,13 @@ import java.awt.event.KeyListener;
 public class ControllerHandler implements ModelListener, KeyListener {
     private Controller controller;
     private Timer updateControllerTimer;
+    private static WiimoteHandler wiimoteHandler;
 
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
         updateControllerTimer = new Timer(1000/60, e -> controller.update());
+        wiimoteHandler = new WiimoteHandler();
     }
 
     @Override
@@ -52,15 +52,15 @@ public class ControllerHandler implements ModelListener, KeyListener {
     {
         if(model instanceof BootModel)
         {
-            return new BootController((BootModel) model);
+            return new BootController((BootModel) model, wiimoteHandler);
         }
         if(model instanceof MainMenuModel)
         {
-            return new MainMenuController((MainMenuModel) model);
+            return new MainMenuController((MainMenuModel) model, wiimoteHandler);
         }
         if(model instanceof WoodDodgingModel)
         {
-            return new WoodDodgingController((WoodDodgingModel) model);
+            return new WoodDodgingController((WoodDodgingModel) model, wiimoteHandler);
         }
         return null;
     }

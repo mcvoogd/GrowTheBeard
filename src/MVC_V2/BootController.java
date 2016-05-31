@@ -7,10 +7,12 @@ class BootController implements Controller {
     private boolean aPressed = false;
     private boolean bPressed = false;
     private BootModel bootModel;
+    private WiimoteHandler wiimoteHandler;
 
-    public BootController(BootModel model)
+    public BootController(BootModel model, WiimoteHandler wiimoteHandler)
     {
         this.bootModel = model;
+        this.wiimoteHandler = wiimoteHandler;
     }
     @Override
     public void onModelEvent(ModelEvent event) {
@@ -28,7 +30,9 @@ class BootController implements Controller {
         {
             case KeyEvent.VK_A : aPressed = true; break;
             case KeyEvent.VK_B : bPressed = true; break;
-            case KeyEvent.VK_SPACE : aPressed = bPressed = true;;break;
+            case KeyEvent.VK_SPACE : aPressed = bPressed = true; break;
+            case KeyEvent.VK_C : wiimoteHandler.SearchWiimotes();
+                System.out.println("searching wiimotes");break;
         }
     }
 

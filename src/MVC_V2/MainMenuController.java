@@ -5,10 +5,12 @@ import java.awt.event.KeyEvent;
 public class MainMenuController implements Controller {
     private boolean exit = false;
     private Model model;
+    private WiimoteHandler wiimoteHandler;
 
-    public MainMenuController(MainMenuModel model)
+    public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
     {
         this.model = model;
+        this.wiimoteHandler = wiimoteHandler;
     }
     @Override
     public void update() {
