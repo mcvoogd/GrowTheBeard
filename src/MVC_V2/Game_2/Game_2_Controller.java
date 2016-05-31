@@ -10,14 +10,12 @@ import java.awt.event.KeyEvent;
 public class Game_2_Controller implements Controller {
 
     private Game_2_Model gameModel;
-    private Game_2_View gameView;
     private WiimoteHandler wiimoteHandler;
 
-    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler, Game_2_View view)
+    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler)
     {
         this.gameModel = model;
-        this.gameView = view;
-        this.wiimoteHandler = wiimoteHandler;
+         this.wiimoteHandler = wiimoteHandler;
     }
 
     @Override
@@ -25,10 +23,7 @@ public class Game_2_Controller implements Controller {
         //check wiimote stuff.
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             gameModel.setPitch(wiimoteHandler.getPitch(0));
-
         }
-
-
     }
 
     @Override
