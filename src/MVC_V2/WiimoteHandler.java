@@ -527,4 +527,14 @@ public class WiimoteHandler {
             isMotionSensingActive[wiimoteID] = false;
         }
     }
+
+    public boolean isWiiMotesConnected() {
+        if (wiimotes != null) {
+            if (wiimotes.length > 0) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }
