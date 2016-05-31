@@ -7,6 +7,7 @@ import java.awt.*;
 public class ViewHandler implements ModelListener {
     private View view;
     private JFrame frame;
+    private JPanel panel;
     private Timer repainter = new Timer(1000/60, e -> frame.repaint());
 
     public ViewHandler(ControllerHandler controllerHandler)
@@ -20,6 +21,7 @@ public class ViewHandler implements ModelListener {
             frame.setUndecorated(true);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             frame.toFront();
+            panel = new PaintPanel();
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice screen = ge.getDefaultScreenDevice();
 
@@ -33,21 +35,7 @@ public class ViewHandler implements ModelListener {
             screen.setFullScreenWindow(frame);
             screen.setDisplayMode(newDisplayMode);
             frame.addKeyListener(controllerHandler);
-            frame.setContentPane(new JPanel(){
-                @Override
-                protected void paintComponent(Graphics g2) {
-                    super.paintComponent(g2);
-                    Graphics2D g = (Graphics2D) g2;
-                    RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g.setRenderingHints(renderingHints);
-                    g.scale(getWidth()/1920.0, getHeight()/1080.0);
-    
-                    if (view != null) view.draw(g);
-    
-                    // fixes stutter on Linux systems
-                    Toolkit.getDefaultToolkit().sync();
-                }
-            });
+            frame.setContentPane(panel);
             frame.setVisible(true);
         }catch(Exception e) {
             Logger.instance.log(e);
@@ -61,14 +49,15 @@ public class ViewHandler implements ModelListener {
             view = selectedView(((NewModel)event).newModel);
             Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
             view.start();
+
+            if(event instanceof NewGameEvent)
+            {
+                frame.setContentPane(((NewGameEvent) event).getPanel());
+            }
         }else{
             if (view != null) view.onModelEvent(event);
         }
 
-        if(event instanceof NewGameEvent)
-        {
-            frame.setContentPane(((NewGameEvent) event).getPanel());
-        }
     }
 
     private static View selectedView(Model model){
@@ -85,5 +74,22 @@ public class ViewHandler implements ModelListener {
     public void startTimer(){
         Logger.instance.log("VH002", "timer started", Logger.LogType.LOG);
         repainter.start();
+    }
+
+    class PaintPanel extends JPanel
+    {
+        public void paintComponent(Graphics g2)
+        {
+            super.paintComponent(g2);
+            Graphics2D g = (Graphics2D) g2;
+            RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHints(renderingHints);
+            g.scale(getWidth()/1920.0, getHeight()/1080.0);
+
+            if (view != null) view.draw(g);
+
+            // fixes stutter on Linux systems
+            Toolkit.getDefaultToolkit().sync();
+        }
     }
 }
