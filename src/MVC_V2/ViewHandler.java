@@ -50,12 +50,14 @@ public class ViewHandler implements ModelListener {
             Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
             view.start();
 
-            if(event instanceof NewGameEvent)
-            {
-                frame.setContentPane(((NewGameEvent) event).getPanel());
-            }
         }else{
             if (view != null) view.onModelEvent(event);
+        }
+
+        if(event instanceof NewGameEvent)
+        {
+            frame.setContentPane(((NewGameEvent) event).getPanel());
+            frame.repaint();
         }
 
     }
@@ -87,8 +89,7 @@ public class ViewHandler implements ModelListener {
             g.scale(getWidth()/1920.0, getHeight()/1080.0);
 
             if (view != null) view.draw(g);
-
-            // fixes stutter on Linux systems
+             // fixes stutter on Linux systems
             Toolkit.getDefaultToolkit().sync();
         }
     }
