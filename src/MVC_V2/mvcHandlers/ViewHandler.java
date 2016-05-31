@@ -6,6 +6,8 @@ import MVC_V2.bootMenu.BootView;
 import MVC_V2.event.ModelEvent;
 import MVC_V2.event.NewGameEvent;
 import MVC_V2.event.NewModel;
+import MVC_V2.game_2.Game_2_Model;
+import MVC_V2.game_2.Game_2_View;
 import MVC_V2.mainMenu.MainMenuModel;
 import MVC_V2.mainMenu.MainMenuView;
 import MVC_V2.mvcInterfaces.Model;
@@ -82,6 +84,10 @@ public class ViewHandler implements ModelListener {
         }
         if(model instanceof MainMenuModel){
             return new MainMenuView();
+        }
+        if(model instanceof Game_2_Model)
+        {
+            return new Game_2_View((Game_2_Model) model);
         }
 
         return null;

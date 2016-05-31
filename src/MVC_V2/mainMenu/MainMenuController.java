@@ -3,6 +3,8 @@ package MVC_V2.mainMenu;
 import MVC_V2.event.MainMenuEvent;
 import MVC_V2.event.ModelEvent;
 import MVC_V2.event.NewGameEvent;
+import MVC_V2.event.NewModel;
+import MVC_V2.game_2.Game_2_Model;
 import MVC_V2.mvcHandlers.ModelHandler;
 import MVC_V2.mvcInterfaces.Controller;
 import MVC_V2.mvcInterfaces.Model;
@@ -12,7 +14,7 @@ import java.awt.event.KeyEvent;
 
 public class MainMenuController implements Controller {
     private boolean exit = false;
-    private Model model;
+    private MainMenuModel model;
     private WiimoteHandler wiimoteHandler;
 
     public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
@@ -40,6 +42,7 @@ public class MainMenuController implements Controller {
         {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
             case KeyEvent.VK_A: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
+            case KeyEvent.VK_D: model.onMenuChoose(); break;
             case KeyEvent.VK_ALT : ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
         }
     }
