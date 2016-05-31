@@ -186,6 +186,7 @@ public class Logger
             for (String argument : arguments)
                 message += argument;
             log(code, message, LogType.DEBUG);
+            return;
         }
         if (messageMap == null) return;
         if (messageMap.containsKey(code) == false) {log("LO005", "the code ("+code+") has not been loaded", LogType.ERROR); return;} // TODO switch to the current method
@@ -318,6 +319,7 @@ public class Logger
 
                 Logger.instance.log("GW001");
                 Logger.instance.log("RH002", "SomeImageKey");
+                Logger.instance.log("sysout", "some sort ", "OF", " message");
             } catch (Logger.LogMessageBuilder.LogMessageBuildException e) {
                 Logger.instance.log(e);
             }
