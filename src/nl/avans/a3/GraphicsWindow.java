@@ -1,6 +1,6 @@
 package nl.avans.a3;
 
-import Game_01.GameBoard;
+import MVC_V2.Game_01.GameBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +70,7 @@ public class GraphicsWindow extends JPanel{
                         if(mainMenu.getMode() == MainMenu.Mode.CHOOSESINGLE)
                         {
                             mainmenu = false;
-                            new GameBoard();
+                            new GameBoard(wiimoteHandler);
                         }
 
                 }

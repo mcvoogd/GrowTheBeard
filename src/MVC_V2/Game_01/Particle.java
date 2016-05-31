@@ -1,4 +1,4 @@
-package Game_01;
+package MVC_V2.Game_01;
 
 import Util.Images;
 

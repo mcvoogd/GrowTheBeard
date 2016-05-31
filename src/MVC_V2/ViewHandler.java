@@ -65,6 +65,11 @@ public class ViewHandler implements ModelListener {
         }else{
             if (view != null) view.onModelEvent(event);
         }
+
+        if(event instanceof NewGameEvent)
+        {
+            frame.setContentPane(((NewGameEvent) event).getPanel());
+        }
     }
 
     private static View selectedView(Model model){
@@ -74,9 +79,7 @@ public class ViewHandler implements ModelListener {
         if(model instanceof MainMenuModel){
             return new MainMenuView();
         }
-        if(model instanceof WoodDodgingModel){
-            return new WoodDodgingView();
-        }
+
         return null;
     }
 

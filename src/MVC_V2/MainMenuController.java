@@ -31,7 +31,8 @@ public class MainMenuController implements Controller {
         switch (a.getKeyCode())
         {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
-            case KeyEvent.VK_A: ModelHandler.instance.onModelEvent(new MainMenuEvent());
+            case KeyEvent.VK_A: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
+            case KeyEvent.VK_ALT : ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
         }
     }
 

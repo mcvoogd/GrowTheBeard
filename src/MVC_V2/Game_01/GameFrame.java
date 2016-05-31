@@ -1,4 +1,4 @@
-package Game_01;
+package MVC_V2.Game_01;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,7 +11,7 @@ class GameFrame extends JFrame {
 
 	private void initGameFrame() {
 		setSize(1920, 1080);
-		add(new GameBoard());
+		add(new GameBoard(wiimoteHandler));
 
 		setResizable(false);
 

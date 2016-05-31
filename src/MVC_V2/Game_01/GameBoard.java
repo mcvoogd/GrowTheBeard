@@ -1,6 +1,6 @@
-package Game_01;
+package MVC_V2.Game_01;
+import MVC_V2.WiimoteHandler;
 import nl.avans.a3.EasyTransformer;
-import nl.avans.a3.WiimoteHandler;
 import Util.Images;
 
 import java.awt.Color;
@@ -63,9 +63,10 @@ public class GameBoard extends JPanel implements ActionListener {
 	private boolean playerCollision = false;
 
 	public GameBoard(WiimoteHandler wiimoteHandler) {
-        this.wiimoteHandler = wiimoteHandler;
-        initGameBoard();
+		this.wiimoteHandler = wiimoteHandler;
+		initGameBoard();
 	}
+
 
 	private void initGameBoard() {
 //		test();
