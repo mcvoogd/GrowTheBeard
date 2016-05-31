@@ -29,8 +29,8 @@ public class BootController implements Controller {
     }
 
     @Override
-    public void keyPressed(KeyEvent a) {
-        switch (a.getKeyCode())
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode())
         {
             case KeyEvent.VK_A : aPressed = true; break;
             case KeyEvent.VK_B : bPressed = true; break;
