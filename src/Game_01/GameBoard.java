@@ -1,7 +1,4 @@
 package Game_01;
-import MVC_V2.Game_01_Objects.Particle;
-import MVC_V2.Game_01_Objects.Player;
-import MVC_V2.Game_01_Objects.WoodBlock;
 import nl.avans.a3.EasyTransformer;
 import nl.avans.a3.WiimoteHandler;
 import Util.Images;
