@@ -1,13 +1,13 @@
-package MVC_V2.game_2;
+package MVC_V2.game_Example;
 
 import MVC_V2.mvcInterfaces.Model;
 
-public class Game_2_Model implements Model {
+public class Game_Example_Model implements Model {
     private float pitch;
     private int x = 500;
     private int y = 500;
 
-    public Game_2_Model()
+    public Game_Example_Model()
     {
         pitch = 0f;
     }
@@ -18,7 +18,9 @@ public class Game_2_Model implements Model {
 
     @Override
     public void update() {
-        this.x = (int) (x + pitch);
+        System.out.println("Update model" +  "X : " + x + " Pitch: " + pitch);
+
+        this.x = (int) (x + (pitch*10.0));
     }
 
     @Override

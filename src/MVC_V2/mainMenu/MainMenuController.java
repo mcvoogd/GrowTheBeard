@@ -3,11 +3,8 @@ package MVC_V2.mainMenu;
 import MVC_V2.event.MainMenuEvent;
 import MVC_V2.event.ModelEvent;
 import MVC_V2.event.NewGameEvent;
-import MVC_V2.event.NewModel;
-import MVC_V2.game_2.Game_2_Model;
 import MVC_V2.mvcHandlers.ModelHandler;
 import MVC_V2.mvcInterfaces.Controller;
-import MVC_V2.mvcInterfaces.Model;
 import MVC_V2.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;

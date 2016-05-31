@@ -1,4 +1,4 @@
-package MVC_V2.game_2;
+package MVC_V2.game_Example;
 
 import MVC_V2.event.ModelEvent;
 import MVC_V2.mvcInterfaces.View;
@@ -6,11 +6,11 @@ import MVC_V2.util.ResourceHandler;
 
 import java.awt.*;
 
-public class Game_2_View implements View {
-    private Game_2_Model model;
+public class Game_Example_View implements View {
+    private Game_Example_Model model;
     private Image axe;
 
-    public Game_2_View(Game_2_Model model)
+    public Game_Example_View(Game_Example_Model model)
     {
         this.model = model;
     }

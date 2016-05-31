@@ -1,28 +1,31 @@
-package MVC_V2.game_2;
+package MVC_V2.game_Example;
 
-import MVC_V2.bootMenu.BootModel;
 import MVC_V2.mvcInterfaces.Controller;
 import MVC_V2.event.ModelEvent;
 import MVC_V2.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
 
-public class Game_2_Controller implements Controller {
+public class Game_Example_Controller implements Controller {
 
-    private Game_2_Model gameModel;
+    private Game_Example_Model gameModel;
     private WiimoteHandler wiimoteHandler;
 
-    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler)
+    public Game_Example_Controller(Game_Example_Model model, WiimoteHandler wiimoteHandler)
     {
         this.gameModel = model;
          this.wiimoteHandler = wiimoteHandler;
+        this.wiimoteHandler.activateMotionSensing();
     }
 
     @Override
     public void update() {
         //check wiimote stuff.
+        gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
-            gameModel.setPitch(wiimoteHandler.getPitch(0));
+            float pitch =  wiimoteHandler.getPitch(0);
+            System.out.println("Controller Pitch :" + pitch);
+            gameModel.setPitch(pitch);
         }
     }
 

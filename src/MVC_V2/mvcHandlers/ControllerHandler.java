@@ -1,8 +1,8 @@
 package MVC_V2.mvcHandlers;
 
 import MVC_V2.event.ModelEvent;
-import MVC_V2.game_2.Game_2_Controller;
-import MVC_V2.game_2.Game_2_Model;
+import MVC_V2.game_Example.Game_Example_Controller;
+import MVC_V2.game_Example.Game_Example_Model;
 import MVC_V2.mvcInterfaces.ModelListener;
 import MVC_V2.event.NewModel;
 import MVC_V2.util.WiimoteHandler;
@@ -71,9 +71,9 @@ public class ControllerHandler implements ModelListener, KeyListener {
         {
             return new MainMenuController((MainMenuModel) model, wiimoteHandler);
         }
-        if(model instanceof Game_2_Model)
+        if(model instanceof Game_Example_Model)
         {
-            return new Game_2_Controller((Game_2_Model) model, wiimoteHandler);
+            return new Game_Example_Controller((Game_Example_Model) model, wiimoteHandler);
         }
 
         return null;
