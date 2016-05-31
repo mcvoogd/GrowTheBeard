@@ -58,6 +58,8 @@ public class ViewHandler implements ModelListener {
         {
             frame.setContentPane(((NewGameEvent) event).getPanel());
             frame.repaint();
+            frame.invalidate();
+            frame.revalidate();
         }
 
     }
