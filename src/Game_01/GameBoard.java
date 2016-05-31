@@ -62,8 +62,9 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<Particle> particles;
 	private boolean playerCollision = false;
 
-	public GameBoard() {
-		initGameBoard();
+	public GameBoard(WiimoteHandler wiimoteHandler) {
+        this.wiimoteHandler = wiimoteHandler;
+        initGameBoard();
 	}
 
 	private void initGameBoard() {
@@ -71,8 +72,6 @@ public class GameBoard extends JPanel implements ActionListener {
 		new Images();
 		scaleBackground();
 		addWoodImages();
-		wiimoteHandler = new WiimoteHandler();
-		wiimoteHandler.SearchWiimotes();
 		wiimoteHandler.activateMotionSensing();
 		addKeyListener(new KAdapter());
 		setFocusable(true);
