@@ -616,15 +616,18 @@ public class WiimoteHandler {
     public float getMax(int wiiMote){
         int max = gForceWiimoteList.get(wiiMote).size();
         ArrayList<Float> values = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            float valueToadd = gForceWiimoteList.get(wiiMote).get(max - 1 - i).getX();
-            if(valueToadd < 0){
-                valueToadd = -valueToadd;
+        if(max > 10) {
+            for (int i = 0; i < 10; i++) {
+                float valueToadd = gForceWiimoteList.get(wiiMote).get(max - 1 - i).getX();
+                if (valueToadd < 0) {
+                    valueToadd = -valueToadd;
+                }
+                values.add(valueToadd);
             }
-            values.add(valueToadd);
+            Collections.sort(values);
+            return values.get(values.size() - 1);
+        }else{
+            return 0;
         }
-        Collections.sort(values);
-        return values.get(values.size() - 1);
-
     }
 }
