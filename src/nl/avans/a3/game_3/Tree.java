@@ -95,18 +95,18 @@ public class Tree {
 
     public void damageTree(int damage)
     {
-
-        this.hitpoints -= damage;
-        if(leftOrRight) {
-            addDamageNumber(x + 50, y + 800, damage, Color.BLACK);
-        }else
-        {
-            addDamageNumber(x - 50, y + 800, damage, Color.BLACK);
+        if(!fallen) {
+            this.hitpoints -= damage;
+            if (leftOrRight) {
+                addDamageNumber(x + 50, y + 800, damage, Color.BLACK);
+            } else {
+                addDamageNumber(x - 50, y + 800, damage, Color.BLACK);
+            }
+            if (hitpoints < 0) {
+                hitpoints = 0;
+            }
+            this.damage = damage;
         }
-        if(hitpoints < 0){
-            hitpoints = 0;
-        }
-        this.damage = damage;
     }
 
     public boolean isDamaged()
