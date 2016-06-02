@@ -28,7 +28,9 @@ public class ViewHandler implements ModelListener{
     private JPanel panel;
     private Timer repainter = new Timer(1000/60, e -> frame.repaint());
 
-    public ViewHandler(ControllerHandler controllerHandler, boolean fullScreen)
+    public enum DisplayMode2{FULLSCREEN, WINDOW, BORDERLES_WINDOW}
+
+    public ViewHandler(ControllerHandler controllerHandler, DisplayMode2 displayMode)
     {
         ModelHandler.instance.addListener(this);
         Logger.instance.log("VH003", "ViewHandler created", Logger.LogType.DEBUG);
@@ -39,7 +41,7 @@ public class ViewHandler implements ModelListener{
             panel = new PaintPanel();
             frame.setContentPane(panel);
             frame.toFront();
-            if (fullScreen) {
+            if (displayMode == DisplayMode2.FULLSCREEN) {
                 frame.setAutoRequestFocus(true);
                 frame.setUndecorated(true);
                 frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -59,9 +61,12 @@ public class ViewHandler implements ModelListener{
             }
             else
             {
+                if (displayMode == DisplayMode2.BORDERLES_WINDOW)
+                    frame.setUndecorated(true);
                 panel.setPreferredSize(new Dimension(1920, 1080));
                 frame.pack();
                 frame.setResizable(false);
+
             }
             frame.setVisible(true);
         }catch(Exception e) {
