@@ -2,6 +2,8 @@ package nl.avans.a3.game_2;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 
+import java.util.Random;
+
 /**
  * Created by Thijs on 2-6-2016.
  */
@@ -68,9 +70,15 @@ public class Game_2_Model implements Model
             players[i] = new Player(i, 100+75*i, 400);
     }
 
+    Random rand = new Random(System.currentTimeMillis());
+
     @Override
     public void update() {
-
+        if (rand.nextBoolean())
+            players[0].x += rand.nextFloat()*2-1.0f;
+        if (rand.nextBoolean())
+            players[0].x += rand.nextFloat()*2-1.0f;
+        ModelHandler.instance.onModelEvent(new G2_ObjectMove(0, true, players[0].x, players[0].y));
     }
 
     @Override

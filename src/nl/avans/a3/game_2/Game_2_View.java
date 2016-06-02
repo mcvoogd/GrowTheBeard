@@ -63,5 +63,11 @@ public class Game_2_View implements View {
             players.add(new Player(newPlayer.x, newPlayer.y, ResourceHandler.getImage("res/images_game2/person1")));
             System.out.println("added a new player to view");
         }
+        else if (event instanceof G2_ObjectMove)
+        {
+            G2_ObjectMove objectMove = (G2_ObjectMove)event;
+            players.get(objectMove.id).x = objectMove.newX;
+            players.get(objectMove.id).y = objectMove.newY;
+        }
     }
 }
