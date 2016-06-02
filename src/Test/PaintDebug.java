@@ -30,14 +30,15 @@ public class PaintDebug extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
         setContentPane(new GraphicsWindow(w));
+        Timer timer = new Timer(1000 / 60, e -> this.repaint());
+        timer.start();
     }
 
     private class GraphicsWindow extends JPanel{
         WiimoteHandler w;
         public GraphicsWindow(WiimoteHandler w){
             this.w = w;
-            Timer timer = new Timer(1000 / 60, e -> this.repaint());
-            timer.start();
+
         }
 
         @Override
