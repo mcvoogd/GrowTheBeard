@@ -7,6 +7,7 @@ public class Game_3_Model implements Model{
     private Character[] characters = new Character[2];
     private Tree[] trees = new Tree[2];
     private final int START_X = 400;
+    private boolean hitPlayer1, hitPlayer2;
 
     public void Game_3_Model(){
 
@@ -32,6 +33,24 @@ public class Game_3_Model implements Model{
     @Override
     public void close() {
 
+    }
+
+    public boolean getHitPlayer(int player)
+    {
+        switch(player)
+        {
+            case 1 : return hitPlayer1;
+            case 2 : return hitPlayer2;
+        }
+        return false;
+    }
+    public void setHitPlayer(int player, boolean trueOrFalse)
+    {
+        switch(player)
+        {
+            case 1 : hitPlayer1 = trueOrFalse; break;
+            case 2 : hitPlayer2 = trueOrFalse; break;
+        }
     }
 
     public Character[] getPlayers(){
