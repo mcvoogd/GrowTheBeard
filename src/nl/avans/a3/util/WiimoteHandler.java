@@ -1,5 +1,6 @@
 package nl.avans.a3.util;
 
+import org.apache.commons.lang3.Pair;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.GForce;
@@ -29,7 +30,7 @@ public class WiimoteHandler {
     
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
-    private IRSource[] irSources;
+    private IRSource[][] irSources;
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
     private GForce[] gForce = new GForce[4];
@@ -121,7 +122,7 @@ public class WiimoteHandler {
 
                 @Override
                 public void onIrEvent(IREvent e){
-                    irSources = e.getIRPoints();
+                    setIrSources(finalI, e.getIRPoints());
                 }
 
                 @Override
@@ -182,6 +183,10 @@ public class WiimoteHandler {
                 }
             });
         }
+    }
+
+    private void setIrSources(int wiimoteID, IRSource[] irPoints){
+        irSources[wiimoteID] = irPoints;
     }
 
     private void disconnect(int wiimoteID){
@@ -269,11 +274,11 @@ public class WiimoteHandler {
 
                 //Draw IR points
                 if(irSources != null){
-                    for(int j = 0; j < irSources.length; j++){
-                        int x = irSources[j].getX();
-                        int y = irSources[j].getY();
-                        int rx = irSources[j].getRx();
-                        int ry = irSources[j].getRy();
+                    for(int j = 0; j < irSources[i].length; j++){
+                        int x = irSources[i][j].getX();
+                        int y = irSources[i][j].getY();
+                        int rx = irSources[i][j].getRx();
+                        int ry = irSources[i][j].getRy();
                         double scaleFactor = (double) height / 1000;
                         int newX = (int) Math.round(x * scaleFactor);
                         int newY = (int) Math.round(y * scaleFactor);
@@ -284,8 +289,8 @@ public class WiimoteHandler {
                         g.setColor(new Color(0, 255, 0));
                         g.fillOval(newRx + offset, newRy + height * 2, 10, 10);
                         g.setColor(new Color(255, 255, 255));
-                        g.drawString("X" + j + " = " + irSources[j].getX() + " Y" + j + " = " + irSources[j].getY(), offset + 2, height * 2 + 10 * (j + 1));
-                        g.drawString("RX" + j + " = " + irSources[j].getRx() + " RY" + j + " = " + irSources[j].getRy(), offset + offset/2 + 2, height * 2 + 10 * (j + 1));
+                        g.drawString("X" + j + " = " + irSources[i][j].getX() + " Y" + j + " = " + irSources[i][j].getY(), offset + 2, height * 2 + 10 * (j + 1));
+                        g.drawString("RX" + j + " = " + irSources[i][j].getRx() + " RY" + j + " = " + irSources[i][j].getRy(), offset + width/2 + 2, height * 2 + 10 * (j + 1));
                     }
                 }
 
@@ -441,6 +446,10 @@ public class WiimoteHandler {
     public void deactivateRumble(int wiiMoteID){
         wiimotes[wiiMoteID].deactivateRumble();
     }
+    
+//    public Pair<Integer, Integer> getPointer(int wiimoteID){
+//        //for();
+//    }
 
     /**
      * Returns if the button of wiimote has been pressed.
