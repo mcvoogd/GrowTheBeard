@@ -30,7 +30,7 @@ public class WiimoteHandler {
     
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
-    private IRSource[][] irSources;
+    private IRSource[][] irSources = new IRSource[4][5];
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
     private GForce[] gForce = new GForce[4];
@@ -38,6 +38,7 @@ public class WiimoteHandler {
 
     private float[][] oldValue = new float[4][3];
     private boolean[] connectedNunchucks = new boolean[4];
+    private boolean[][] peakValue = new boolean[4][3];
     
     private LinkedList<LinkedList<GForce>> gForceWiimoteList = new LinkedList<>();
     private LinkedList<LinkedList<Orientation>> orientationWiimoteList = new LinkedList<>();
@@ -131,6 +132,8 @@ public class WiimoteHandler {
                     storeGForce(finalI, e.getGforce());
                     setOrientation(finalI, e.getOrientation());
                     storeOrientation(finalI, e.getOrientation());
+                    setPeakValue(finalI);
+
                 }
 
                 @Override
@@ -186,7 +189,7 @@ public class WiimoteHandler {
     }
 
     private void setIrSources(int wiimoteID, IRSource[] irPoints){
-        irSources[wiimoteID] = irPoints;
+        this.irSources[wiimoteID] = irPoints;
     }
 
     private void disconnect(int wiimoteID){
@@ -195,6 +198,21 @@ public class WiimoteHandler {
 
     private void setgForce(int wiimoteID, GForce gForce){
         this.gForce[wiimoteID] = gForce;
+    }
+
+    private void setPeakValue(int wiimoteID){
+        float[] newValues = new float[3];
+        newValues[0] = gForceWiimoteList.get(wiimoteID).getLast().getX();
+        newValues[1] = gForceWiimoteList.get(wiimoteID).getLast().getY();
+        newValues[2] = gForceWiimoteList.get(wiimoteID).getLast().getZ();
+        for(int i = 0; i < wiimotes.length; i++) {
+                if ((oldValue[wiimoteID][i] - newValues[i]) > 1.5) {
+                    peakValue[wiimoteID][i] = true;
+                } else {
+                    peakValue[wiimoteID][i] = false;
+                }
+                oldValue[wiimoteID][i] = newValues[i];
+        }
     }
     
     private void setOrientation(int wiimoteID, Orientation orientation){
@@ -304,34 +322,45 @@ public class WiimoteHandler {
                 g.setColor(new Color(255, 255, 255));
                 g.drawString("Wiimote " + wiimotes[i].getId() + " - G-Force", offset + 2, 10);
                 g.drawString("Orientation", offset + 2, height + 10);
-                g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
-                g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
-                g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
-                g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
-                g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
+                if(gForceWiimoteList.get(i).size() > 0){
+                    g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
+                    g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
+                    g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
+                    g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
+                    g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
+                }
 
-                /*
+
                 float newXValue = gForceWiimoteList.get(i).getLast().getX();
                 float newYValue = gForceWiimoteList.get(i).getLast().getY();
                 float newZValue = gForceWiimoteList.get(i).getLast().getZ();
                 if((oldValue[i][0] - newXValue) > 1.5){
                     g.setColor(new Color(250,0,0));
                     g.fillRect(width*2 * i, height * 2, 50, 200);
+                    peakValue[i][0] = true;
+                }else{
+                    peakValue[i][0] = false;
                 }
                 oldValue[i][0] = newXValue;
 
                 if((oldValue[i][1] - newYValue) > 1.5){
                     g.setColor(new Color(0, 255, 0));
                     g.fillRect((width*2 * i) + 50, height * 2, 50, 200);
+                    peakValue[i][1] = true;
+                }else{
+                    peakValue[i][1] = false;
                 }
                 oldValue[i][1] = newYValue;
 
                 if((oldValue[i][2] - newZValue) > 1.5){
                     g.setColor(new Color(0, 0, 255));
                     g.fillRect((width*2 * i) + 100, height * 2, 50, 200);
+                    peakValue[i][2] = true;
+                }else{
+                    peakValue[i][2] = false;
                 }
                 oldValue[i][2] = newZValue;
-                */
+
 
                 if(isNunchuckConnected(i)){
                     // draw background boxes
@@ -577,5 +606,9 @@ public class WiimoteHandler {
             return false;
         }
         return false;
+    }
+
+    public boolean[] getPeakValue(int wiiMote){
+        return peakValue[wiiMote];
     }
 }

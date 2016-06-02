@@ -20,10 +20,30 @@ public class Game_3_View implements View{
 
     @Override
     public void draw(Graphics2D g) {
-        gameModel.getPlayers()[0].draw(g);
-        gameModel.getPlayers()[1].draw(g);
+
         gameModel.getTrees()[0].draw(g);
         gameModel.getTrees()[1].draw(g);
+        gameModel.getPlayers()[0].draw(g);
+        gameModel.getPlayers()[1].draw(g);
+
+        for(DamageNumber i : gameModel.getTrees()[0].getDamageNumbers())
+        {
+            i.update();
+            i.draw(g);
+        }for(DamageNumber i : gameModel.getTrees()[1].getDamageNumbers())
+        {
+            i.update();
+            i.draw(g);
+        }
+        if(gameModel.getHitPlayer(1))
+        {
+            g.drawOval(300, 1000, 50, 50);
+        }
+        if(gameModel.getHitPlayer(2))
+        {
+            g.drawOval(600, 1000, 50, 50);
+        }
+
     }
 
     @Override
