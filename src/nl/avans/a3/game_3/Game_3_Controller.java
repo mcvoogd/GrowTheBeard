@@ -20,6 +20,10 @@ public class Game_3_Controller implements Controller{
     @Override
     public void update() {
         gameModel.update();
+        if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
+            float pitch =  wiimoteHandler.getPitch(0);
+            System.out.println("Controller Pitch :" + pitch);
+        }
     }
 
     @Override

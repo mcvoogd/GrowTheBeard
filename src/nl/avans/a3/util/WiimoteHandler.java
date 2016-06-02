@@ -423,7 +423,6 @@ public class WiimoteHandler {
 
     public float getPitch(int wiimoteID) {
         if (orientationWiimoteList.get(wiimoteID).size() > 0){
-            System.out.println("Wiimote Pitch");
         return orientationWiimoteList.get(wiimoteID).getLast().getPitch();
         }
         else
