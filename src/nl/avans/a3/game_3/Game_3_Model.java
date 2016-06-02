@@ -28,6 +28,7 @@ public class Game_3_Model implements Model{
         for (int i = 0; i < trees.length; i++) {
             trees[i].update();
         }
+
     }
 
     @Override

@@ -35,6 +35,14 @@ public class Game_3_View implements View{
             i.update();
             i.draw(g);
         }
+        if(gameModel.getHitPlayer(1))
+        {
+            g.drawOval(300, 1000, 50, 50);
+        }
+        if(gameModel.getHitPlayer(2))
+        {
+            g.drawOval(600, 1000, 50, 50);
+        }
 
     }
 
