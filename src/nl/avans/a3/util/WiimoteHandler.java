@@ -30,7 +30,7 @@ public class WiimoteHandler {
     
     private Wiimote[] wiimotes;
     private JoystickEvent[] joystickEvents;
-    private IRSource[][] irSources;
+    private IRSource[][] irSources = new IRSource[4][5];
     private ArrayList<EnumMap<Buttons, Boolean>> pressedButtons = new ArrayList<>();
     private ArrayList<EnumMap<Buttons, Boolean>> heldButtons = new ArrayList<>();
     private GForce[] gForce = new GForce[4];
@@ -186,7 +186,7 @@ public class WiimoteHandler {
     }
 
     private void setIrSources(int wiimoteID, IRSource[] irPoints){
-        irSources[wiimoteID] = irPoints;
+        this.irSources[wiimoteID] = irPoints;
     }
 
     private void disconnect(int wiimoteID){
@@ -304,11 +304,13 @@ public class WiimoteHandler {
                 g.setColor(new Color(255, 255, 255));
                 g.drawString("Wiimote " + wiimotes[i].getId() + " - G-Force", offset + 2, 10);
                 g.drawString("Orientation", offset + 2, height + 10);
-                g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
-                g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
-                g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
-                g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
-                g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
+                if(gForceWiimoteList.get(i).size() > 0){
+                    g.drawString("X = " + gForceWiimoteList.get(i).getLast().getX(), offset + 2, 20);
+                    g.drawString("Y = " + gForceWiimoteList.get(i).getLast().getY(), offset + 2, 30);
+                    g.drawString("Z = " + gForceWiimoteList.get(i).getLast().getZ(), offset + 2, 40);
+                    g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
+                    g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
+                }
 
                 /*
                 float newXValue = gForceWiimoteList.get(i).getLast().getX();
