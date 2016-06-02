@@ -5,6 +5,7 @@ import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -23,8 +24,8 @@ public class Game_2_View implements View {
     private class Player
     {
         float x, y;
-        Image playerImage;
-        Player(float x, float y, Image playerImage)
+        BufferedImage playerImage;
+        Player(float x, float y, BufferedImage playerImage)
         {
             this.x = x;
             this.y = y;
@@ -60,8 +61,15 @@ public class Game_2_View implements View {
         if (event instanceof G2_NewPlayer)
         {
             G2_NewPlayer newPlayer = (G2_NewPlayer)event;
-            players.add(new Player(newPlayer.x, newPlayer.y, ResourceHandler.getImage("res/images_game2/person1")));
+            BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.playerID+1) + ".png");
+            players.add(new Player(newPlayer.x, newPlayer.y, image.getSubimage(0, 0, image.getWidth()>>2, image.getHeight())));
             System.out.println("added a new player to view");
+        }
+        else if (event instanceof G2_ObjectMove)
+        {
+            G2_ObjectMove objectMove = (G2_ObjectMove)event;
+            players.get(objectMove.id).x = objectMove.newX;
+            players.get(objectMove.id).y = objectMove.newY;
         }
     }
 }

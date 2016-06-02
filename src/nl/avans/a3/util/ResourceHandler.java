@@ -3,6 +3,7 @@ package nl.avans.a3.util;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,9 +12,9 @@ import java.util.HashMap;
  * Created by FlorisBob on 27-May-16.
  */
 public class ResourceHandler {
-    private static HashMap<String, Image> imageHashMap = new HashMap<>();
+    private static HashMap<String, BufferedImage> imageHashMap = new HashMap<>();
 
-    public static final Image getImage(String imageKey)
+    public static final BufferedImage getImage(String imageKey)
     {
         if (imageKey == null)
         {
@@ -27,7 +28,7 @@ public class ResourceHandler {
         if (imageFile.exists() == false) {Logger.instance.log("RH002", imageKey); return null;}
         if (imageFile.canRead() == false) {Logger.instance.log("RH003", imageKey); return null;}
 
-        Image image = null;
+        BufferedImage image = null;
 
         try {
             image = ImageIO.read(imageFile);

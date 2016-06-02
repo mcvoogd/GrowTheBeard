@@ -39,7 +39,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void onModelEvent(ModelEvent event) {
-        System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
+        //System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
             this.controller = selectController(((NewModel) event).newModel);
