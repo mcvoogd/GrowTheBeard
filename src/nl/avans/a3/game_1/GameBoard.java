@@ -136,10 +136,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
-			g2.setColor(new Color(0x161BFF));
-			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
-			g2.setColor(new Color(0x2CE21C));
-			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1050);
+//			g2.setColor(new Color(0x161BFF));
+//			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
+//			g2.setColor(new Color(0x2CE21C));
+//			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1050);
 
 			g2.setColor(Color.BLACK);
 			g2.translate(0, 850);
