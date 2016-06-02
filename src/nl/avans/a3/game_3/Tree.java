@@ -43,15 +43,15 @@ public class Tree {
         background = (BufferedImage) ResourceHandler.getImage("res/images_game3/background.png");
         sprites = new BufferedImage[5];
         if(leftOrRight) {
-            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
-            for(int i = 0; i < 5; i++){
-                sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
-            }
-        }else
-        {
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
             for(int i = 0; i < 5; i++){
                 sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
+            }
+        }else
+        {
+            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
+            for(int i = 0; i < 5; i++){
+                sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
             }
         }
 
