@@ -35,4 +35,9 @@ public class Character {
         }
     }
 
+    public BufferedImage getPlayerImage()
+    {
+        return playerImage;
+    }
+
 }

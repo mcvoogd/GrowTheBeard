@@ -28,6 +28,7 @@ public class Tree {
     private Timer alphaTimer;
     private Timer treeFlashTimer;
     private boolean leftOrRight;
+    private boolean fading = false;
     private BufferedImage image;
     private BufferedImage trunk;
     private float alpha = 1.0f;
@@ -136,6 +137,7 @@ public class Tree {
                     treeFlashTimer.stop();
                     count = 0;
                     treeVisible = true;
+                    fading = false;
                 }
             }
             else {
@@ -171,44 +173,46 @@ public class Tree {
 
     public void resetTree()
     {
-        rotation = 0;
-        fallen = false;
-        alpha = 1.0f;
-        hitpoints = 1000;
-        changeSprite(sprites[1]);
-        damageNumbers.clear();
         if(!treeFlashTimer.isRunning())
         {
             treeFlashTimer.start();
         }
+        rotation = 0;
+        fallen = false;
+        alpha = 1.0f;
+        fading = true;
+        hitpoints = 1000;
+        changeSprite(sprites[1]);
+        damageNumbers.clear();
     }
 
     public void damageTree(int damage)
     {
-        if(!fallen) {
-            this.hitpoints -= damage;
-            Color hitColor = Color.RED;
-            if(damage < 10){
-                hitColor = new Color(255, 250, 30);
-            }else
-            if(damage < 25){
-                hitColor = new Color(255, 120, 30);
+        if(!fading) {
+            if (!fallen) {
+                this.hitpoints -= damage;
+                Color hitColor = Color.RED;
+                if (damage < 10) {
+                    hitColor = new Color(255, 250, 30);
+                } else if (damage < 25) {
+                    hitColor = new Color(255, 120, 30);
+                }
+                if (damage < 40) {
+                    hitColor = new Color(255, 73, 29);
+                }
+                if (damage >= 50) {
+                    hitColor = new Color(240, 185, 36);
+                }
+                if (leftOrRight) {
+                    addDamageNumber(x + 50, y + 800, damage, hitColor);
+                } else {
+                    addDamageNumber(x - 50, y + 800, damage, hitColor);
+                }
+                if (hitpoints < 0) {
+                    hitpoints = 0;
+                }
+                this.damage = damage;
             }
-            if(damage < 40){
-                hitColor = new Color(255, 73, 29);
-            }
-            if(damage >= 50){
-                hitColor = new Color(240, 185, 36);
-            }
-            if (leftOrRight) {
-                addDamageNumber(x + 50, y + 800, damage, hitColor);
-            } else {
-                addDamageNumber(x - 50, y + 800, damage, hitColor);
-            }
-            if (hitpoints < 0) {
-                hitpoints = 0;
-            }
-            this.damage = damage;
         }
     }
 

@@ -187,16 +187,22 @@ public class GameBoard extends JPanel implements ActionListener {
 		FontMetrics fm = getFontMetrics(font);
 		g2.setFont(font);
 		String s = "DRAW";
-		if(player == 1){
-			s = "WINNER";
-			g2.setColor(new Color(50, 200, 55));
-			g2.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+		switch(player)
+		{
+			case 0 : g.setColor(Color.BLACK);
+				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+				break; //default
+			case 1 :
+				s = "WINNER";
+				g.setColor(new Color(50, 200, 55));
+				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+				break;
+			case 2 :
+				s = "WINNER";
+				g.setColor(new Color(200, 50, 50));
+				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
 		}
-		if(player == 2){
-			s = "WINNER";
-			g2.setColor(new Color(200, 50, 50));
-			g2.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-		}
+
 		g2.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
 		g2.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
 
