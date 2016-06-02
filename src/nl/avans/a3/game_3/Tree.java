@@ -33,6 +33,7 @@ public class Tree {
     private float alpha = 1.0f;
     private  int count = 0;
     private boolean switched = false;
+    private AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
 
     private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
@@ -63,7 +64,17 @@ public class Tree {
         changeSprite(sprites[1]);
         alphaTimer = new Timer(100, e -> {if(alpha > 0.05f) alpha -= 0.05f;});
         treeVisible = true;
-        treeFlashTimer = new Timer(2000/1, e ->{treeVisible = !treeVisible; switched = true;}
+        treeFlashTimer = new Timer(2000/8, e ->{
+            treeVisible = !treeVisible;
+            switched = true;
+            if(treeVisible) {
+                alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+            }
+            else
+            {
+                alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f);
+            }
+        }
         );
     }
 
@@ -108,25 +119,19 @@ public class Tree {
         if(!fallen) {
             if(treeFlashTimer.isRunning()) {
                 if(treeVisible && switched) {
-                    AlphaComposite old = (AlphaComposite) g.getComposite();
-                    AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
-                    g.setComposite(alcom);
-                    g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
-                    g.setComposite(old);
                     count++;
                     switched = false;
                 }
                 else if(!treeVisible && switched)
                 {
-                    AlphaComposite old = (AlphaComposite) g.getComposite();
-                    AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f);
-                    g.setComposite(alcom);
-                    g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
-                    g.setComposite(old);
                     count++;
                     switched = false;
                 }
-                if(count == 8)
+                AlphaComposite old = (AlphaComposite) g.getComposite();
+                g.setComposite(alcom);
+                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+                g.setComposite(old);
+                if(count == 6)
                 {
                     treeFlashTimer.stop();
                     count = 0;
@@ -149,7 +154,6 @@ public class Tree {
             g.setComposite(alcom);
             g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
             g.setComposite(old);
-
 
             if(alpha < 0.5f)
             {
