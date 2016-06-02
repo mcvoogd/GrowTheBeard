@@ -32,6 +32,12 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
             System.exit(0);
         }
+        if(e.getKeyCode() == KeyEvent.VK_P){
+            gameModel.damageTree(0);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_C){
+            gameModel.damageTree(1);
+        }
     }
 
     @Override

@@ -5,6 +5,8 @@ import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Created by Thijs on 2-6-2016.
@@ -18,6 +20,20 @@ public class Game_2_View implements View {
         this.model = model;
     }
 
+    private class Player
+    {
+        float x, y;
+        Image playerImage;
+        Player(float x, float y, Image playerImage)
+        {
+            this.x = x;
+            this.y = y;
+            this.playerImage = playerImage;
+        }
+    }
+
+    private ArrayList<Player> players = new ArrayList<>();
+
     @Override
     public void start() {
 
@@ -25,7 +41,8 @@ public class Game_2_View implements View {
 
     @Override
     public void draw(Graphics2D g) {
-
+        for (Player player : players)
+            g.drawImage(player.playerImage, (int)player.x, (int)player.y, null);
     }
 
     @Override
@@ -35,6 +52,16 @@ public class Game_2_View implements View {
 
     @Override
     public void onModelEvent(ModelEvent event) {
-
+        if (event instanceof Game_2_Event == false)
+        {
+            nl.avans.a3.util.Logger.instance.log("2V001", "unexcpected message", nl.avans.a3.util.Logger.LogType.WARNING);
+            return;
+        }
+        if (event instanceof G2_NewPlayer)
+        {
+            G2_NewPlayer newPlayer = (G2_NewPlayer)event;
+            players.add(new Player(newPlayer.x, newPlayer.y, ResourceHandler.getImage("res/images_game2/person1")));
+            System.out.println("added a new player to view");
+        }
     }
 }
