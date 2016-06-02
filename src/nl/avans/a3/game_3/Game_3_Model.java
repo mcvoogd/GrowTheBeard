@@ -9,8 +9,9 @@ public class Game_3_Model implements Model{
     private final int START_X = 400;
     private boolean hitPlayer1, hitPlayer2;
 
-    public void Game_3_Model(){
-
+    public Game_3_Model(){
+        hitPlayer1 = true;
+        hitPlayer2 = true;
 
     }
 
@@ -62,7 +63,17 @@ public class Game_3_Model implements Model{
         return trees;
     }
 
-    public void damageTree(int tree){
-        trees[tree].damageTree(100);
+    public void damageTree(int tree, int damage){
+        trees[tree].damageTree(damage);
+    }
+
+    public boolean getFallenPerTree(int tree)
+    {
+        switch(tree)
+        {
+            case 0 : return trees[tree].getIsFallen();
+            case 1 : return trees[tree].getIsFallen();
+        }
+        return false;
     }
 }
