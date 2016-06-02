@@ -6,8 +6,8 @@ import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Created by Thijs on 2-6-2016.
@@ -42,13 +42,14 @@ public class Game_2_View implements View {
 
     @Override
     public void draw(Graphics2D g) {
+        BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
+        g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
         for (Player player : players)
             g.drawImage(player.playerImage, (int)player.x, (int)player.y, null);
     }
 
     @Override
     public void close() {
-
     }
 
     @Override
