@@ -14,7 +14,7 @@ public class Game_3_Controller implements Controller{
     public Game_3_Controller(Game_3_Model gameModel, WiimoteHandler wiimoteHandler){
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
-        wiimoteHandler.activateMotionSensing();
+        this.wiimoteHandler.activateMotionSensing();
     }
 
     @Override
@@ -22,8 +22,14 @@ public class Game_3_Controller implements Controller{
         gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             float pitch =  wiimoteHandler.getPitch(0);
-            System.out.println("Controller Pitch :" + pitch);
+//            System.out.println(pitch);
+
         }
+
+        if(wiimoteHandler.getPeakValue(0)[0]) {
+            System.out.println("HIT");
+        }
+        //System.out.println(wiimoteHandler.getWiimoteGForceY(0));
     }
 
     @Override
