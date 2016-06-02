@@ -27,7 +27,7 @@ public class ModelHandler implements ModelListener{
 
     public static ModelHandler instance = new ModelHandler();
 
-    private Model model;
+    private Model model = null;
 
     public void start()
     {

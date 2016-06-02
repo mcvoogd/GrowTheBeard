@@ -15,7 +15,7 @@ MM002,E,MainMenu::MainMenu,Loading images failed!,
 MM003,L,MainMenu::MainMenu,Loading images succesvol!,
 ,,,,
 ResourceHandler, RH,,,
-RH001, E, ResourceHandler::getImage, image can't be null,
+RH001, E, "ResourceHandler::getImage", "image can't be null",
 RH002, E, ResourceHandler::getImage(imageKey), image (<imageKey>) doesn't exist,
 RH003, E, ResourceHandler::getImage(imageKey), image (<imageKey>) canot be red,
 RH004, W, ResourceHandler::unloadImage(imageKey), image (<imageKey>) is not loaded, since the image is not loaded it canot be unloaded

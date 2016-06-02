@@ -1,4 +1,5 @@
 package nl.avans.a3.game_2;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 
 /**
@@ -32,12 +33,18 @@ public class Game_2_Model implements Model
     private class Player extends Collidiable
     {
         PlayerState state;
+        final int id;
 
         float pitch = 0;
         boolean aPressed = false;
 
-        Player() {
+        Player(int id, float x, float y)
+        {
             super(PlAYER_WIDTH, PLAYER_HEIGHT, false);
+            this.id = id;
+            this.x = x;
+            this.y = y;
+            ModelHandler.instance.onModelEvent(new G2_NewPlayer(id, x, y));
         }
     }
 
@@ -53,11 +60,12 @@ public class Game_2_Model implements Model
 
     public Game_2_Model()
     {
-
     }
 
     @Override
     public void start() {
+        for (int i = 0; i < PLAYER_COUNT; i++)
+            players[i] = new Player(i, 100+75*i, 400);
     }
 
     @Override

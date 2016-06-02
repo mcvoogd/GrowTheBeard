@@ -9,6 +9,7 @@ import nl.avans.a3.game_example.Game_Example_Controller;
 import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.boot_menu.BootController;
 import nl.avans.a3.boot_menu.BootModel;
@@ -38,31 +39,33 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void onModelEvent(ModelEvent event) {
+        System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
             this.controller = selectController(((NewModel) event).newModel);
             if(!updateControllerTimer.isRunning())
+                Logger.instance.log("VH001", "new controller ("+this.controller.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
             updateControllerTimer.start();
         }else
         {
-            controller.onModelEvent(event);
+            if (controller != null) controller.onModelEvent(event);
         }
 
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        controller.keyTyped(e);
+        if (controller != null) controller.keyTyped(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        controller.keyPressed(e);
+        if (controller != null) controller.keyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        controller.keyReleased(e);
+        if (controller != null) controller.keyReleased(e);
     }
 
     private static Controller selectController(Model model)
