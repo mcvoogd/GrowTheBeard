@@ -205,6 +205,7 @@ public class Logger
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null)
             {
+                if (nextLine.length < 4) continue;
                 if (nextLine[0].trim().equals("") || nextLine[3].trim().equals("")) continue;
                 LogType logType = LogType.DEBUG;
                 switch (nextLine[1].trim().charAt(0))
