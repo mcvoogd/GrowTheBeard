@@ -23,16 +23,19 @@ public class Game_2_View implements View {
 
     private class Player
     {
+        final int ANIMATION_LENGTH = 1;
+
         float x, y;
         BufferedImage[] animation;
         int selectedAnimation = 0;
+        int animationTicksLeft = -1;
         Player(float x, float y, BufferedImage playerImage)
         {
             this.x = x;
             this.y = y;
             animation = new BufferedImage[4];
             for (int i =0 ; i < 4; i++)
-                animation[i] = playerImage.getSubimage(playerImage.getWidth()*i, 0, playerImage.getWidth()-1, playerImage.getHeight());
+                animation[i] = playerImage.getSubimage(playerImage.getWidth()/4*i, 0, playerImage.getWidth()/4, playerImage.getHeight());
         }
     }
 
@@ -48,6 +51,12 @@ public class Game_2_View implements View {
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
         for (Player player : players) {
+            if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
+            {
+                player.animationTicksLeft = player.ANIMATION_LENGTH;
+                player.selectedAnimation++;
+            }
+
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
         }
     }
@@ -67,7 +76,7 @@ public class Game_2_View implements View {
         {
             G2_NewObject newPlayer = (G2_NewObject)event;
             BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.id +1) + ".png");
-            players.add(new Player(newPlayer.x, newPlayer.y, image.getSubimage(0, 0, image.getWidth()>>2, image.getHeight())));
+            players.add(new Player(newPlayer.x, newPlayer.y, image));
             System.out.println("added a new player to view");
         }
         else if (event instanceof G2_ObjectMove)
@@ -75,6 +84,21 @@ public class Game_2_View implements View {
             G2_ObjectMove objectMove = (G2_ObjectMove)event;
             players.get(objectMove.id).x = objectMove.newX;
             players.get(objectMove.id).y = objectMove.newY;
+        }
+        else if (event instanceof G2_PlayerStateChange)
+        {
+            G2_PlayerStateChange playerStateChange = (G2_PlayerStateChange)event;
+            Player player = players.get(playerStateChange.id);
+            if (playerStateChange.state == G2_PlayerStateChange.State.JUMP)
+            {
+                player.selectedAnimation = 1;
+                player.animationTicksLeft = player.ANIMATION_LENGTH;
+            }
+            else
+            {
+                player.selectedAnimation = 0;
+                player.animationTicksLeft = -1;
+            }
         }
     }
 }
