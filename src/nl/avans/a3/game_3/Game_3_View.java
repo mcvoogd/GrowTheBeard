@@ -26,13 +26,14 @@ public class Game_3_View implements View{
         Font tf = new Font("Verdana", Font.BOLD, 68);
         FontMetrics ft = g.getFontMetrics(tf);
 
-        g.drawImage(banner, 0, 930, 1920, 180,  null);
-        g.setFont(tf);
-        g.setColor(new Color(159, 44, 22));
-        g.drawString("" + gameModel.getTime(), 960 - (ft.stringWidth("" + gameModel.getTime())/2) + 90, 1040);
-
         gameModel.getTrees()[0].draw(g);
         gameModel.getTrees()[1].draw(g);
+
+        g.drawImage(banner, 0, -25, 1920, 180,  null);
+        g.setFont(tf);
+        g.setColor(new Color(159, 44, 22));
+        g.drawString("" + gameModel.getTime(), 960 - (ft.stringWidth("" + gameModel.getTime())/2) + 90, 80);
+
         gameModel.getPlayers()[0].draw(g);
         gameModel.getPlayers()[1].draw(g);
 

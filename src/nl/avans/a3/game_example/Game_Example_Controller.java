@@ -24,8 +24,8 @@ public class Game_Example_Controller implements Controller{
         gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             float pitch =  wiimoteHandler.getPitch(0);
-            System.out.println("Controller Pitch :" + pitch);
             gameModel.setPitch(pitch);
+
         }
     }
 

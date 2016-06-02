@@ -27,6 +27,9 @@ public class Tree {
     private boolean leftOrRight;
     private BufferedImage image;
     private BufferedImage trunk;
+    private BufferedImage newTreeImage;
+    private int newTreeX;
+    private int newTreeY;
 
     private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
@@ -40,7 +43,7 @@ public class Tree {
         rotation = 0;
         this.leftOrRight = leftOrRight;
         sprites = new BufferedImage[5];
-        if(leftOrRight) {
+        if(!leftOrRight) {
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
             for(int i = 0; i < 5; i++){
                 sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
@@ -95,8 +98,8 @@ public class Tree {
 
     public void draw(Graphics2D g)
     {
-        g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y), null);
-        g.drawImage(trunk, x, y, null);
+        g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y-60), null);
+        g.drawImage(trunk, x, y+180, null);
     }
 
     private void changeSprite(BufferedImage image)
@@ -205,6 +208,18 @@ public class Tree {
     public ArrayList<DamageNumber> getDamageNumbers()
     {
         return damageNumbers;
+    }
+
+    public void changeTree(Graphics2D g)
+    {
+
+        Timer pusher = new Timer(100, e -> {
+
+                newTreeY -= 10;
+                newTreeX = this.x;
+        });
+     //   g.drawImage(sprites[1]);
+
     }
 
 }

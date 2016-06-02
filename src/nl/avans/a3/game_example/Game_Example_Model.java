@@ -18,8 +18,6 @@ public class Game_Example_Model implements Model{
 
     @Override
     public void update() {
-        System.out.println("Update model" +  "X : " + x + " Pitch: " + pitch);
-
         this.x = (int) (x + (pitch*10.0));
     }
 
