@@ -27,10 +27,8 @@ public class Tree {
     private boolean leftOrRight;
     private BufferedImage image;
     private BufferedImage trunk;
-    private BufferedImage newTreeImage;
-    private int newTreeX;
-    private int newTreeY;
-
+    private float alpha = 1.0f;
+    private Timer alphaTimer;
     private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
     public Tree(int x, int y, boolean leftOrRight)
@@ -40,6 +38,7 @@ public class Tree {
         this.y = y;
         width = 100;
         height = 1080;
+        newTreeY = 1080;
         rotation = 0;
         this.leftOrRight = leftOrRight;
         sprites = new BufferedImage[5];
@@ -58,6 +57,8 @@ public class Tree {
 
         trunk = sprites[0];
         changeSprite(sprites[1]);
+        alphaTimer = new Timer(100, e -> {if(alpha > 0.05f) alpha -= 0.05f;});
+
     }
 
     public void update()
@@ -98,13 +99,44 @@ public class Tree {
 
     public void draw(Graphics2D g)
     {
-        g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y-60), null);
-        g.drawImage(trunk, x, y+180, null);
+        if(!fallen) {
+            g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+            g.drawImage(trunk, x, y + 180, null);
+        }
+        else {
+           if(fallen && (rotation > maxRotation || rotation < -maxRotation))
+           {
+               alphaTimer.start();
+           }
+                    //alphacomposite to fade away!
+            AlphaComposite old = (AlphaComposite) g.getComposite();
+            AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            g.setComposite(alcom);
+            g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+            g.setComposite(old);
+            g.drawImage(trunk, x, y + 180, null);
+
+            if(alpha < 0.5f)
+            {
+                alphaTimer.stop();
+                resetTree();
+            }
+        }
     }
 
     private void changeSprite(BufferedImage image)
     {
         this.sprite = image;
+    }
+
+    public void resetTree()
+    {
+        rotation = 0;
+        fallen = false;
+        alpha = 1.0f;
+        hitpoints = 1000;
+        changeSprite(sprites[1]);
+        damageNumbers.clear();
     }
 
     public void damageTree(int damage)
@@ -210,16 +242,5 @@ public class Tree {
         return damageNumbers;
     }
 
-    public void changeTree(Graphics2D g)
-    {
-
-        Timer pusher = new Timer(100, e -> {
-
-                newTreeY -= 10;
-                newTreeX = this.x;
-        });
-     //   g.drawImage(sprites[1]);
-
-    }
 
 }
