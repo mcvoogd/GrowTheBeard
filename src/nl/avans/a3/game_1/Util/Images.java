@@ -15,15 +15,15 @@ public class Images {
     public static BufferedImage particle;
 
     public Images(){
-        woodBlock = readImage("images_game1\\wood1");
-        woodBlock2 = readImage("images_game1\\wood2");
-        woodBlock3 = readImage("images_game1\\wood3");
-        player1 = readImage("images_game1\\person1");
-        player2 = readImage("images_game1\\person2");
-        game1Background = readImage("images_game1\\background2");
-        particle = readImage("images_game1\\particle");
-        game1Winscreen = readImage("images_game1\\winscreen");
-        banner = readImage("images_game1\\banner");
+        woodBlock = readImage("images_game1/wood1");
+        woodBlock2 = readImage("images_game1/wood2");
+        woodBlock3 = readImage("images_game1/wood3");
+        player1 = readImage("images_game1/person1");
+        player2 = readImage("images_game1/person2");
+        game1Background = readImage("images_game1/background2");
+        particle = readImage("images_game1/particle");
+        game1Winscreen = readImage("images_game1/winscreen");
+        banner = readImage("images_game1/banner");
 
     }
 
