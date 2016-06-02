@@ -1,5 +1,6 @@
 package nl.avans.a3.mvc_handlers;
 
+import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.ModelListener;
@@ -31,7 +32,7 @@ public class ModelHandler implements ModelListener{
     public void start()
     {
         //start with boot.
-        changeModel(new NewModel(null, new BootModel()));
+        changeModel(new NewModel(null, new Game_2_Model()));
     }
 
     public void changeModel(NewModel event)

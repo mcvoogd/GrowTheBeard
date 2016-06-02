@@ -6,6 +6,8 @@ import nl.avans.a3.boot_menu.BootView;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_2.Game_2_Model;
+import nl.avans.a3.game_2.Game_2_View;
 import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.game_example.Game_Example_View;
 import nl.avans.a3.main_menu.MainMenuModel;
@@ -88,6 +90,10 @@ public class ViewHandler implements ModelListener{
         if(model instanceof Game_Example_Model)
         {
             return new Game_Example_View((Game_Example_Model) model);
+        }
+        if (model instanceof Game_2_Model)
+        {
+            return new Game_2_View((Game_2_Model)model);
         }
 
         return null;

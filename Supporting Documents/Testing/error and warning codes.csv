@@ -3,7 +3,8 @@ LO001,E,Logger::log(Exception e),Exception can't be null,pass a non null Excepti
 LO002,W,"Logger::log(String, ..)",are you sureyou want to log an empty warning,"this warning is logged since the message of the log is either null or ecual to """" witch is probably not what you want"
 LO003,E,"Logger::log(ï¿½, String codePath, String message, ...)","the log type cannot be NOTHING, code(<code>) message(<message>)",the nothing type is reserved for the console / log to indicate that notthing should be shown so a log canot have this type
 LO004,W,Logger::checkInitilaztion,the logger is not properly initialized ,if the init method does noet get called on time some sysout calls could be missed
-LO005,E,"Logger::log(code, args…)",the code (<code>) is not loaded,the log code has not been loaded by the logger
+LO005,E,"Logger::log(code, argsï¿½)",the code (<code>) is not loaded,the log code has not been loaded by the logger
+LO006,E,"Logger::log(code, args), "exception occured on code (<code>)", "some txt"
 ,,,,
 GraphicsWindow,GW,,,
 GW001,L,GraphicsWindow::GraphicsWindow,Program Exited by keypress,
