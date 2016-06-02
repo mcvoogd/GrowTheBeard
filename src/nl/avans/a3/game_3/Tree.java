@@ -15,17 +15,20 @@ public class Tree {
     private BufferedImage[] sprites;
     private BufferedImage sprite;
 
-    private Tree(int x, int y)
+    public Tree(int x, int y)
     {
+        System.out.println("NEW T BJR GYEIBHVBv hffycv hygfyt8v");
         hitpoints = 1000;
         this.x = x;
         this.y = y;
         width = 100;
-        height = 1920;
+        height = 1080;
+        sprites = new BufferedImage[4];
         for(int i = 0; i < 3; i++)
         {
             sprites[i] = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_" + i + ".png");
         }
+        changeSprite(sprites[0]);
     }
 
     public void update()

@@ -40,7 +40,7 @@ public class MainMenuController implements Controller {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
             case KeyEvent.VK_A: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
             case KeyEvent.VK_D: model.onMenuChoose(); break;
-            case KeyEvent.VK_ALT : ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
+
         }
     }
 

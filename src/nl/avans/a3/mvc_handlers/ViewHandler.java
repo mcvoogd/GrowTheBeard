@@ -8,6 +8,8 @@ import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_2.Game_2_View;
+import nl.avans.a3.game_3.Game_3_Model;
+import nl.avans.a3.game_3.Game_3_View;
 import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.game_example.Game_Example_View;
 import nl.avans.a3.main_menu.MainMenuModel;
@@ -96,6 +98,9 @@ public class ViewHandler implements ModelListener{
             return new Game_2_View((Game_2_Model)model);
         }
 
+        if(model instanceof Game_3_Model) {
+            return new Game_3_View((Game_3_Model) model);
+        }
         return null;
     }
 
