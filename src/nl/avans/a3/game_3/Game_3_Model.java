@@ -10,10 +10,10 @@ public class Game_3_Model implements Model{
 
     private Character[] characters = new Character[2];
     private Tree[] trees = new Tree[2];
-    private final int START_X = 400;
+    private final int START_X = 350;
     private boolean hitPlayer1, hitPlayer2;
     private Timer countDownTimer;
-    private int time = 5;
+    private int time = 30;
     private boolean ingame = true;
     private BufferedImage background;
 
@@ -56,8 +56,12 @@ public class Game_3_Model implements Model{
         if(!ingame)
         {
             countDownTimer.stop();
-
         }
+        characters[0].update();
+        characters[1].update();
+
+
+
     }
 
     @Override
@@ -78,8 +82,8 @@ public class Game_3_Model implements Model{
     {
         switch(player)
         {
-            case 1 : hitPlayer1 = trueOrFalse; break;
-            case 2 : hitPlayer2 = trueOrFalse; break;
+            case 1 : hitPlayer1 = trueOrFalse; characters[0].setImage(0);break;
+            case 2 : hitPlayer2 = trueOrFalse; characters[1].setImage(0);break;
         }
     }
 
@@ -122,6 +126,13 @@ public class Game_3_Model implements Model{
     public BufferedImage getBackground()
     {
         return background;
+    }
+
+    public void startHit(int player){
+        switch (player){
+            case 1: characters[0].setChop(true); break;
+            case 2: characters[1].setChop(true); break;
+        }
     }
 
     public BufferedImage getPlayerImage(int player)
