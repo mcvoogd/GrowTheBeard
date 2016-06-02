@@ -422,6 +422,18 @@ public class WiimoteHandler {
         heldButtons.get(wiimoteID).put(button, value);
     }
 
+    public float getWiimoteGForceX(int wiimoteID){
+        return gForceWiimoteList.get(wiimoteID).getLast().getX();
+    }
+    
+    public float getWiimoteGForceY(int wiimoteID){
+        return gForceWiimoteList.get(wiimoteID).getLast().getY();
+    }
+    
+    public float getWiimoteGForceZ(int wiimoteID){
+        return gForceWiimoteList.get(wiimoteID).getLast().getZ();
+    }
+
     public float getRoll(int wiimoteID){
         return orientationWiimoteList.get(wiimoteID).getLast().getRoll();
     }
