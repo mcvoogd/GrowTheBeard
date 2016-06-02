@@ -7,9 +7,13 @@ import nl.avans.a3.mvc_interfaces.Model;
  */
 public class Game_2_Model implements Model {
 
-    private float pitch;
-    private int x = 500;
-    private int y = 500;
+    private class Player {
+        float x, y;
+        float pitch;
+        boolean isJumping;
+    }
+
+
 
     public Game_2_Model()
     {
@@ -32,23 +36,12 @@ public class Game_2_Model implements Model {
 
     }
 
-    public void setPitch(float pitch)
+    public void setPitch(float pitch, int player)
     {
         this.pitch = pitch;
     }
 
-    public int getX()
-    {
-        return x;
-    }
+    public void setAButtonPressed(boolean pressed, int player) {
 
-    public int getY()
-    {
-        return y;
-    }
-
-    public float getPitch()
-    {
-        return pitch;
     }
 }

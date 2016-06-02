@@ -1,7 +1,6 @@
 package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
-import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -12,10 +11,10 @@ import java.awt.*;
  */
 public class Game_2_View implements View {
 
-    private Game_Example_Model model;
+    private Game_2_Model model;
     private Image axe;
 
-    public Game_2_View(Game_Example_Model model)
+    public Game_2_View(Game_2_Model model)
     {
         this.model = model;
     }

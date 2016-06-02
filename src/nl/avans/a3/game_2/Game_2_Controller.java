@@ -11,10 +11,10 @@ import java.awt.event.KeyEvent;
  * Created by Thijs on 2-6-2016.
  */
 public class Game_2_Controller implements Controller {
-    private Game_Example_Model gameModel;
+    private Game_2_Model gameModel;
     private WiimoteHandler wiimoteHandler;
 
-    public Game_2_Controller(Game_Example_Model model, WiimoteHandler wiimoteHandler)
+    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler)
     {
         this.gameModel = model;
         this.wiimoteHandler = wiimoteHandler;
@@ -26,9 +26,10 @@ public class Game_2_Controller implements Controller {
         //check wiimote stuff.
         gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
-            float pitch =  wiimoteHandler.getPitch(0);
-            System.out.println("Controller Pitch :" + pitch);
-            gameModel.setPitch(pitch);
+            gameModel.setPitch(wiimoteHandler.getPitch(0), 0);
+            gameModel.setPitch(wiimoteHandler.getPitch(1), 1);
+            gameModel.setAButtonPressed(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A), 0);
+            gameModel.setAButtonPressed(wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A), 1);
         }
     }
 
