@@ -44,7 +44,7 @@ public class DamageNumber {
     public void draw(Graphics2D g)
     {
         g.setColor(color);
-        Font newFont = new Font("Verdana", Font.BOLD, 24);
+        Font newFont = new Font("Verdana", Font.BOLD, damage);
         g.setFont(newFont);
         g.drawString("" + damage, x,y);
     }

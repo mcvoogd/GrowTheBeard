@@ -111,10 +111,23 @@ public class Tree {
     {
         if(!fallen) {
             this.hitpoints -= damage;
+            Color hitColor = Color.RED;
+            if(damage < 10){
+                hitColor = new Color(255, 250, 30);
+            }else
+            if(damage < 25){
+                hitColor = new Color(255, 120, 30);
+            }
+            if(damage < 40){
+                hitColor = new Color(255, 73, 29);
+            }
+            if(damage >= 50){
+                hitColor = new Color(240, 185, 36);
+            }
             if (leftOrRight) {
-                addDamageNumber(x + 50, y + 800, damage, Color.BLACK);
+                addDamageNumber(x + 50, y + 800, damage, hitColor);
             } else {
-                addDamageNumber(x - 50, y + 800, damage, Color.BLACK);
+                addDamageNumber(x - 50, y + 800, damage, hitColor);
             }
             if (hitpoints < 0) {
                 hitpoints = 0;
