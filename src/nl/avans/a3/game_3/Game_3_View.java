@@ -20,7 +20,10 @@ public class Game_3_View implements View{
 
     @Override
     public void draw(Graphics2D g) {
-
+        gameModel.getPlayers()[0].draw(g);
+        gameModel.getPlayers()[1].draw(g);
+        gameModel.getTrees()[0].draw(g);
+        gameModel.getTrees()[1].draw(g);
     }
 
     @Override
