@@ -42,6 +42,11 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.damageTree(1);
         }
+        if(e.getKeyCode() == KeyEvent.VK_S)
+        {
+            gameModel.damageTree(0);
+            gameModel.damageTree(1);
+        }
     }
 
     @Override

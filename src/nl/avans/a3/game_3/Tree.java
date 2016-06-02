@@ -6,6 +6,8 @@ import nl.avans.a3.util.ResourceHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Tree {
@@ -20,9 +22,13 @@ public class Tree {
     private double rotation;
     private int maxRotation = 95;
     private boolean fallen;
+    private int damage = 0;
     Timer rotator;
+    private boolean leftOrRight;
+    private BufferedImage treeTrunk;
+    private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
-    public Tree(int x, int y)
+    public Tree(int x, int y, boolean leftOrRight)
     {
         hitpoints = 1000;
         this.x = x;
@@ -30,16 +36,27 @@ public class Tree {
         width = 100;
         height = 1080;
         rotation = 0;
+        this.leftOrRight = leftOrRight;
         sprites = new BufferedImage[4];
         for(int i = 0; i < 4; i++)
         {
             sprites[i] = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_" + i + ".png");
         }
+        treeTrunk = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_trunk.png");
         changeSprite(sprites[0]);
     }
 
     public void update()
     {
+        Iterator<DamageNumber> ir = damageNumbers.iterator();
+        while (ir.hasNext())
+        {
+            DamageNumber temp = ir.next();
+            if(!temp.getAlive())
+            {
+                ir.remove();
+            }
+        }
         if(hitpoints < 750)
         {
             changeSprite(sprites[0]);
@@ -56,8 +73,7 @@ public class Tree {
         {
             changeSprite(sprites[3]);
             if(!fallen){
-                Random rand = new Random();
-                drawFallingAnimation(rand.nextBoolean());
+                drawFallingAnimation(leftOrRight);
                 fallen = true;
             }
         }
@@ -69,6 +85,7 @@ public class Tree {
     public void draw(Graphics2D g)
     {
         g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y), null);
+        g.drawImage(treeTrunk, x, y+850, null);
     }
 
     private void changeSprite(BufferedImage image)
@@ -80,9 +97,25 @@ public class Tree {
     {
 
         this.hitpoints -= damage;
+        if(leftOrRight) {
+            addDamageNumber(x + 50, y + 800, damage, Color.BLACK);
+        }else
+        {
+            addDamageNumber(x - 50, y + 800, damage, Color.BLACK);
+        }
         if(hitpoints < 0){
             hitpoints = 0;
         }
+        this.damage = damage;
+    }
+
+    public boolean isDamaged()
+    {
+        if(damage > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -146,5 +179,15 @@ public class Tree {
 
         });
         rotator.start();
+    }
+
+    public void addDamageNumber(int x, int y, int damage, Color color)
+    {
+        damageNumbers.add(new DamageNumber(x, y, damage, color, leftOrRight));
+    }
+
+    public ArrayList<DamageNumber> getDamageNumbers()
+    {
+        return damageNumbers;
     }
 }
