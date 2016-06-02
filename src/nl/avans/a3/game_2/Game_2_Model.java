@@ -65,22 +65,25 @@ public class Game_2_Model implements Model
             {
                 state = PlayerState.JUMPING;
                 jumpTicks = 1;
+                ModelHandler.instance.onModelEvent(new G2_PlayerStateChange(G2_PlayerStateChange.State.JUMP, id));
             }
             if (state == PlayerState.JUMPING)
             {
                 x += movX*4;
                 y += heightAt(jumpTicks)-heightAt(jumpTicks-1);
-                System.out.println("current ("+jumpTicks+") = " + heightAt(jumpTicks) +
-                ", previus("+(jumpTicks-1) + ") = " + heightAt(jumpTicks-1)+
-                ", diffrence = " + (heightAt(jumpTicks)-heightAt(jumpTicks-1)));
+                ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
                 if (++jumpTicks > JUMP_DURATION) {
                     state = PlayerState.ON_KINETIC;
+                    ModelHandler.instance.onModelEvent(new G2_PlayerStateChange(G2_PlayerStateChange.State.WALK, id));
                 }
             }
             else
             {
-                x += movX*5;
-                // TODO handle the platform that you're standing on
+                if (movX != 0) {
+                    x += movX * 5;
+                    ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
+                    // TODO handle the platform that you're standing on
+                }
             }
             jump = false;
         }
@@ -112,9 +115,6 @@ public class Game_2_Model implements Model
     public void update() {
         players[0].update();
         players[1].update();
-
-        ModelHandler.instance.onModelEvent(new G2_ObjectMove(0, true, players[0].x, players[0].y));
-        ModelHandler.instance.onModelEvent(new G2_ObjectMove(1, true, players[1].x, players[1].y));
     }
 
     @Override

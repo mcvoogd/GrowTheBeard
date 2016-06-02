@@ -24,12 +24,15 @@ public class Game_2_View implements View {
     private class Player
     {
         float x, y;
-        BufferedImage playerImage;
+        BufferedImage[] animation;
+        int selectedAnimation = 0;
         Player(float x, float y, BufferedImage playerImage)
         {
             this.x = x;
             this.y = y;
-            this.playerImage = playerImage;
+            animation = new BufferedImage[4];
+            for (int i =0 ; i < 4; i++)
+                animation[i] = playerImage.getSubimage(playerImage.getWidth()*i, 0, playerImage.getWidth()-1, playerImage.getHeight());
         }
     }
 
@@ -44,8 +47,9 @@ public class Game_2_View implements View {
     public void draw(Graphics2D g) {
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
-        for (Player player : players)
-            g.drawImage(player.playerImage, (int)player.x, 1080-(int)player.y, null);
+        for (Player player : players) {
+            g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
+        }
     }
 
     @Override

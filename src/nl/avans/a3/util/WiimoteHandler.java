@@ -13,6 +13,7 @@ import wiiusej.wiiusejevents.wiiuseapievents.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedList;
 
@@ -206,7 +207,7 @@ public class WiimoteHandler {
         newValues[1] = gForceWiimoteList.get(wiimoteID).getLast().getY();
         newValues[2] = gForceWiimoteList.get(wiimoteID).getLast().getZ();
         for(int i = 0; i < wiimotes.length; i++) {
-                if ((oldValue[wiimoteID][i] - newValues[i]) > 1.5) {
+                if ((oldValue[wiimoteID][i] - newValues[i]) > 0.5) {
                     peakValue[wiimoteID][i] = true;
                 } else {
                     peakValue[wiimoteID][i] = false;
@@ -610,5 +611,20 @@ public class WiimoteHandler {
 
     public boolean[] getPeakValue(int wiiMote){
         return peakValue[wiiMote];
+    }
+
+    public float getMax(int wiiMote){
+        int max = gForceWiimoteList.get(wiiMote).size();
+        ArrayList<Float> values = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            float valueToadd = gForceWiimoteList.get(wiiMote).get(max - 1 - i).getX();
+            if(valueToadd < 0){
+                valueToadd = -valueToadd;
+            }
+            values.add(valueToadd);
+        }
+        Collections.sort(values);
+        return values.get(values.size() - 1);
+
     }
 }

@@ -123,6 +123,11 @@ public class Tree {
         }
     }
 
+    public boolean getIsFallen()
+    {
+        return fallen;
+    }
+
     public boolean isDamaged()
     {
         if(damage > 0)
