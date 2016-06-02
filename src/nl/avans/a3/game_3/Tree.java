@@ -1,7 +1,9 @@
 package nl.avans.a3.game_3;
 
+import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -14,6 +16,7 @@ public class Tree {
     private int height;
     private BufferedImage[] sprites;
     private BufferedImage sprite;
+    private int rotation;
 
     public Tree(int x, int y)
     {
@@ -23,6 +26,7 @@ public class Tree {
         this.y = y;
         width = 100;
         height = 1080;
+        rotation = 0;
         sprites = new BufferedImage[4];
         for(int i = 0; i < 3; i++)
         {
@@ -53,7 +57,7 @@ public class Tree {
 
     public void draw(Graphics g)
     {
-        g.drawImage(sprite, x, y, width, height, null);
+        EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y);
     }
 
     private void changeSprite(BufferedImage image)
@@ -66,9 +70,23 @@ public class Tree {
         this.hitpoints -= damage;
     }
 
-
-    public void drawFallingAnimation(Graphics2D g)
+    /**
+     * read this to see what the boolean is used for.
+     * @param g : graphics object.
+     * @param leftOrRight : TRUE for left, FALSE for RIGHT.
+     */
+    public void drawFallingAnimation(Graphics2D g, boolean leftOrRight)
     {
-        //TODO draw fall animation.
+        Timer rotator = new Timer(1000/60, e->
+        {
+            if(leftOrRight)
+            {
+                rotation++;
+            }else
+            {
+                rotation--;
+            }
+        });
+        rotator.start();
     }
 }
