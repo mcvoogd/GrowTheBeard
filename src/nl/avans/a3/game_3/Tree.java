@@ -38,7 +38,6 @@ public class Tree {
         this.y = y;
         width = 100;
         height = 1080;
-        newTreeY = 1080;
         rotation = 0;
         this.leftOrRight = leftOrRight;
         sprites = new BufferedImage[5];
