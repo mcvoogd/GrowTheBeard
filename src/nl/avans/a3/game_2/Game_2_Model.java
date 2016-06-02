@@ -1,7 +1,9 @@
 package nl.avans.a3.game_2;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 
+import java.time.Duration;
 import java.util.Random;
 
 /**
@@ -36,9 +38,7 @@ public class Game_2_Model implements Model
     {
         PlayerState state;
         final int id;
-
-        float pitch = 0;
-        boolean aPressed = false;
+        boolean jump = false;
 
         Player(int id, float x, float y)
         {
@@ -46,7 +46,43 @@ public class Game_2_Model implements Model
             this.id = id;
             this.x = x;
             this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewPlayer(id, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, x, y));
+        }
+
+        final int JUMP_DURATION = 75;
+        final double JUMP_HEIGHT = 200;
+        final double v = JUMP_DURATION/Math.PI;
+        int jumpTicks = 0;
+
+        private double heightAt(double x)
+        {
+            return (Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT);
+        }
+
+        public void update()
+        {
+            if (jump && state != PlayerState.JUMPING)
+            {
+                state = PlayerState.JUMPING;
+                jumpTicks = 1;
+            }
+            if (state == PlayerState.JUMPING)
+            {
+                x += movX*4;
+                y += heightAt(jumpTicks)-heightAt(jumpTicks-1);
+                System.out.println("current ("+jumpTicks+") = " + heightAt(jumpTicks) +
+                ", previus("+(jumpTicks-1) + ") = " + heightAt(jumpTicks-1)+
+                ", diffrence = " + (heightAt(jumpTicks)-heightAt(jumpTicks-1)));
+                if (++jumpTicks > JUMP_DURATION) {
+                    state = PlayerState.ON_KINETIC;
+                }
+            }
+            else
+            {
+                x += movX*5;
+                // TODO handle the platform that you're standing on
+            }
+            jump = false;
         }
     }
 
@@ -74,11 +110,11 @@ public class Game_2_Model implements Model
 
     @Override
     public void update() {
-        if (rand.nextBoolean())
-            players[0].x += rand.nextFloat()*2-1.0f;
-        if (rand.nextBoolean())
-            players[0].x += rand.nextFloat()*2-1.0f;
+        players[0].update();
+        players[1].update();
+
         ModelHandler.instance.onModelEvent(new G2_ObjectMove(0, true, players[0].x, players[0].y));
+        ModelHandler.instance.onModelEvent(new G2_ObjectMove(1, true, players[1].x, players[1].y));
     }
 
     @Override
@@ -86,11 +122,16 @@ public class Game_2_Model implements Model
 
     }
 
-    public void setPitch(float pitch, int player)
+    public void setMoveHorizontal(float move, int player)
     {
-        players[player].pitch = pitch;
+        if (player > 1) return; // TODO proper warnings
+        if (Math.abs(move)>1) return;
+        players[player].movX = move;
+        //System.out.println("player" + player + ", moveX = " + players[player].movX);
     }
 
-    public void setAButtonPressed(boolean pressed, int player) {
+    public void setJump(boolean pressed, int player) {
+        if (player > 1) return;
+        players[player].jump = pressed;
     }
 }

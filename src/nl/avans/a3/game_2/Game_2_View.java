@@ -45,7 +45,7 @@ public class Game_2_View implements View {
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
         for (Player player : players)
-            g.drawImage(player.playerImage, (int)player.x, (int)player.y, null);
+            g.drawImage(player.playerImage, (int)player.x, 1080-(int)player.y, null);
     }
 
     @Override
@@ -59,10 +59,10 @@ public class Game_2_View implements View {
             nl.avans.a3.util.Logger.instance.log("2V001", "unexcpected message", nl.avans.a3.util.Logger.LogType.WARNING);
             return;
         }
-        if (event instanceof G2_NewPlayer)
+        if (event instanceof G2_NewObject)
         {
-            G2_NewPlayer newPlayer = (G2_NewPlayer)event;
-            BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.playerID+1) + ".png");
+            G2_NewObject newPlayer = (G2_NewObject)event;
+            BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.id +1) + ".png");
             players.add(new Player(newPlayer.x, newPlayer.y, image.getSubimage(0, 0, image.getWidth()>>2, image.getHeight())));
             System.out.println("added a new player to view");
         }
