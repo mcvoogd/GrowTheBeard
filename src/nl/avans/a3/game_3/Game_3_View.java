@@ -22,7 +22,7 @@ public class Game_3_View implements View{
 
     @Override
     public void draw(Graphics2D g) {
-
+        g.drawImage(gameModel.getBackground(), 0, 0, null);
         Font tf = new Font("Verdana", Font.BOLD, 68);
         FontMetrics ft = g.getFontMetrics(tf);
 

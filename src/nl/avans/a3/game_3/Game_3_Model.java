@@ -1,8 +1,10 @@
 package nl.avans.a3.game_3;
 
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class Game_3_Model implements Model{
 
@@ -13,10 +15,12 @@ public class Game_3_Model implements Model{
     private Timer countDownTimer;
     private int time = 30;
     private boolean ingame;
+    private BufferedImage background;
 
     public Game_3_Model(){
         hitPlayer1 = true;
         hitPlayer2 = true;
+        background = (BufferedImage) ResourceHandler.getImage("res/images_game3/background.png");
 
     }
 
@@ -91,5 +95,10 @@ public class Game_3_Model implements Model{
     public int getTime()
     {
         return time;
+    }
+
+    public BufferedImage getBackground()
+    {
+        return background;
     }
 }
