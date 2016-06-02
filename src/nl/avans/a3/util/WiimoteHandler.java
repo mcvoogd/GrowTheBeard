@@ -423,15 +423,27 @@ public class WiimoteHandler {
     }
 
     public float getWiimoteGForceX(int wiimoteID){
-        return gForceWiimoteList.get(wiimoteID).getLast().getX();
+        if(gForceWiimoteList.get(wiimoteID).size() > 0){
+            return gForceWiimoteList.get(wiimoteID).getLast().getX();
+        }else{
+            return 0;
+        }
     }
     
     public float getWiimoteGForceY(int wiimoteID){
-        return gForceWiimoteList.get(wiimoteID).getLast().getY();
+        if(gForceWiimoteList.get(wiimoteID).size() > 0){
+            return gForceWiimoteList.get(wiimoteID).getLast().getY();
+        }else{
+            return 0;
+        }
     }
     
     public float getWiimoteGForceZ(int wiimoteID){
-        return gForceWiimoteList.get(wiimoteID).getLast().getZ();
+        if(gForceWiimoteList.get(wiimoteID).size() > 0){
+            return gForceWiimoteList.get(wiimoteID).getLast().getZ();
+        }else{
+            return 0;
+        }
     }
 
     public float getRoll(int wiimoteID){
