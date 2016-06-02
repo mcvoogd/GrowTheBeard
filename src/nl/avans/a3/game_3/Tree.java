@@ -6,6 +6,7 @@ import nl.avans.a3.util.ResourceHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Tree {
 
@@ -16,11 +17,13 @@ public class Tree {
     private int height;
     private BufferedImage[] sprites;
     private BufferedImage sprite;
-    private int rotation;
+    private double rotation;
+    private int maxRotation = 95;
+    private boolean fallen;
+    Timer rotator;
 
     public Tree(int x, int y)
     {
-        System.out.println("NEW T BJR GYEIBHVBv hffycv hygfyt8v");
         hitpoints = 1000;
         this.x = x;
         this.y = y;
@@ -28,7 +31,7 @@ public class Tree {
         height = 1080;
         rotation = 0;
         sprites = new BufferedImage[4];
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             sprites[i] = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_" + i + ".png");
         }
@@ -52,12 +55,20 @@ public class Tree {
         if(hitpoints <= 0)
         {
             changeSprite(sprites[3]);
+            if(!fallen){
+                Random rand = new Random();
+                drawFallingAnimation(rand.nextBoolean());
+                fallen = true;
+            }
         }
+        if(rotation > maxRotation || rotation < -maxRotation)
+        {
+            rotator.stop();}
     }
 
-    public void draw(Graphics g)
+    public void draw(Graphics2D g)
     {
-        EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y);
+        g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y), null);
     }
 
     private void changeSprite(BufferedImage image)
@@ -65,27 +76,74 @@ public class Tree {
         this.sprite = image;
     }
 
-    public void setHitpoints(int damage)
+    public void damageTree(int damage)
     {
+
         this.hitpoints -= damage;
+        if(hitpoints < 0){
+            hitpoints = 0;
+        }
     }
 
     /**
      * read this to see what the boolean is used for.
-     * @param g : graphics object.
      * @param leftOrRight : TRUE for left, FALSE for RIGHT.
      */
-    public void drawFallingAnimation(Graphics2D g, boolean leftOrRight)
+    public void drawFallingAnimation(boolean leftOrRight)
     {
-        Timer rotator = new Timer(1000/60, e->
+            rotator = new Timer(1000/60, e->
         {
             if(leftOrRight)
             {
-                rotation++;
+                if(rotation < maxRotation)
+                {
+                    if(rotation >= 0 && rotation <= 20)
+                    {
+                        rotation += 0.2;
+                    }else
+                    if(rotation > 20 && rotation <= 30)
+                    {
+                        rotation += 0.4;
+                    }else
+                    if(rotation > 30 && rotation <= 50)
+                    {
+                        rotation += 1.2;
+                    }else
+                    if(rotation > 50 && rotation <= 80)
+                    {
+                        rotation += 1.8;
+                    }else
+                    if(rotation > 80 && rotation <= maxRotation)
+                    {
+                        rotation += 2.2;
+                    }
+
+                }
             }else
             {
-                rotation--;
+                if(rotation > -maxRotation)
+                    if(rotation <= 0 && rotation >= -20)
+                    {
+                        rotation -= 0.2;
+                    }else
+                    if(rotation < -20 && rotation >= -30)
+                    {
+                        rotation -= 0.4;
+                    }else
+                    if(rotation < -30 && rotation >= -50)
+                    {
+                        rotation -= 1.2;
+                    }else
+                    if(rotation < -50 && rotation >= -80)
+                    {
+                        rotation -= 1.8;
+                    }else
+                    if(rotation < -80 && rotation >= -maxRotation)
+                    {
+                        rotation -= 2.2;
+                    }
             }
+
         });
         rotator.start();
     }
