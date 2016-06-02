@@ -35,7 +35,7 @@ public class BootController implements Controller{
             case KeyEvent.VK_A : aPressed = true; break;
             case KeyEvent.VK_B : bPressed = true; break;
             case KeyEvent.VK_SPACE : aPressed = bPressed = true; break;
-            case KeyEvent.VK_C : wiimoteHandler.SearchWiimotes();
+            case KeyEvent.VK_C : wiimoteHandler.searchWiimotes();
                 System.out.println("searching wiimotes");break;
         }
     }

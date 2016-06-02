@@ -50,7 +50,7 @@ public class WiimoteHandler {
     /**
      * Searches for wiimotes.
      */
-    public void SearchWiimotes(){
+    public void searchWiimotes(){
         joystickEvents = new JoystickEvent[4];
         wiimotes = WiiUseApiManager.getWiimotes(4, true);
         for(int i = 0; i < wiimotes.length; i++){
@@ -272,13 +272,20 @@ public class WiimoteHandler {
                     for(int j = 0; j < irSources.length; j++){
                         int x = irSources[j].getX();
                         int y = irSources[j].getY();
+                        int rx = irSources[j].getRx();
+                        int ry = irSources[j].getRy();
                         double scaleFactor = (double) height / 1000;
                         int newX = (int) Math.round(x * scaleFactor);
                         int newY = (int) Math.round(y * scaleFactor);
+                        int newRx = (int) Math.round(rx * scaleFactor);
+                        int newRy = (int) Math.round(ry * scaleFactor);
                         g.setColor(new Color(255, 0, 0));
                         g.fillOval(newX + offset, newY + height * 2, 10, 10);
+                        g.setColor(new Color(0, 255, 0));
+                        g.fillOval(newRx + offset, newRy + height * 2, 10, 10);
                         g.setColor(new Color(255, 255, 255));
                         g.drawString("X" + j + " = " + irSources[j].getX() + " Y" + j + " = " + irSources[j].getY(), offset + 2, height * 2 + 10 * (j + 1));
+                        g.drawString("RX" + j + " = " + irSources[j].getRx() + " RY" + j + " = " + irSources[j].getRy(), offset + offset/2 + 2, height * 2 + 10 * (j + 1));
                     }
                 }
 
@@ -298,11 +305,10 @@ public class WiimoteHandler {
                 g.drawString("Pitch = " + orientationWiimoteList.get(i).getLast().getPitch(), offset + 2, height + 20);
                 g.drawString("Roll = " + orientationWiimoteList.get(i).getLast().getRoll(), offset + 2, height + 30);
 
+                /*
                 float newXValue = gForceWiimoteList.get(i).getLast().getX();
                 float newYValue = gForceWiimoteList.get(i).getLast().getY();
                 float newZValue = gForceWiimoteList.get(i).getLast().getZ();
-                float pitch = orientationWiimoteList.get(i).getLast().getPitch();
-                float roll = orientationWiimoteList.get(i).getLast().getRoll();
                 if((oldValue[i][0] - newXValue) > 1.5){
                     g.setColor(new Color(250,0,0));
                     g.fillRect(width*2 * i, height * 2, 50, 200);
@@ -320,6 +326,7 @@ public class WiimoteHandler {
                     g.fillRect((width*2 * i) + 100, height * 2, 50, 200);
                 }
                 oldValue[i][2] = newZValue;
+                */
 
                 if(isNunchuckConnected(i)){
                     // draw background boxes
