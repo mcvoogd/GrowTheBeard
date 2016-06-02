@@ -15,10 +15,11 @@ public class Game_3_Model implements Model{
 
     @Override
     public void start() {
+
+        trees[0] = new Tree(0, 0, true);
+        trees[1] = new Tree(1820, 0, false);
         characters[0] = new Character(1, START_X, 500);
         characters[1] = new Character(2, 1920 - START_X - 328, 500); //screenwidth - startPlayer - widthPlayer
-        trees[0] = new Tree(0, 0);
-        trees[1] = new Tree(1820, 0);
     }
 
     @Override
