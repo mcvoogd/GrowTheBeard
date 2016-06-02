@@ -2,12 +2,17 @@ package nl.avans.a3.game_3;
 
 import nl.avans.a3.mvc_interfaces.Model;
 
+import javax.swing.*;
+
 public class Game_3_Model implements Model{
 
     private Character[] characters = new Character[2];
     private Tree[] trees = new Tree[2];
     private final int START_X = 400;
     private boolean hitPlayer1, hitPlayer2;
+    private Timer countDownTimer;
+    private int time = 30;
+    private boolean ingame;
 
     public void Game_3_Model(){
 
@@ -21,12 +26,18 @@ public class Game_3_Model implements Model{
         trees[1] = new Tree(1820, 0, false);
         characters[0] = new Character(1, START_X, 500);
         characters[1] = new Character(2, 1920 - START_X - 328, 500); //screenwidth - startPlayer - widthPlayer
+        countDownTimer = new Timer(1000, e -> time--);
+        countDownTimer.start();
     }
 
     @Override
     public void update() {
         for (int i = 0; i < trees.length; i++) {
             trees[i].update();
+        }
+        if(time == 0)
+        {
+            countDownTimer.stop();
         }
 
     }
@@ -64,5 +75,10 @@ public class Game_3_Model implements Model{
 
     public void damageTree(int tree){
         trees[tree].damageTree(100);
+    }
+
+    public int getTime()
+    {
+        return time;
     }
 }

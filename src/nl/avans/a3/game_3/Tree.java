@@ -23,9 +23,12 @@ public class Tree {
     private int maxRotation = 95;
     private boolean fallen;
     private int damage = 0;
-    Timer rotator;
+    private Timer rotator;
     private boolean leftOrRight;
-    private BufferedImage treeTrunk;
+    private BufferedImage image;
+    private BufferedImage trunk;
+    private BufferedImage background;
+
     private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
     public Tree(int x, int y, boolean leftOrRight)
@@ -37,13 +40,23 @@ public class Tree {
         height = 1080;
         rotation = 0;
         this.leftOrRight = leftOrRight;
-        sprites = new BufferedImage[4];
-        for(int i = 0; i < 4; i++)
+        background = (BufferedImage) ResourceHandler.getImage("res/images_game3/background.png");
+        sprites = new BufferedImage[5];
+        if(leftOrRight) {
+            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
+            for(int i = 0; i < 5; i++){
+                sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
+            }
+        }else
         {
-            sprites[i] = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_" + i + ".png");
+            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
+            for(int i = 0; i < 5; i++){
+                sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
+            }
         }
-        treeTrunk = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_trunk.png");
-        changeSprite(sprites[0]);
+
+        trunk = sprites[0];
+        changeSprite(sprites[1]);
     }
 
     public void update()
@@ -59,19 +72,19 @@ public class Tree {
         }
         if(hitpoints < 750)
         {
-            changeSprite(sprites[0]);
+            changeSprite(sprites[1]);
         }
         if(hitpoints < 500)
         {
-            changeSprite(sprites[1]);
+            changeSprite(sprites[2]);
         }
         if(hitpoints < 250)
         {
-            changeSprite(sprites[2]);
+            changeSprite(sprites[3]);
         }
         if(hitpoints <= 0)
         {
-            changeSprite(sprites[3]);
+            changeSprite(sprites[4]);
             if(!fallen){
                 drawFallingAnimation(leftOrRight);
                 fallen = true;
@@ -84,8 +97,9 @@ public class Tree {
 
     public void draw(Graphics2D g)
     {
+        g.drawImage(background, 0,0,null);
         g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y), null);
-        g.drawImage(treeTrunk, x, y+850, null);
+        g.drawImage(trunk, x- 300, y+300, null);
     }
 
     private void changeSprite(BufferedImage image)
