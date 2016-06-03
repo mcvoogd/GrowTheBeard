@@ -1,4 +1,5 @@
 package nl.avans.a3.game_1;
+import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.game_1.Util.Images;
@@ -166,6 +167,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 			else{
 				//drawGameEnd(g);
+			}
+			if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
+				PartyModeHandler.notifyNextGame();
+				System.out.println("invoked");
 			}
 		}
 		Toolkit.getDefaultToolkit().sync();
