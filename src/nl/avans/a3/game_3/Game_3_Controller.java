@@ -2,6 +2,7 @@ package nl.avans.a3.game_3;
 
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.Controller;
+import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -27,7 +28,6 @@ public class Game_3_Controller implements Controller{
             float pitch = wiimoteHandler.getPitch(0);
             pitch1 = wiimoteHandler.getPitch(0);
             pitch2 = wiimoteHandler.getPitch(1);
-
 
             float max1 = wiimoteHandler.getMax(0);
             float max2 = wiimoteHandler.getMax(1);
@@ -55,6 +55,11 @@ public class Game_3_Controller implements Controller{
             pitch2 = wiimoteHandler.getPitch(1);
             if (pitch2 < -80 && pitch2 > -100) {
                 gameModel.setHitPlayer(2, true);
+            }
+            if(!gameModel.getIngame()) {
+                if (wiimoteHandler.getIsButtonDown(0, WiimoteHandler.Buttons.KEY_A)) {
+                    PartyModeHandler.notifyNextGame();
+                }
             }
         }
 

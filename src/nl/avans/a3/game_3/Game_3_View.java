@@ -73,6 +73,8 @@ public class Game_3_View implements View{
             {
                 drawGameEnd(g, 0);
             }
+
+
         }
 
         for (Particle p : gameModel.getParticles()) {
