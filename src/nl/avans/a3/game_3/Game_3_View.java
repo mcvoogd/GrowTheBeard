@@ -36,6 +36,7 @@ public class Game_3_View implements View{
     public void draw(Graphics2D g) {
         if(gameModel.getIngame()) {
             g.drawImage(gameModel.getBackground(), 0, 0, null);
+            gameModel.getBird().draw(g);
             Font tf = new Font("Verdana", Font.BOLD, 68);
             FontMetrics ft = g.getFontMetrics(tf);
 
@@ -77,6 +78,8 @@ public class Game_3_View implements View{
         for (Particle p : gameModel.getParticles()) {
             p.draw(g);
         }
+
+
     }
 
     private void drawGameEnd(Graphics2D g, int player) {

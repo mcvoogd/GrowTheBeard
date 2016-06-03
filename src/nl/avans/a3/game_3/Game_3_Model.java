@@ -7,11 +7,13 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Game_3_Model implements Model{
 
     private Character[] characters = new Character[2];
     private Tree[] trees = new Tree[2];
+    private Bird bird;
     private final int START_X = 350;
     private boolean hitPlayer1, hitPlayer2;
     private Timer countDownTimer;
@@ -19,6 +21,8 @@ public class Game_3_Model implements Model{
     private boolean ingame = true;
     private BufferedImage background;
     private ArrayList<Particle> particles;
+
+    private Random rand = new Random();
 
     public int getScorePlayer1() {
         return scorePlayer1;
@@ -43,6 +47,7 @@ public class Game_3_Model implements Model{
     @Override
     public void start() {
         particles = new ArrayList<>();
+        bird = new Bird();
         trees[0] = new Tree(0, 0, true);
         trees[1] = new Tree(1720, 0, false);
         characters[0] = new Character(1, START_X, 480);
@@ -73,6 +78,11 @@ public class Game_3_Model implements Model{
         characters[0].update();
         characters[1].update();
 
+
+        bird.update();
+        if(bird.getWait()){
+            bird.setWait(rand.nextInt(300));
+        }
 
 
     }
@@ -170,5 +180,9 @@ public class Game_3_Model implements Model{
 
     public ArrayList<Particle> getParticles(){
         return particles;
+    }
+
+    public Bird getBird(){
+        return bird;
     }
 }
