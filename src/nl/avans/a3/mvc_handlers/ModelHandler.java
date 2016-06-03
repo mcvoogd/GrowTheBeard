@@ -12,9 +12,7 @@ import nl.avans.a3.mvc_interfaces.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by FlorisBob on 27-May-16.
- */
+
 public class ModelHandler implements ModelListener{
     public ArrayList<ModelListener> listeners = new ArrayList<>();
     public void addListener(ModelListener listener) {
@@ -33,7 +31,6 @@ public class ModelHandler implements ModelListener{
     public void start()
     {
         //start with boot.
-
         changeModel(new NewModel(null, new BootModel()));
     }
 

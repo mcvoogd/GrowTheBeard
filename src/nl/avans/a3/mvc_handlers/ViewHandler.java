@@ -28,32 +28,46 @@ public class ViewHandler implements ModelListener{
     private JPanel panel;
     private Timer repainter = new Timer(1000/60, e -> frame.repaint());
 
-    public ViewHandler(ControllerHandler controllerHandler)
+    public enum DisplayMode2{FULLSCREEN, WINDOW, BORDERLES_WINDOW}
+
+    public ViewHandler(ControllerHandler controllerHandler, DisplayMode2 displayMode)
     {
         ModelHandler.instance.addListener(this);
         Logger.instance.log("VH003", "ViewHandler created", Logger.LogType.DEBUG);
         try{
 
             frame = new JFrame("Grow the Beard");
-            frame.setAutoRequestFocus(true);
-            frame.setUndecorated(true);
-            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-            frame.toFront();
-            panel = new PaintPanel();
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            GraphicsDevice screen = ge.getDefaultScreenDevice();
-
-            DisplayMode oldDisplayMode = screen.getDisplayMode();
-            DisplayMode newDisplayMode = new DisplayMode(screen.getDisplayMode().getWidth(), screen.getDisplayMode().getHeight(), screen.getDisplayMode().getBitDepth(), screen.getDisplayMode().getRefreshRate());
-
-            if(!screen.isFullScreenSupported()){
-                Logger.instance.log("MN001", "Fullscreen unsupported on this device", Logger.LogType.ERROR);
-                System.exit(1);
-            }
-            screen.setFullScreenWindow(frame);
-            screen.setDisplayMode(newDisplayMode);
             frame.addKeyListener(controllerHandler);
+            panel = new PaintPanel();
             frame.setContentPane(panel);
+            frame.toFront();
+            if (displayMode == DisplayMode2.FULLSCREEN) {
+                frame.setAutoRequestFocus(true);
+                frame.setUndecorated(true);
+                frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                GraphicsDevice screen = ge.getDefaultScreenDevice();
+
+                DisplayMode oldDisplayMode = screen.getDisplayMode();
+                DisplayMode newDisplayMode = new DisplayMode(screen.getDisplayMode().getWidth(), screen.getDisplayMode().getHeight(), screen.getDisplayMode().getBitDepth(), screen.getDisplayMode().getRefreshRate());
+
+                if (!screen.isFullScreenSupported()) {
+                    Logger.instance.log("MN001", "Fullscreen unsupported on this device", Logger.LogType.ERROR);
+                    System.exit(1);
+                }
+                screen.setFullScreenWindow(frame);
+                screen.setDisplayMode(newDisplayMode);
+            }
+            else
+            {
+                if (displayMode == DisplayMode2.BORDERLES_WINDOW)
+                    frame.setUndecorated(true);
+                panel.setPreferredSize(new Dimension(1920, 1080));
+                frame.pack();
+                frame.setResizable(false);
+
+            }
             frame.setVisible(true);
         }catch(Exception e) {
             Logger.instance.log(e);

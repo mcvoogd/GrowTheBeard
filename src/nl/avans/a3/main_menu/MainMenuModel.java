@@ -12,6 +12,13 @@ public class MainMenuModel implements Model{
     private Point2D pointer;
 
 
+
+    public enum Mode{
+        CHOOSE_PARTY, CHOOSE_SINGLE
+    }
+
+    private Mode mode = Mode.CHOOSE_SINGLE;
+
     @Override
     public void start() {
 
@@ -39,4 +46,20 @@ public class MainMenuModel implements Model{
     public void setPointer(Point2D pointer){
         this.pointer = pointer;
     }
+
+    public Mode getMode()
+    {
+        return mode;
+    }
+
+    public void changeMode()
+    {
+        switch (mode)
+        {
+            case CHOOSE_PARTY: mode = Mode.CHOOSE_SINGLE; break;
+            case CHOOSE_SINGLE: mode = Mode.CHOOSE_PARTY; break;
+        }
+    }
+
+
 }

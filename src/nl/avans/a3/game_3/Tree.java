@@ -6,6 +6,8 @@ import nl.avans.a3.util.ResourceHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Tree {
@@ -20,44 +22,95 @@ public class Tree {
     private double rotation;
     private int maxRotation = 95;
     private boolean fallen;
-    Timer rotator;
+    private boolean treeVisible;
+    private int damage = 0;
+    private Timer rotator;
+    private Timer alphaTimer;
+    private Timer treeFlashTimer;
+    private boolean leftOrRight;
+    private boolean fading = false;
+    private final int MAXHITPOINTS = 250;
+    private BufferedImage image;
+    private BufferedImage trunk;
+    private int xOffset;
+    private float alpha = 1.0f;
+    private  int count = 0;
+    private boolean switched = false;
+    private AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
 
-    public Tree(int x, int y)
+    private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
+
+    public Tree(int x, int y, boolean leftOrRight)
     {
-        hitpoints = 1000;
+        hitpoints = MAXHITPOINTS;
         this.x = x;
         this.y = y;
         width = 100;
         height = 1080;
         rotation = 0;
-        sprites = new BufferedImage[4];
-        for(int i = 0; i < 4; i++)
+        this.leftOrRight = leftOrRight;
+        sprites = new BufferedImage[6];
+        if(!leftOrRight) {
+            xOffset = 7;
+            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
+            for(int i = 0; i < 6; i++){
+                sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
+            }
+        }else
         {
-            sprites[i] = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_" + i + ".png");
+            xOffset = -7;
+            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
+            for(int i = 0; i < 6; i++){
+                sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
+            }
         }
-        changeSprite(sprites[0]);
+
+        trunk = sprites[0];
+        changeSprite(sprites[1]);
+        alphaTimer = new Timer(100, e -> {if(alpha > 0.05f) alpha -= 0.05f;});
+        treeVisible = true;
+        treeFlashTimer = new Timer(2000/8, e ->{
+            treeVisible = !treeVisible;
+            switched = true;
+            if(treeVisible) {
+                alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+            }
+            else
+            {
+                alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f);
+            }
+        }
+        );
     }
 
     public void update()
     {
-        if(hitpoints < 750)
+        Iterator<DamageNumber> ir = damageNumbers.iterator();
+        while (ir.hasNext())
         {
-            changeSprite(sprites[0]);
+            DamageNumber temp = ir.next();
+            if(!temp.getAlive())
+            {
+                ir.remove();
+            }
         }
-        if(hitpoints < 500)
-        {
-            changeSprite(sprites[1]);
-        }
-        if(hitpoints < 250)
+        if(hitpoints <= 200) // eerste cut
         {
             changeSprite(sprites[2]);
         }
-        if(hitpoints <= 0)
+        if(hitpoints <= 150) // tweede cut
         {
             changeSprite(sprites[3]);
+        }
+        if(hitpoints <= 100) // derde cut
+        {
+            changeSprite(sprites[4]);
+        }
+        if(hitpoints <= 0) // boom valt.
+        {
+            changeSprite(sprites[5]);
             if(!fallen){
-                Random rand = new Random();
-                drawFallingAnimation(rand.nextBoolean());
+                drawFallingAnimation(leftOrRight);
                 fallen = true;
             }
         }
@@ -68,7 +121,53 @@ public class Tree {
 
     public void draw(Graphics2D g)
     {
-        g.drawImage(sprite,  EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 300, x, y), null);
+        if(!fallen) {
+            if(treeFlashTimer.isRunning()) {
+                if(treeVisible && switched) {
+                    count++;
+                    switched = false;
+                }
+                else if(!treeVisible && switched)
+                {
+                    count++;
+                    switched = false;
+                }
+                AlphaComposite old = (AlphaComposite) g.getComposite();
+                g.setComposite(alcom);
+                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x + xOffset, y - 60), null);
+                g.setComposite(old);
+                if(count == 6)
+                {
+                    treeFlashTimer.stop();
+                    count = 0;
+                    treeVisible = true;
+                    fading = false;
+                }
+            }
+            else {
+                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x + xOffset, y - 60), null);
+
+            }
+        }
+        else {
+           if(fallen && (rotation > maxRotation || rotation < -maxRotation))
+           {
+               alphaTimer.start();
+           }
+            //alphacomposite to fade away!
+            AlphaComposite old = (AlphaComposite) g.getComposite();
+            AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            g.setComposite(alcom);
+            g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x+ xOffset, y - 60), null);
+            g.setComposite(old);
+
+            if(alpha < 0.5f)
+            {
+                alphaTimer.stop();
+                resetTree();
+            }
+        }
+        g.drawImage(trunk, x, y + 180, null);
     }
 
     private void changeSprite(BufferedImage image)
@@ -76,13 +175,63 @@ public class Tree {
         this.sprite = image;
     }
 
+    public void resetTree()
+    {
+        if(!treeFlashTimer.isRunning())
+        {
+            treeFlashTimer.start();
+        }
+        rotation = 0;
+        fallen = false;
+        alpha = 1.0f;
+        fading = true;
+        hitpoints = MAXHITPOINTS;
+        changeSprite(sprites[1]);
+        damageNumbers.clear();
+    }
+
     public void damageTree(int damage)
     {
-
-        this.hitpoints -= damage;
-        if(hitpoints < 0){
-            hitpoints = 0;
+        if(!fading) {
+            if (!fallen) {
+                this.hitpoints -= damage;
+                Color hitColor = Color.RED;
+                if (damage < 10) {
+                    hitColor = new Color(255, 250, 30);
+                } else if (damage < 25) {
+                    hitColor = new Color(255, 120, 30);
+                }
+                if (damage < 40) {
+                    hitColor = new Color(255, 73, 29);
+                }
+                if (damage >= 50) {
+                    hitColor = new Color(240, 185, 36);
+                }
+                if (leftOrRight) {
+                    addDamageNumber(x + 50, y + 800, damage, hitColor);
+                } else {
+                    addDamageNumber(x - 50, y + 800, damage, hitColor);
+                }
+                if (hitpoints < 0) {
+                    hitpoints = 0;
+                }
+                this.damage = damage;
+            }
         }
+    }
+
+    public boolean getIsFallen()
+    {
+        return fallen;
+    }
+
+    public boolean isDamaged()
+    {
+        if(damage > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -97,54 +246,98 @@ public class Tree {
             {
                 if(rotation < maxRotation)
                 {
-                    if(rotation >= 0 && rotation <= 20)
+                    if(rotation >= 0 && rotation <= 10)
                     {
                         rotation += 0.2;
                     }else
-                    if(rotation > 20 && rotation <= 30)
+                    if(rotation >= 10 && rotation <= 20)
                     {
                         rotation += 0.4;
                     }else
-                    if(rotation > 30 && rotation <= 50)
+                    if(rotation >= 20 && rotation <= 30)
+                    {
+                        rotation += 0.6;
+                    }else
+                    if(rotation > 30 && rotation <= 40)
+                    {
+                        rotation += 0.8;
+                    }else
+                    if(rotation > 40 && rotation <= 50)
                     {
                         rotation += 1.2;
                     }else
-                    if(rotation > 50 && rotation <= 80)
+                    if(rotation > 50 && rotation <= 60)
                     {
                         rotation += 1.8;
                     }else
-                    if(rotation > 80 && rotation <= maxRotation)
+                    if(rotation >= 60 && rotation <= 70)
+                    {
+                        rotation += 2.0;
+                    }else
+                    if(rotation >= 70 && rotation <= 80)
                     {
                         rotation += 2.2;
+                    }else
+                    if(rotation > 80 && rotation <= maxRotation)
+                    {
+                        rotation += 2.4;
                     }
 
                 }
             }else
             {
                 if(rotation > -maxRotation)
-                    if(rotation <= 0 && rotation >= -20)
+                    if(rotation <= 0 && rotation >= -10)
                     {
                         rotation -= 0.2;
                     }else
-                    if(rotation < -20 && rotation >= -30)
+                    if(rotation <= -10 && rotation >= -20)
                     {
                         rotation -= 0.4;
                     }else
-                    if(rotation < -30 && rotation >= -50)
+                    if(rotation <= -20 && rotation >= -30)
+                    {
+                        rotation -= 0.6;
+                    }else
+                    if(rotation <= -30 && rotation >= -40)
+                    {
+                        rotation -= 0.8;
+                    }else
+                    if(rotation <= -40 && rotation >= -50)
                     {
                         rotation -= 1.2;
                     }else
-                    if(rotation < -50 && rotation >= -80)
+                    if(rotation < -50 && rotation >= -60)
                     {
                         rotation -= 1.8;
                     }else
-                    if(rotation < -80 && rotation >= -maxRotation)
+                    if(rotation < -60 && rotation >= -70)
+                    {
+                        rotation -= 2.0;
+                    }else
+                    if(rotation < -70 && rotation >= -80)
                     {
                         rotation -= 2.2;
+                    }else
+                    if(rotation < -80 && rotation >= -maxRotation)
+                    {
+                        rotation -= 2.4;
                     }
             }
 
         });
         rotator.start();
     }
+
+    public void addDamageNumber(int x, int y, int damage, Color color)
+    {
+        damageNumbers.add(new DamageNumber(x, y, damage, color, leftOrRight));
+    }
+
+    public ArrayList<DamageNumber> getDamageNumbers()
+    {
+        return damageNumbers;
+    }
+
+
 }

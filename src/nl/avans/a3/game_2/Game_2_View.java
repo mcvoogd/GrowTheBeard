@@ -6,8 +6,10 @@ import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import java.lang.reflect.Array;
+import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Created by Thijs on 2-6-2016.
@@ -23,32 +25,66 @@ public class Game_2_View implements View {
 
     private class Player
     {
+        final int ANIMATION_LENGTH = 1;
+
         float x, y;
-        BufferedImage playerImage;
+        BufferedImage[] animation;
+        int selectedAnimation = 0;
+        int animationTicksLeft = -1;
         Player(float x, float y, BufferedImage playerImage)
         {
             this.x = x;
             this.y = y;
-            this.playerImage = playerImage;
+            animation = new BufferedImage[4];
+            for (int i =0 ; i < 4; i++)
+                animation[i] = playerImage.getSubimage(playerImage.getWidth()/4*i, 0, playerImage.getWidth()/4, playerImage.getHeight());
         }
     }
 
     private ArrayList<Player> players = new ArrayList<>();
 
+    private class Platform {
+        float x, y;
+        BufferedImage image;
+
+        Platform(float x, float y, BufferedImage platformImage) {
+            this.x = x;
+            this.y = y;
+            image = platformImage;
+        }
+    }
+
+    private ArrayList<Platform> platforms = new ArrayList<>();
+
+    BufferedImage testImage;
+
     @Override
     public void start() {
-
+        testImage = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+        testImage.createGraphics().fillRect(0, 0, 100, 100);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        for (Player player : players)
-            g.drawImage(player.playerImage, (int)player.x, (int)player.y, null);
+        BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
+        g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
+        for (Player player : players) {
+            if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
+            {
+                player.animationTicksLeft = player.ANIMATION_LENGTH;
+                player.selectedAnimation++;
+            }
+
+            g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
+        }
+        for (Platform platform : platforms) {
+
+        }
+        g.drawImage(testImage, 100, 100, null);
     }
 
     @Override
     public void close() {
-
     }
 
     @Override
@@ -58,11 +94,11 @@ public class Game_2_View implements View {
             nl.avans.a3.util.Logger.instance.log("2V001", "unexcpected message", nl.avans.a3.util.Logger.LogType.WARNING);
             return;
         }
-        if (event instanceof G2_NewPlayer)
+        if (event instanceof G2_NewObject)
         {
-            G2_NewPlayer newPlayer = (G2_NewPlayer)event;
-            BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.playerID+1) + ".png");
-            players.add(new Player(newPlayer.x, newPlayer.y, image.getSubimage(0, 0, image.getWidth()>>2, image.getHeight())));
+            G2_NewObject newPlayer = (G2_NewObject)event;
+            BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newPlayer.id +1) + ".png");
+            players.add(new Player(newPlayer.x, newPlayer.y, image));
             System.out.println("added a new player to view");
         }
         else if (event instanceof G2_ObjectMove)
@@ -70,6 +106,21 @@ public class Game_2_View implements View {
             G2_ObjectMove objectMove = (G2_ObjectMove)event;
             players.get(objectMove.id).x = objectMove.newX;
             players.get(objectMove.id).y = objectMove.newY;
+        }
+        else if (event instanceof G2_PlayerStateChange)
+        {
+            G2_PlayerStateChange playerStateChange = (G2_PlayerStateChange)event;
+            Player player = players.get(playerStateChange.id);
+            if (playerStateChange.state == G2_PlayerStateChange.State.JUMP)
+            {
+                player.selectedAnimation = 1;
+                player.animationTicksLeft = player.ANIMATION_LENGTH;
+            }
+            else
+            {
+                player.selectedAnimation = 0;
+                player.animationTicksLeft = -1;
+            }
         }
     }
 }

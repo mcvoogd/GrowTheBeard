@@ -18,7 +18,6 @@ public class Game_Example_View implements View{
     @Override
     public void start() {
        axe = ResourceHandler.getImage("res/splash/axe.png");
-
     }
 
     @Override
