@@ -29,6 +29,7 @@ public class Tree {
     private Timer treeFlashTimer;
     private boolean leftOrRight;
     private boolean fading = false;
+    private final int MAXHITPOINTS = 250;
     private BufferedImage image;
     private BufferedImage trunk;
     private float alpha = 1.0f;
@@ -40,23 +41,23 @@ public class Tree {
 
     public Tree(int x, int y, boolean leftOrRight)
     {
-        hitpoints = 1000;
+        hitpoints = MAXHITPOINTS;
         this.x = x;
         this.y = y;
         width = 100;
         height = 1080;
         rotation = 0;
         this.leftOrRight = leftOrRight;
-        sprites = new BufferedImage[5];
+        sprites = new BufferedImage[6];
         if(!leftOrRight) {
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
-            for(int i = 0; i < 5; i++){
+            for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
             }
         }else
         {
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
-            for(int i = 0; i < 5; i++){
+            for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
             }
         }
@@ -90,21 +91,21 @@ public class Tree {
                 ir.remove();
             }
         }
-        if(hitpoints < 750)
-        {
-            changeSprite(sprites[1]);
-        }
-        if(hitpoints < 500)
+        if(hitpoints <= 200) // eerste cut
         {
             changeSprite(sprites[2]);
         }
-        if(hitpoints < 250)
+        if(hitpoints <= 150) // tweede cut
         {
             changeSprite(sprites[3]);
         }
-        if(hitpoints <= 0)
+        if(hitpoints <= 100) // derde cut
         {
             changeSprite(sprites[4]);
+        }
+        if(hitpoints <= 0) // boom valt.
+        {
+            changeSprite(sprites[5]);
             if(!fallen){
                 drawFallingAnimation(leftOrRight);
                 fallen = true;
@@ -181,7 +182,7 @@ public class Tree {
         fallen = false;
         alpha = 1.0f;
         fading = true;
-        hitpoints = 1000;
+        hitpoints = MAXHITPOINTS;
         changeSprite(sprites[1]);
         damageNumbers.clear();
     }
@@ -242,50 +243,82 @@ public class Tree {
             {
                 if(rotation < maxRotation)
                 {
-                    if(rotation >= 0 && rotation <= 20)
+                    if(rotation >= 0 && rotation <= 10)
                     {
                         rotation += 0.2;
                     }else
-                    if(rotation > 20 && rotation <= 30)
+                    if(rotation >= 10 && rotation <= 20)
                     {
                         rotation += 0.4;
                     }else
-                    if(rotation > 30 && rotation <= 50)
+                    if(rotation >= 20 && rotation <= 30)
+                    {
+                        rotation += 0.6;
+                    }else
+                    if(rotation > 30 && rotation <= 40)
+                    {
+                        rotation += 0.8;
+                    }else
+                    if(rotation > 40 && rotation <= 50)
                     {
                         rotation += 1.2;
                     }else
-                    if(rotation > 50 && rotation <= 80)
+                    if(rotation > 50 && rotation <= 60)
                     {
                         rotation += 1.8;
                     }else
-                    if(rotation > 80 && rotation <= maxRotation)
+                    if(rotation >= 60 && rotation <= 70)
+                    {
+                        rotation += 2.0;
+                    }else
+                    if(rotation >= 70 && rotation <= 80)
                     {
                         rotation += 2.2;
+                    }else
+                    if(rotation > 80 && rotation <= maxRotation)
+                    {
+                        rotation += 2.4;
                     }
 
                 }
             }else
             {
                 if(rotation > -maxRotation)
-                    if(rotation <= 0 && rotation >= -20)
+                    if(rotation <= 0 && rotation >= -10)
                     {
                         rotation -= 0.2;
                     }else
-                    if(rotation < -20 && rotation >= -30)
+                    if(rotation <= -10 && rotation >= -20)
                     {
                         rotation -= 0.4;
                     }else
-                    if(rotation < -30 && rotation >= -50)
+                    if(rotation <= -20 && rotation >= -30)
+                    {
+                        rotation -= 0.6;
+                    }else
+                    if(rotation <= -30 && rotation >= -40)
+                    {
+                        rotation -= 0.8;
+                    }else
+                    if(rotation <= -40 && rotation >= -50)
                     {
                         rotation -= 1.2;
                     }else
-                    if(rotation < -50 && rotation >= -80)
+                    if(rotation < -50 && rotation >= -60)
                     {
                         rotation -= 1.8;
                     }else
-                    if(rotation < -80 && rotation >= -maxRotation)
+                    if(rotation < -60 && rotation >= -70)
+                    {
+                        rotation -= 2.0;
+                    }else
+                    if(rotation < -70 && rotation >= -80)
                     {
                         rotation -= 2.2;
+                    }else
+                    if(rotation < -80 && rotation >= -maxRotation)
+                    {
+                        rotation -= 2.4;
                     }
             }
 

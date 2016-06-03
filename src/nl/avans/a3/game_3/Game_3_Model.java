@@ -15,7 +15,7 @@ public class Game_3_Model implements Model{
     private final int START_X = 350;
     private boolean hitPlayer1, hitPlayer2;
     private Timer countDownTimer;
-    private int time = 5;
+    private int time = 15;
     private boolean ingame = true;
     private BufferedImage background;
     private ArrayList<Particle> particles;
