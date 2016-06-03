@@ -4,6 +4,7 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -34,6 +35,11 @@ public class Game_2_Model implements Model
         }
     }
 
+    boolean intersects(Collidiable a, Collidiable b)
+    {
+        return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.width && a.y + a.width < b.y;
+    }
+
     private class Player extends Collidiable
     {
         PlayerState state;
@@ -56,7 +62,10 @@ public class Game_2_Model implements Model
 
         private double heightAt(double x)
         {
-            return (Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT);
+            return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
+            // TODO fix the fancy curve
+            //if (x < JUMP_DURATION/2.0) return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
+            //else return (Math.sin((x-(JUMP_DURATION/4.0))/(JUMP_DURATION/Math.PI))*(JUMP_HEIGHT/2))+JUMP_HEIGHT/2;
         }
 
         public void update()
@@ -89,6 +98,17 @@ public class Game_2_Model implements Model
         }
     }
 
+    ArrayList<Platform> platforms;
+
+    private class Platform extends Collidiable
+    {
+        Platform(float width, float height) {
+            super(width, height, true);
+        }
+    }
+
+    private class
+
     private class WoodBlock extends Collidiable
     {
 
@@ -101,12 +121,14 @@ public class Game_2_Model implements Model
 
     public Game_2_Model()
     {
+        platforms = new ArrayList<>();
     }
 
     @Override
     public void start() {
         for (int i = 0; i < PLAYER_COUNT; i++)
             players[i] = new Player(i, 100+75*i, 400);
+
     }
 
     Random rand = new Random(System.currentTimeMillis());

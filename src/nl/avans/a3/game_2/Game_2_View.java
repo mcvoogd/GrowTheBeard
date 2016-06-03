@@ -41,9 +41,12 @@ public class Game_2_View implements View {
 
     private ArrayList<Player> players = new ArrayList<>();
 
+    BufferedImage testImage;
+
     @Override
     public void start() {
-
+        testImage = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+        testImage.createGraphics().fillRect(0, 0, 100, 100);
     }
 
     @Override
@@ -59,6 +62,8 @@ public class Game_2_View implements View {
 
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
         }
+
+        g.drawImage(testImage, 100, 100, null);
     }
 
     @Override
