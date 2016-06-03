@@ -17,6 +17,8 @@ import nl.avans.a3.main_menu.MainMenuView;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.single_menu.SingleMenuModel;
+import nl.avans.a3.single_menu.SingleMenuView;
 import nl.avans.a3.util.Logger;
 
 import javax.swing.*;
@@ -102,6 +104,9 @@ public class ViewHandler implements ModelListener{
         }
         if(model instanceof MainMenuModel){
             return new MainMenuView((MainMenuModel) model);
+        }
+        if(model instanceof SingleMenuModel){
+            return new SingleMenuView((SingleMenuModel) model);
         }
         if(model instanceof Game_Example_Model)
         {

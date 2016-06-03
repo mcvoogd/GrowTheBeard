@@ -9,6 +9,8 @@ import nl.avans.a3.game_example.Game_Example_Controller;
 import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.single_menu.SingleMenuController;
+import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.boot_menu.BootController;
@@ -77,6 +79,9 @@ public class ControllerHandler implements ModelListener, KeyListener {
         if(model instanceof MainMenuModel)
         {
             return new MainMenuController((MainMenuModel) model, wiimoteHandler);
+        }
+        if(model instanceof SingleMenuModel){
+            return new SingleMenuController((SingleMenuModel) model, wiimoteHandler);
         }
         if(model instanceof Game_Example_Model)
         {

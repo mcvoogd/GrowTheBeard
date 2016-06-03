@@ -8,6 +8,7 @@ import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
+import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.geom.Point2D;
@@ -43,8 +44,8 @@ public class MainMenuModel implements Model{
         switch (mode)
         {
             case CHOOSE_PARTY: /**ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler));*/
-                partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this);
-            case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model())); break;
+                partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
+            case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new SingleMenuModel())); break;
         }
 
     }
