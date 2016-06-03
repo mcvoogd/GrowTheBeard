@@ -1,10 +1,8 @@
 package nl.avans.a3.single_menu;
 
 
-import nl.avans.a3.event.MainMenuEvent;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.event.NewModel;
-import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
@@ -31,7 +29,7 @@ public class SingleMenuController implements Controller {
         if(wiimoteHandler.isWiiMotesConnected()) {
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
             }
-            pointerLocation = new Point2D.Double(wiimoteHandler.getPointer(0).getX()*((1920.0 + SCREEN_OFFSET)/1024.0) - SCREEN_OFFSET/2, wiimoteHandler.getPointer(0).getY()*((1080.0 + SCREEN_OFFSET)/900.0) - SCREEN_OFFSET/2);
+            pointerLocation = new Point2D.Double(wiimoteHandler.getCenteredPointer(0).getX()*((1920.0 + SCREEN_OFFSET)/1024.0) - SCREEN_OFFSET/2, wiimoteHandler.getCenteredPointer(0).getY()*((1080.0 + SCREEN_OFFSET)/900.0) - SCREEN_OFFSET/2);
             model.setPointer(pointerLocation);
         }
         if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_HOME) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_HOME)){

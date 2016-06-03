@@ -3,8 +3,6 @@ package nl.avans.a3.main_menu;
 import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.game_2.Game_2_Model;
-import nl.avans.a3.game_3.Game_3_Model;
-import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -16,8 +14,7 @@ import java.awt.geom.Point2D;
 public class MainMenuModel implements Model{
     private Point2D pointer;
     PartyModeHandler partyModeHandler;
-
-
+    
     public enum Mode{
         CHOOSE_PARTY, CHOOSE_SINGLE
     }
@@ -47,7 +44,6 @@ public class MainMenuModel implements Model{
                 partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
             case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new SingleMenuModel())); break;
         }
-
     }
 
     public Point2D getPointer(){
@@ -71,6 +67,4 @@ public class MainMenuModel implements Model{
             case CHOOSE_SINGLE: mode = Mode.CHOOSE_PARTY; break;
         }
     }
-
-
 }
