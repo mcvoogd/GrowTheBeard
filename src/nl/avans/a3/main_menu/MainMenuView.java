@@ -32,11 +32,11 @@ public class MainMenuView implements View {
     private boolean triggered = false;
     private double speed = 0.5;
 
-    public enum Mode{
-        CHOOSE_PARTY, CHOOSE_SINGLE
-    }
+    private MainMenuModel model;
 
-    private Mode mode = Mode.CHOOSE_SINGLE;
+    public MainMenuView(MainMenuModel model){
+        this.model = model;
+    }
 
     @Override
     public void start() {
@@ -58,7 +58,7 @@ public class MainMenuView implements View {
         }
         rotation += speed;
 
-        switch(mode){
+        switch(model.getMode()){
             case CHOOSE_PARTY:
                 g.drawImage(partyGame, EasyTransformer.rotateWithOffset(rotation, 350, 10, PARTY_BOARD_X, PARTY_BOARD_Y), null);
                 g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
@@ -70,7 +70,6 @@ public class MainMenuView implements View {
         }
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
         g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
-
     }
 
     @Override
@@ -82,16 +81,10 @@ public class MainMenuView implements View {
     public void onModelEvent(ModelEvent event) {
         if(event instanceof MainMenuEvent)
         {
-            changeMode();
+            model.changeMode();
         }
+
     }
 
-    public void changeMode()
-    {
-        switch (mode)
-        {
-            case CHOOSE_PARTY: mode = Mode.CHOOSE_SINGLE; break;
-            case CHOOSE_SINGLE: mode = Mode.CHOOSE_PARTY; break;
-        }
-    }
+
 }

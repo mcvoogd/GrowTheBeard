@@ -31,7 +31,6 @@ public class ModelHandler implements ModelListener{
     public void start()
     {
         //start with boot.
-
         changeModel(new NewModel(null, new BootModel()));
     }
 

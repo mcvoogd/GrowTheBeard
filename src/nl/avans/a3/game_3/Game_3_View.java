@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class Game_3_View implements View{
 
-    Game_3_Model gameModel;
+    private Game_3_Model gameModel;
     private BufferedImage banner;
     private BufferedImage winscreen;
     private BufferedImage[] winner;
