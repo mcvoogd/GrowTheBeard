@@ -9,17 +9,22 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.util.WiimoteHandler;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 
 public class MainMenuController implements Controller {
+    private static final double SCREEN_OFFSET = 200.0;
     private boolean exit = false;
     private MainMenuModel model;
     private WiimoteHandler wiimoteHandler;
+    private Point2D pointerLocation;
 
     public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
     {
         this.model = model;
         this.wiimoteHandler = wiimoteHandler;
+        wiimoteHandler.activateMotionSensing();
     }
     @Override
     public void update() {
@@ -27,6 +32,8 @@ public class MainMenuController implements Controller {
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
                 ModelHandler.instance.onModelEvent(new MainMenuEvent());
             }
+            pointerLocation = new Point2D.Double(wiimoteHandler.getPointer(0).getX()*((1920.0 + SCREEN_OFFSET)/1024.0) - SCREEN_OFFSET/2, wiimoteHandler.getPointer(0).getY()*((1080.0 + SCREEN_OFFSET)/900.0) - SCREEN_OFFSET/2);
+            model.setPointer(pointerLocation);
         }
     }
 

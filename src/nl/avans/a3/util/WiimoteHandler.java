@@ -1,6 +1,5 @@
 package nl.avans.a3.util;
 
-import org.apache.commons.lang3.Pair;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.GForce;
@@ -12,6 +11,7 @@ import wiiusej.wiiusejevents.wiiuseapievents.*;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -472,10 +472,22 @@ public class WiimoteHandler {
     public void deactivateRumble(int wiiMoteID){
         wiimotes[wiiMoteID].deactivateRumble();
     }
-    
-//    public Pair<Integer, Integer> getPointer(int wiimoteID){
-//        //for();
-//    }
+
+
+    /**
+     * Returns an estimated point (center) in an area of 1024 * 900
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     * @return the estimated point
+     */
+    public Point2D getPointer(int wiimoteID){
+        Point2D point = new Point2D.Double(0, 0);
+        for(int i = 0; irSources[wiimoteID].length > i; i++){
+            point.setLocation(point.getX() + irSources[wiimoteID][i].getX(), point.getY() + irSources[wiimoteID][i].getY());
+        }
+        point.setLocation(point.getX()/irSources[wiimoteID].length, point.getY()/irSources[wiimoteID].length);
+        return point;
+    }
 
     /**
      * Returns if the button of wiimote has been pressed.

@@ -9,7 +9,7 @@ import nl.avans.a3.mvc_interfaces.View;
 import java.awt.*;
 
 public class MainMenuView implements View {
-
+    private MainMenuModel model;
     private Image background;
     private Image partyGame;
     private Image singleGame;
@@ -27,7 +27,7 @@ public class MainMenuView implements View {
 
     private final int NAIL_RIGHT_OFFSET_X = 200;
     private final int NAIL_RIGHT_OFFSET_Y = 35;
-
+    
     private double rotation = 0.0;
     private boolean triggered = false;
     private double speed = 0.5;
@@ -37,7 +37,10 @@ public class MainMenuView implements View {
     }
 
     private Mode mode = Mode.CHOOSE_SINGLE;
-
+    public MainMenuView(MainMenuModel model){
+        this.model = model;
+    }
+    
     @Override
     public void start() {
         background = ResourceHandler.getImage("res/menu/background.png");
@@ -70,7 +73,8 @@ public class MainMenuView implements View {
         }
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
         g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
-
+        g.setColor(Color.red);
+        g.fillOval((int)model.getPointer().getX(), (int)model.getPointer().getY(), 10, 10);
     }
 
     @Override

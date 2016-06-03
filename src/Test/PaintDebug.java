@@ -45,6 +45,9 @@ public class PaintDebug extends JFrame{
             super.paintComponent(graphics);
             Graphics2D g = (Graphics2D) graphics;
             w.drawDebug(g);
+            g.setColor(Color.RED);
+            System.out.println(w.getPointer(0).getX());
+            g.fillOval((int) w.getPointer(0).getX(), (int) w.getPointer(0).getY(), 10, 10);
             // fixes stutter on Linux systems
             Toolkit.getDefaultToolkit().sync();
         }

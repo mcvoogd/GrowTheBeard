@@ -87,7 +87,7 @@ public class ViewHandler implements ModelListener{
             return new BootView();
         }
         if(model instanceof MainMenuModel){
-            return new MainMenuView();
+            return new MainMenuView((MainMenuModel) model);
         }
         if(model instanceof Game_Example_Model)
         {
