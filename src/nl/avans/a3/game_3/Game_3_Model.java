@@ -5,6 +5,8 @@ import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Game_3_Model implements Model{
 
@@ -16,6 +18,7 @@ public class Game_3_Model implements Model{
     private int time = 30;
     private boolean ingame = true;
     private BufferedImage background;
+    private ArrayList<Particle> particles;
 
     public int getScorePlayer1() {
         return scorePlayer1;
@@ -39,11 +42,11 @@ public class Game_3_Model implements Model{
 
     @Override
     public void start() {
-
+        particles = new ArrayList<>();
         trees[0] = new Tree(0, 0, true);
         trees[1] = new Tree(1720, 0, false);
-        characters[0] = new Character(1, START_X, 500);
-        characters[1] = new Character(2, 1920 - START_X - 328, 500); //screenwidth - startPlayer - widthPlayer
+        characters[0] = new Character(1, START_X, 480);
+        characters[1] = new Character(2, 1920 - START_X - 328, 480); //screenwidth - startPlayer - widthPlayer
         countDownTimer = new Timer(1000, e -> {time--; if(time == -1) ingame = false;} );
         countDownTimer.start();
     }
@@ -53,6 +56,16 @@ public class Game_3_Model implements Model{
         for (Tree tree : trees) {
             tree.update();
         }
+
+        Iterator it = particles.iterator();
+        while (it.hasNext()){
+            Particle p = (Particle) it.next();
+            p.update();
+            if(p.getLife() > 10){
+                it.remove();
+            }
+        }
+
         if(!ingame)
         {
             countDownTimer.stop();
@@ -102,6 +115,15 @@ public class Game_3_Model implements Model{
             case 1 : scorePlayer1 += damage; break;
             case 2 : scorePlayer2 += damage; break;
         }
+        switch (tree){
+            case 0 : for(int i = 0; i < 10; i++){
+                particles.add(new Particle( 100, 780, i*36));
+            } break;
+            case 1:
+                for(int i = 0; i < 10; i++){
+                    particles.add(new Particle(1920 - 100, 780, i*36));
+                } break;
+        }
     }
 
     public boolean getFallenPerTree(int tree)
@@ -144,5 +166,9 @@ public class Game_3_Model implements Model{
 
         }
         return null;
+    }
+
+    public ArrayList<Particle> getParticles(){
+        return particles;
     }
 }

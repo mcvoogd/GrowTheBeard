@@ -79,6 +79,10 @@ public class Game_3_View implements View{
                 drawGameEnd(g, 0);
             }
         }
+
+        for (Particle p : gameModel.getParticles()) {
+            p.draw(g);
+        }
     }
 
     private void drawGameEnd(Graphics2D g, int player) {
