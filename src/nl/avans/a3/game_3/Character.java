@@ -19,7 +19,7 @@ public class Character {
         this.playerNumber = playerNumber;
         this.x = x;
         this.y = y;
-//        initImage();
+        initImage();
         setImage(0);
 
         timer = new Timer(300/3, e -> {
@@ -82,12 +82,14 @@ public class Character {
 
     public void initImage(){
         if(playerNumber == 1){
-            mainImage = ResourceHandler.getImage("res/images_game1/person1.png");
+            mainImage = ResourceHandler.getImage("res/images_game2/person1.png");
         }else{
-            mainImage = ResourceHandler.getImage("res/images_game1/person2.png");
+            mainImage = ResourceHandler.getImage("res/images_game2/person2.png");
         }
-        mainImage = (BufferedImage) mainImage.getScaledInstance(168 * 4, 246, BufferedImage.SCALE_DEFAULT);
-        mainImage = mainImage.getSubimage(0, 0, 168, 246);
-
+            Image temp = mainImage;
+            BufferedImage bufferedImage = new BufferedImage(200, 600, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = bufferedImage.createGraphics();
+            g2.drawImage(temp, 0, 0, null);
+            mainImage = bufferedImage.getSubimage(0, 0, 200, 300);
     }
 }

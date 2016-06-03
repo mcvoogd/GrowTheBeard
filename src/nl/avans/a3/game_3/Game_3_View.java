@@ -98,14 +98,14 @@ public class Game_3_View implements View{
                 g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
                 break; //default
             case 1 :
-                g.drawImage(winner[0], 500, 100, null); break;
+                g.drawImage(winner[0], 500, 100, null); break; //TEKST
             case 2 :
-                g.drawImage(winner[1], 500, 100, null); break;
+                g.drawImage(winner[1], 500, 100, null); break; //TEKST
 
         }
 
-        g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 515, 400, 1315/4, 1922/4,  null);
-        g.drawImage(gameModel.getPlayerImage(2), (1920/2) - (1315/8) + 520, 400, 1315/4, 1922/4, null);
+        g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
+        g.drawImage(gameModel.getPlayerImage(2), (1920/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
 
 
     }
