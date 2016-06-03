@@ -7,6 +7,8 @@ import nl.avans.a3.util.ResourceHandler;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import java.lang.reflect.Array;
+import java.nio.Buffer;
 import java.util.ArrayList;
 
 /**
@@ -41,6 +43,19 @@ public class Game_2_View implements View {
 
     private ArrayList<Player> players = new ArrayList<>();
 
+    private class Platform {
+        float x, y;
+        BufferedImage image;
+
+        Platform(float x, float y, BufferedImage platformImage) {
+            this.x = x;
+            this.y = y;
+            image = platformImage;
+        }
+    }
+
+    private ArrayList<Platform> platforms = new ArrayList<>();
+
     BufferedImage testImage;
 
     @Override
@@ -62,7 +77,9 @@ public class Game_2_View implements View {
 
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
         }
+        for (Platform platform : platforms) {
 
+        }
         g.drawImage(testImage, 100, 100, null);
     }
 

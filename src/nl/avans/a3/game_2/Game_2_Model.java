@@ -21,6 +21,7 @@ public class Game_2_Model implements Model
     final int BLOCK_HEIGHT = 20;
 
     public enum PlayerState{JUMPING, ON_KINETIC}
+    public enum PlatformState{FALLING, REMOVE}
 
     private class Collidiable
     {
@@ -102,8 +103,29 @@ public class Game_2_Model implements Model
 
     private class Platform extends Collidiable
     {
-        Platform(float width, float height) {
+        PlatformState state;
+        boolean falling = false;
+        float x, y;
+
+        Platform(float width, float height, float x, float y) {
             super(width, height, true);
+            this.x = x;
+            this.y = y;
+        }
+
+        final int FALL_DURATION = 500;
+        int fallTicks = 0;
+
+        public void update() {
+            if (falling && state != PlatformState.REMOVE) {
+
+            }
+            if (state == PlatformState.REMOVE) {
+
+            }
+            else {
+
+            }
         }
     }
 
