@@ -38,7 +38,7 @@ public class Game_2_Model implements Model
 
     boolean intersects(Collidiable a, Collidiable b)
     {
-        return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.width && a.y + a.width < b.y;
+        return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height < b.y;
     }
 
     private class Player extends Collidiable
