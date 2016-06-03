@@ -55,7 +55,7 @@ public class Character {
             playerImage = image.getSubimage(614 * imageNumber, 0, 614, 469);
             armImage = image.getSubimage(614 * (imageNumber + 1), 0, 614, 469);
         }else{
-            BufferedImage image = (BufferedImage) ResourceHandler.getImage("res/images_game3/person1.png");
+            BufferedImage image = (BufferedImage) ResourceHandler.getImage("res/images_game3/person2.png");
             playerImage = image.getSubimage(614 * imageNumber, 0, 614, 469);
             armImage = image.getSubimage(614 * (imageNumber + 1), 0, 614, 469);
         }

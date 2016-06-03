@@ -55,17 +55,11 @@ public class Game_3_View implements View{
                     i.update();
                     i.draw(g);
                 }
-                if (gameModel.getHitPlayer(1)) {
-                    g.fillOval(400, 300, 50, 50);
-                }
             }
             if (!gameModel.getFallenPerTree(1)) {
                 for (DamageNumber i : gameModel.getTrees()[1].getDamageNumbers()) {
                     i.update();
                     i.draw(g);
-                }
-                if (gameModel.getHitPlayer(2)) {
-                    g.fillOval(1920 - 400, 300, 50, 50);
                 }
             }
         }

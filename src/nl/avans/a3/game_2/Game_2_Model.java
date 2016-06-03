@@ -107,8 +107,6 @@ public class Game_2_Model implements Model
         }
     }
 
-    private class
-
     private class WoodBlock extends Collidiable
     {
 

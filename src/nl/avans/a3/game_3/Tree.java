@@ -32,6 +32,7 @@ public class Tree {
     private final int MAXHITPOINTS = 250;
     private BufferedImage image;
     private BufferedImage trunk;
+    private int xOffset;
     private float alpha = 1.0f;
     private  int count = 0;
     private boolean switched = false;
@@ -50,12 +51,14 @@ public class Tree {
         this.leftOrRight = leftOrRight;
         sprites = new BufferedImage[6];
         if(!leftOrRight) {
+            xOffset = 7;
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
             for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
             }
         }else
         {
+            xOffset = -7;
             image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
             for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
@@ -131,7 +134,7 @@ public class Tree {
                 }
                 AlphaComposite old = (AlphaComposite) g.getComposite();
                 g.setComposite(alcom);
-                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x + xOffset, y - 60), null);
                 g.setComposite(old);
                 if(count == 6)
                 {
@@ -142,7 +145,7 @@ public class Tree {
                 }
             }
             else {
-                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+                g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x + xOffset, y - 60), null);
 
             }
         }
@@ -155,7 +158,7 @@ public class Tree {
             AlphaComposite old = (AlphaComposite) g.getComposite();
             AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
             g.setComposite(alcom);
-            g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x, y - 60), null);
+            g.drawImage(sprite, EasyTransformer.rotateAroundCenterWithOffset(sprite, rotation, 0, 375, x+ xOffset, y - 60), null);
             g.setComposite(old);
 
             if(alpha < 0.5f)
