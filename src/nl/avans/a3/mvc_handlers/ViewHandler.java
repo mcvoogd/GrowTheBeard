@@ -28,6 +28,7 @@ public class ViewHandler implements ModelListener{
     private View view;
     private JFrame frame;
     private JPanel panel;
+    private JPanel mvcPanel;
     private Timer repainter = new Timer(1000/60, e -> frame.repaint());
 
     public enum DisplayMode2{FULLSCREEN, WINDOW, BORDERLES_WINDOW}
@@ -79,6 +80,14 @@ public class ViewHandler implements ModelListener{
     @Override
     public void onModelEvent(ModelEvent event) {
         if (event instanceof NewModel){
+            if(frame.getContentPane() != mvcPanel && mvcPanel != null)
+            {
+                frame.setContentPane(mvcPanel);
+                frame.repaint();
+                frame.invalidate();
+                frame.revalidate();
+            }
+            panel = mvcPanel;
             if (view != null) view.close();
             view = selectedView(((NewModel)event).newModel);
             Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
@@ -90,6 +99,7 @@ public class ViewHandler implements ModelListener{
 
         if(event instanceof NewGameEvent)
         {
+            mvcPanel = (JPanel) frame.getContentPane();
             frame.setContentPane(((NewGameEvent) event).getPanel());
             frame.repaint();
             frame.invalidate();

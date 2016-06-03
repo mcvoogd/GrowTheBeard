@@ -166,7 +166,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				drawGameEnd(g, 2);
 			}
 			else{
-				//drawGameEnd(g);
+				drawGameEnd(g, 0);
 			}
 			if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 				PartyModeHandler.notifyNextGame();

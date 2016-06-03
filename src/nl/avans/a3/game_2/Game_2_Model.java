@@ -20,6 +20,8 @@ public class Game_2_Model implements Model
     final int BLOCK_WIDTH = 50;
     final int BLOCK_HEIGHT = 20;
 
+    //TODO : ADD A BOOLEAN TO SEE IF INGAME.
+    //TODO : ADD A TIMER THAT COUNTS DOWN FROM 30 TO 0;
     public enum PlayerState{JUMPING, ON_KINETIC}
     public enum PlatformState{FALLING, REMOVE}
 
