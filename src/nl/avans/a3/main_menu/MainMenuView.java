@@ -9,7 +9,6 @@ import nl.avans.a3.mvc_interfaces.View;
 import java.awt.*;
 
 public class MainMenuView implements View {
-    private MainMenuModel model;
     private Image background;
     private Image partyGame;
     private Image singleGame;
@@ -32,10 +31,10 @@ public class MainMenuView implements View {
     private boolean triggered = false;
     private double speed = 0.5;
 
-    private MainMenuModel model;
+    private MainMenuModel mainMenuModel;
     
     public MainMenuView(MainMenuModel model){
-        this.model = model;
+        this.mainMenuModel = model;
     }
     
     @Override
@@ -58,7 +57,7 @@ public class MainMenuView implements View {
         }
         rotation += speed;
 
-        switch(model.getMode()){
+        switch(mainMenuModel.getMode()){
             case CHOOSE_PARTY:
                 g.drawImage(partyGame, EasyTransformer.rotateWithOffset(rotation, 350, 10, PARTY_BOARD_X, PARTY_BOARD_Y), null);
                 g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
@@ -71,7 +70,8 @@ public class MainMenuView implements View {
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
         g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
         g.setColor(Color.red);
-        g.fillOval((int)model.getPointer().getX(), (int)model.getPointer().getY(), 10, 10);
+        if(mainMenuModel.getPointer() != null)
+            g.fillOval((int) mainMenuModel.getPointer().getX(), (int) mainMenuModel.getPointer().getY(), 10, 10);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class MainMenuView implements View {
     public void onModelEvent(ModelEvent event) {
         if(event instanceof MainMenuEvent)
         {
-            model.changeMode();
+            mainMenuModel.changeMode();
         }
 
     }

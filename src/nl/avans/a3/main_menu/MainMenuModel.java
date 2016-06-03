@@ -1,10 +1,13 @@
 package nl.avans.a3.main_menu;
 
+import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.geom.Point2D;
 
@@ -34,9 +37,14 @@ public class MainMenuModel implements Model{
 
     }
     
-    public void onMenuChoose()
+    public void onMenuChoose(WiimoteHandler wiimoteHandler)
     {
-        ModelHandler.instance.onModelEvent(new NewModel(this, new Game_3_Model()));
+        switch (mode)
+        {
+            case CHOOSE_PARTY: ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
+            case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model())); break;
+        }
+
     }
 
     public Point2D getPointer(){
