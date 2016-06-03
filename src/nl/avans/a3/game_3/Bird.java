@@ -2,7 +2,9 @@ package nl.avans.a3.game_3;
 
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
+import sun.util.BuddhistCalendar;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -10,13 +12,23 @@ import java.awt.image.BufferedImage;
 public class Bird {
 
     private int x, y;
-    private final int WIDTH = 441/4, HEIGHT = 247/4;
+    private final int WIDTH = 103, HEIGHT = 142;
     private boolean direction, wait;
     private BufferedImage image;
+    private BufferedImage[] images = new BufferedImage[4];
+    private int imageNumber = 0;
+    private boolean upImage = true;
 
     public Bird(){
         y = 250;
         image = ResourceHandler.getImage("res/images_game3/bird.png");
+        for (int i = 0; i < 4; i++) {
+            images[i] = image.getSubimage(103 * i,0, 103, 142);
+        }
+        image = images[imageNumber];
+
+        Timer timer = new Timer(1000/8, e_-> animate());
+        timer.start();
     }
 
     public void update(){
@@ -61,5 +73,20 @@ public class Bird {
         if(chance > 290){
             wait = false;
         }
+    }
+
+    private void animate(){
+        if(upImage){
+            imageNumber++;
+        }else{
+            imageNumber--;
+        }
+
+        if(imageNumber > 3 || imageNumber < 0){
+            imageNumber = 0;
+            upImage = !upImage;
+        }
+        image = images[imageNumber];
+
     }
 }
