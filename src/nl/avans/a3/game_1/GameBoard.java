@@ -1,6 +1,7 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.EasyTransformer;
+import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.game_1.Util.Images;
 
@@ -52,6 +53,13 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int START_X_PLAYER2 = 1280;
 	private final int PLAYER_Y = -100;
 
+	private BufferedImage text;
+	private double textScale = 0.05;
+	private static final double CHANGE_SPEED = 0.0005;
+	private double change = CHANGE_SPEED;
+	private static final double MAX_SCALE = 0.15;
+	private static final double MIN_SCALE = 0.1;
+
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
 	private BufferedImage[] woodImages = new BufferedImage[3];
@@ -83,7 +91,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
-
+        text = ResourceHandler.getImage("res/images_scoreboard/text.png");
 		initWoodBlocks();
 		if (inGame) {
 			endTimer = new Timer(time * 1000, e -> inGame = !inGame);
@@ -188,6 +196,16 @@ public class GameBoard extends JPanel implements ActionListener {
 	private void drawGameEnd(Graphics g, int player) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(Images.game1Winscreen.getScaledInstance(1920, 1080, BufferedImage.SCALE_DEFAULT), 0, 0, null);
+
+		textScale += change;
+		if(textScale > MAX_SCALE){
+			change = -CHANGE_SPEED;
+		}else if(textScale < MIN_SCALE){
+			change = CHANGE_SPEED;
+		}
+
+		g2.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
+
 		Font font = new Font("Sansserif", Font.BOLD, 360);
 		FontMetrics fm = getFontMetrics(font);
 		g2.setFont(font);

@@ -16,6 +16,7 @@ public class MainMenuView implements View {
     private Image singleGame;
     private Image leftNail;
     private Image rightNail;
+    private Image cursor;
 
     private final int PARTY_BOARD_X = 270;
     private final int PARTY_BOARD_Y = 290;
@@ -51,6 +52,7 @@ public class MainMenuView implements View {
         singleGame = ResourceHandler.getImage("res/menu/single.png");
         leftNail = ResourceHandler.getImage("res/menu/nail1.png");
         rightNail = ResourceHandler.getImage("res/menu/nail2.png");
+        cursor = ResourceHandler.getImage("res/menu/cursor.png");
         //hitboxes for pointer.
         partymode = new Rectangle2D.Double(PARTY_BOARD_X, PARTY_BOARD_Y+160, partyGame.getWidth(null), partyGame.getHeight(null)-160);
         singlemode = new Rectangle2D.Double(SINGLE_BOARD_X, SINGLE_BOARD_Y+120, singleGame.getWidth(null), singleGame.getHeight(null)-120);
@@ -73,8 +75,12 @@ public class MainMenuView implements View {
 
         {
             //THIS IS TO CONTROL THE POINTER WITH KEYBOARD.
-            g.fillOval(mainMenuModel.getPointX(), mainMenuModel.getPointY(), 20, 20);
+            //g.fillOval(mainMenuModel.getPointX(), mainMenuModel.getPointY(), 20, 20);
+            //g.draw(partymode);
+            //g.draw(singlemode);
+
             drawChosenMenuWithPointer(g, new Point2D.Double(mainMenuModel.getPointX(), mainMenuModel.getPointY()));
+            g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
         }
         if(mainMenuModel.getPointer() != null) {
             drawChosenMenuWithPointer(g, mainMenuModel.getPointer());

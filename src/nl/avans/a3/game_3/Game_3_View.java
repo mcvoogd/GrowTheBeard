@@ -3,6 +3,7 @@ package nl.avans.a3.game_3;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.game_1.Util.Images;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
@@ -15,6 +16,14 @@ public class Game_3_View implements View{
     private BufferedImage winscreen;
     private BufferedImage[] winner;
     private BufferedImage winnerImage;
+    private BufferedImage text;
+
+    private double textScale = 0.05;
+    private static final double CHANGE_SPEED = 0.0005;
+    private double change = CHANGE_SPEED;
+    private static final double MAX_SCALE = 0.15;
+    private static final double MIN_SCALE = 0.1;
+
     public Game_3_View(Game_3_Model gameModel){
         this.gameModel = gameModel;
     }
@@ -22,6 +31,7 @@ public class Game_3_View implements View{
     @Override
     public void start() {
         winner = new BufferedImage[2];
+        text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = (BufferedImage)  ResourceHandler.getImage("res/images_game1/banner.png");
         winscreen = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/background.png");
@@ -87,6 +97,16 @@ public class Game_3_View implements View{
     private void drawGameEnd(Graphics2D g, int player) {
 
         g.drawImage(winscreen, 0, 0, 1920, 1080, null);
+
+        textScale += change;
+        if(textScale > MAX_SCALE){
+            change = -CHANGE_SPEED;
+        }else if(textScale < MIN_SCALE){
+            change = CHANGE_SPEED;
+        }
+
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
+
         Font font = new Font("Sansserif", Font.BOLD, 360);
         FontMetrics fm = g.getFontMetrics(font);
         g.setFont(font);
@@ -105,6 +125,7 @@ public class Game_3_View implements View{
 
         g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
         g.drawImage(gameModel.getPlayerImage(2), (1920/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+
 
 
     }
