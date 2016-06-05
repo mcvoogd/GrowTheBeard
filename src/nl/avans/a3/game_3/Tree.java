@@ -37,7 +37,6 @@ public class Tree {
     private  int count = 0;
     private boolean switched = false;
     private AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
-
     private ArrayList<DamageNumber> damageNumbers = new ArrayList<>();
 
     public Tree(int x, int y, boolean leftOrRight)

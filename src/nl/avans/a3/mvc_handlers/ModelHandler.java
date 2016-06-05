@@ -36,12 +36,15 @@ public class ModelHandler implements ModelListener{
 
     public void changeModel(NewModel event)
     {
-        Logger.instance.log("MH001", "model changed from ("+((event.oldModel == null) ? "" : event.oldModel.getClass().getName())+") to ("+event.newModel.getClass().getName()+")", Logger.LogType.DEBUG);
-        model = event.newModel;
-        if(event.oldModel != null) {
+        if(event.newModel != null) {
+                Logger.instance.log("MH001", "model changed from (" + ((event.oldModel == null) ? "" : event.oldModel.getClass().getName()) + ") to (" + event.newModel.getClass().getName() + ")", Logger.LogType.DEBUG);
+                model = event.newModel;
+            }
+        if(event.oldModel != null)
+        {
             event.oldModel.close();
         }
-            dispatchEvent(event);
+        dispatchEvent(event);
         model.start();
     }
 

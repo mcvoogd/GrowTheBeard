@@ -90,9 +90,10 @@ public class ViewHandler implements ModelListener{
             panel = mvcPanel;
             if (view != null) view.close();
             view = selectedView(((NewModel)event).newModel);
-            Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
-            view.start();
-
+            if (view != null) {
+                Logger.instance.log("VH001", "new view (" + view.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
+                view.start();
+            }
         }else{
             if (view != null) view.onModelEvent(event);
         }

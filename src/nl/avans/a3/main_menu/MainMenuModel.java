@@ -10,20 +10,24 @@ import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class MainMenuModel implements Model{
     private Point2D pointer;
     PartyModeHandler partyModeHandler;
-    
+
+
+    private int pointX = 0;
+    private int pointY = 0;
+
     public enum Mode{
-        CHOOSE_PARTY, CHOOSE_SINGLE
+        CHOOSE_PARTY, CHOOSE_SINGLE, DEFAULT
     }
 
-    private Mode mode = Mode.CHOOSE_SINGLE;
+    private Mode mode = Mode.CHOOSE_PARTY;
 
     @Override
     public void start() {
-
     }
 
     @Override
@@ -35,7 +39,36 @@ public class MainMenuModel implements Model{
     public void close() {
 
     }
-    
+
+
+    public int getPointY() {
+        return pointY;
+    }
+
+    public int getPointX() {
+        return pointX;
+    }
+
+    public void pointToRight()
+    {
+        pointX+= 10;
+    }
+
+    public void pointToLeft()
+    {
+        pointX-= 10;
+    }
+
+    public void pointToTop()
+    {
+        pointY-= 10;
+    }
+
+    public void pointToBottem()
+    {
+        pointY+= 10;
+    }
+
     public void onMenuChoose(WiimoteHandler wiimoteHandler)
     {
         switch (mode)
@@ -59,12 +92,14 @@ public class MainMenuModel implements Model{
         return mode;
     }
 
-    public void changeMode()
+    public void setMode(Mode newMode){mode = newMode;}
+
+    public void changeMode(Mode chosenmode)
     {
-        switch (mode)
+        switch (chosenmode)
         {
-            case CHOOSE_PARTY: mode = Mode.CHOOSE_SINGLE; break;
-            case CHOOSE_SINGLE: mode = Mode.CHOOSE_PARTY; break;
+            case CHOOSE_PARTY: mode = Mode.CHOOSE_PARTY; break;
+            case CHOOSE_SINGLE: mode = Mode.CHOOSE_SINGLE; break;
         }
     }
 }

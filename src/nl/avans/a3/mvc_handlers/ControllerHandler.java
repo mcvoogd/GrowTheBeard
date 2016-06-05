@@ -35,7 +35,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
-        updateControllerTimer = new Timer(1000/60, e -> controller.update());
+        updateControllerTimer = new Timer(1000/60, e -> { if(controller != null)controller.update();});
         wiimoteHandler = new WiimoteHandler();
     }
 
@@ -44,10 +44,12 @@ public class ControllerHandler implements ModelListener, KeyListener {
         //System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
-            this.controller = selectController(((NewModel) event).newModel);
-            if(!updateControllerTimer.isRunning())
-                Logger.instance.log("VH001", "new controller ("+this.controller.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
-            updateControllerTimer.start();
+            if(event != null) {
+                this.controller = selectController(((NewModel) event).newModel);
+                if (!updateControllerTimer.isRunning())
+                    Logger.instance.log("VH001", "new controller (" + this.controller.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
+                updateControllerTimer.start();
+            }
         }else
         {
             if (controller != null) controller.onModelEvent(event);
@@ -91,7 +93,6 @@ public class ControllerHandler implements ModelListener, KeyListener {
         {
             return new Game_2_Controller((Game_2_Model)model, wiimoteHandler);
         }
-
         if(model instanceof Game_3_Model){
             return new Game_3_Controller((Game_3_Model) model, wiimoteHandler);
         }
