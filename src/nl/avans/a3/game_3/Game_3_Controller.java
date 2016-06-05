@@ -57,7 +57,7 @@ public class Game_3_Controller implements Controller{
                 gameModel.setHitPlayer(2, true);
             }
             if(!gameModel.getIngame()) {
-                if (wiimoteHandler.getIsButtonDown(0, WiimoteHandler.Buttons.KEY_A)) {
+                if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
                     PartyModeHandler.notifyNextGame();
                 }
             }
