@@ -12,7 +12,7 @@ public class Particle{
     private BufferedImage image;
     private int life, speed = 5;
 
-    public Particle(int xPos, int yPos, double angle){
+    public Particle(int xPos, int yPos, double angle){  // why giving the angle with the constructor, should the angle not be random?
         this.xPos = xPos;
         this.yPos = yPos;
         this.angle = angle;
