@@ -84,7 +84,7 @@ public class MainMenuView implements View {
         }
         if(mainMenuModel.getPointer() != null) {
             drawChosenMenuWithPointer(g, mainMenuModel.getPointer());
-            g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
+            g.drawImage(cursor, (int) mainMenuModel.getPointer().getX(), (int)mainMenuModel.getPointer().getY(), null);
         }
     }
 
