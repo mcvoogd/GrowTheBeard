@@ -2,7 +2,11 @@ package nl.avans.a3.game_2;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.ResourceHandler;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,8 +24,15 @@ public class Game_2_Model implements Model
     final int BLOCK_WIDTH = 50;
     final int BLOCK_HEIGHT = 20;
 
-    //TODO : ADD A BOOLEAN TO SEE IF INGAME.
-    //TODO : ADD A TIMER THAT COUNTS DOWN FROM 30 TO 0;
+    private Timer gameTimer;
+    private Timer viewTimer;
+    private int time = 30;
+
+    int bgX = 1920;
+    int bgY = 1080;
+
+    boolean inGame;
+
     public enum PlayerState{JUMPING, ON_KINETIC}
     public enum PlatformState{FALLING, REMOVE}
 
@@ -99,43 +110,47 @@ public class Game_2_Model implements Model
             }
             jump = false;
         }
+
+        public Rectangle getBounds() {
+            return new Rectangle((int)x, (int)y, PlAYER_WIDTH, PLAYER_HEIGHT);
+        }
     }
 
     ArrayList<Platform> platforms;
 
-    private class Platform extends Collidiable
+    protected class Platform extends Collidiable
     {
         PlatformState state;
         boolean falling = false;
         float x, y;
+        BufferedImage image;
 
-        Platform(float width, float height, float x, float y) {
-            super(width, height, true);
+        Platform(float x, float y) {
+            super(BLOCK_WIDTH, BLOCK_HEIGHT, true);
             this.x = x;
             this.y = y;
+            image = ResourceHandler.getImage("res/images_game2/wood.png");
         }
 
         final int FALL_DURATION = 500;
         int fallTicks = 0;
 
         public void update() {
-            if (falling && state != PlatformState.REMOVE) {
-
-            }
-            if (state == PlatformState.REMOVE) {
-
+            if (falling) {
+                for (int i = 0; i <= 2; i++) {
+                    platforms.get(i).y--;
+                    if (platforms.get(i).y < 100) {
+                        platforms.get(i).y = 1000;
+                    }
+                }
             }
             else {
 
             }
         }
-    }
 
-    private class WoodBlock extends Collidiable
-    {
-
-        WoodBlock() {
-            super(BLOCK_WIDTH, BLOCK_HEIGHT, true);
+        public Rectangle getBounds() {
+            return new Rectangle((int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT);
         }
     }
 
@@ -148,8 +163,19 @@ public class Game_2_Model implements Model
 
     @Override
     public void start() {
+        inGame = true;
         for (int i = 0; i < PLAYER_COUNT; i++)
-            players[i] = new Player(i, 100+75*i, 400);
+            players[i] = new Player(i, 100+75*i, 500);
+        for (int i = 0; i <= 2; i++)
+            platforms.add(new Platform(550 + 300 * i, 500 + 100 * i));
+        gameTimer = new Timer(time * 1000, e -> {
+            inGame = false;
+        });
+        gameTimer.start();
+        viewTimer = new Timer(1000, e -> {
+           time--;
+        });
+        viewTimer.start();
 
     }
 
@@ -159,10 +185,33 @@ public class Game_2_Model implements Model
     public void update() {
         players[0].update();
         players[1].update();
+
+        platforms.get(0).update();
+        platforms.get(1).update();
+        platforms.get(2).update();
+
+        checkCollision();
     }
 
     @Override
     public void close() {
+
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void checkCollision() {
+        Rectangle pl1 = players[0].getBounds();
+        Rectangle pl2 = players[1].getBounds();
+        Rectangle bl1 = platforms.get(0).getBounds();
+        Rectangle bl2 = platforms.get(1).getBounds();
+        Rectangle bl3 = platforms.get(2).getBounds();
+
+        if (pl1.intersects(bl1)) {
+            players[0].movX = 0;
+        }
 
     }
 

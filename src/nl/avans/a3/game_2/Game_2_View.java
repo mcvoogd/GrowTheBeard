@@ -6,9 +6,6 @@ import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import java.lang.reflect.Array;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
 /**
@@ -47,27 +44,29 @@ public class Game_2_View implements View {
         float x, y;
         BufferedImage image;
 
-        Platform(float x, float y, BufferedImage platformImage) {
+        Platform(float x, float y) {
             this.x = x;
             this.y = y;
-            image = platformImage;
+            image = ResourceHandler.getImage("res/images_game2/wood.png");
         }
     }
 
     private ArrayList<Platform> platforms = new ArrayList<>();
 
-    BufferedImage testImage;
-
     @Override
     public void start() {
-        testImage = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
-        testImage.createGraphics().fillRect(0, 0, 100, 100);
+
     }
 
     @Override
     public void draw(Graphics2D g) {
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
-        g.drawImage(image.getSubimage(0, 0, image.getWidth(), image.getHeight()), 0, 0, null);
+        g.drawImage(image.getSubimage(0, 0, 1920, 1080), 0, 0, null);
+
+        g.setColor(Color.RED);
+        g.setFont(new Font("Verdana", Font.BOLD, 68));
+        g.drawString("" + model.getTime(), 960, 100); //TODO logischer maken
+
         for (Player player : players) {
             if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
             {
@@ -77,10 +76,8 @@ public class Game_2_View implements View {
 
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
         }
-        for (Platform platform : platforms) {
-
-        }
-        g.drawImage(testImage, 100, 100, null);
+        for (int i = 0; i <= 2; i++)
+            g.drawImage(model.platforms.get(i).image, (int) model.platforms.get(i).x, (int) model.platforms.get(i).y, null);
     }
 
     @Override
