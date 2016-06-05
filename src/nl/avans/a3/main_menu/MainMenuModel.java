@@ -1,8 +1,6 @@
 package nl.avans.a3.main_menu;
 
-import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
-import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -10,7 +8,6 @@ import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class MainMenuModel implements Model{
     private Point2D pointer;
