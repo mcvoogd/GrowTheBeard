@@ -73,6 +73,10 @@ public class Game_3_View implements View{
                     i.draw(g);
                 }
             }
+
+            for (Particle p : gameModel.getParticles()) {
+                p.draw(g);
+            }
         }
         else {
             if (gameModel.getScorePlayer1() > gameModel.getScorePlayer2()) {
@@ -83,15 +87,7 @@ public class Game_3_View implements View{
             {
                 drawGameEnd(g, 0);
             }
-
-
         }
-
-        for (Particle p : gameModel.getParticles()) {
-            p.draw(g);
-        }
-
-
     }
 
     private void drawGameEnd(Graphics2D g, int player) {
@@ -125,9 +121,6 @@ public class Game_3_View implements View{
 
         g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
         g.drawImage(gameModel.getPlayerImage(2), (1920/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
-
-
-
     }
 
 

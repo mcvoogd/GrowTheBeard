@@ -54,11 +54,15 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int PLAYER_Y = -100;
 
 	private BufferedImage text;
-	private double textScale = 0.05;
-	private static final double CHANGE_SPEED = 0.0005;
-	private double change = CHANGE_SPEED;
-	private static final double MAX_SCALE = 0.15;
-	private static final double MIN_SCALE = 0.1;
+    private double textScale = 0.05;
+    private static final double CHANGE_SPEED = 0.0005;
+    private double change = CHANGE_SPEED;
+    private static final double MAX_SCALE = 0.15;
+    private static final double MIN_SCALE = 0.1;
+
+    private BufferedImage winscreen;
+    private BufferedImage[] winner;
+    private BufferedImage winnerImage;
 
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
@@ -91,8 +95,17 @@ public class GameBoard extends JPanel implements ActionListener {
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
+
+        winner = new BufferedImage[2];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
-		initWoodBlocks();
+        winnerImage = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/winner.png");
+        winscreen = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/background.png");
+
+        for(int i = 0; i < 2; i++){
+            winner[i] = winnerImage.getSubimage(0, (winnerImage.getHeight()/2 * i), winnerImage.getWidth(), winnerImage.getHeight()/2);
+        }
+
+        initWoodBlocks();
 		if (inGame) {
 			endTimer = new Timer(time * 1000, e -> inGame = !inGame);
 			endTimer.start();
@@ -162,19 +175,17 @@ public class GameBoard extends JPanel implements ActionListener {
 			for(Particle p : particles){
 				p.draw(g2);
 			}
-		}
-
-		if (!inGame) {
+		}else {
 			wiimoteHandler.deactivateRumble(0);
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
-				drawGameEnd(g, 1);
+				drawGameEnd(g2, 1);
 			}
 			if (scorePlayer2 > scorePlayer1) {
-				drawGameEnd(g, 2);
+				drawGameEnd(g2, 2);
 			}
 			else{
-				drawGameEnd(g, 0);
+				drawGameEnd(g2, 0);
 			}
 			if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 				PartyModeHandler.notifyNextGame();
@@ -193,45 +204,38 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	private void drawGameEnd(Graphics g, int player) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(Images.game1Winscreen.getScaledInstance(1920, 1080, BufferedImage.SCALE_DEFAULT), 0, 0, null);
+    private void drawGameEnd(Graphics2D g, int player) {
 
-		textScale += change;
-		if(textScale > MAX_SCALE){
-			change = -CHANGE_SPEED;
-		}else if(textScale < MIN_SCALE){
-			change = CHANGE_SPEED;
-		}
+        g.drawImage(winscreen, 0, 0, 1920, 1080, null);
 
-		g2.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
+        textScale += change;
+        if(textScale > MAX_SCALE){
+            change = -CHANGE_SPEED;
+        }else if(textScale < MIN_SCALE){
+            change = CHANGE_SPEED;
+        }
 
-		Font font = new Font("Sansserif", Font.BOLD, 360);
-		FontMetrics fm = getFontMetrics(font);
-		g2.setFont(font);
-		String s = "DRAW";
-		switch(player)
-		{
-			case 0 : g.setColor(Color.BLACK);
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-				break; //default
-			case 1 :
-				s = "WINNER";
-				g.setColor(new Color(50, 200, 55));
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-				break;
-			case 2 :
-				s = "WINNER";
-				g.setColor(new Color(200, 50, 50));
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-		}
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
 
-		g2.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
-		g2.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
+        Font font = new Font("Sansserif", Font.BOLD, 360);
+        FontMetrics fm = g.getFontMetrics(font);
+        g.setFont(font);
+        String s = "DRAW";
+        switch(player)
+        {
+            case 0 : g.setColor(Color.BLACK);
+                g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
+                break; //default
+            case 1 :
+                g.drawImage(winner[0], 500, 100, null); break; //TEKST
+            case 2 :
+                g.drawImage(winner[1], 500, 100, null); break; //TEKST
 
+        }
 
-	}
-
+        g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
+    }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		inGame();

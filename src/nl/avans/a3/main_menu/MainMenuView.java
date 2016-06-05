@@ -68,9 +68,6 @@ public class MainMenuView implements View {
         }
         rotation += speed;
 
-        g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
-        g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
-
         g.setColor(Color.red);
 
         {
@@ -86,6 +83,10 @@ public class MainMenuView implements View {
             drawChosenMenuWithPointer(g, mainMenuModel.getPointer());
             g.drawImage(cursor, (int) mainMenuModel.getPointer().getX(), (int)mainMenuModel.getPointer().getY(), null);
         }
+
+        g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);
+        g.drawImage(rightNail, SINGLE_BOARD_X + NAIL_RIGHT_OFFSET_X, SINGLE_BOARD_Y - NAIL_RIGHT_OFFSET_Y, null);
+
     }
 
     @Override
