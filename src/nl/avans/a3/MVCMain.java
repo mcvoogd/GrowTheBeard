@@ -7,7 +7,6 @@ import nl.avans.a3.util.Logger;
 
 public class MVCMain {
     public static void main(String[] args){
-        //ry{
             Logger.init();
             Logger.instance.log("MV001", "program start", Logger.LogType.LOG);
             ControllerHandler controllerHandler = new ControllerHandler();
@@ -17,8 +16,5 @@ public class MVCMain {
             ModelHandler.instance.start();
             Logger.instance.log("MV004", "model started", Logger.LogType.DEBUG);
             viewHandler.startTimer();
-        /*}catch (Exception e){
-            Logger.instance.log(e);
-        }*/
     }
 }
