@@ -75,12 +75,17 @@ public class MainMenuView implements View {
         //g.draw(partymode);
         //g.draw(singlemode);
 
-        //drawChosenMenuWithPointer(g, new Point2D.Double(mainMenuModel.getPointX(), mainMenuModel.getPointY()));
-        //g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
+       // drawChosenMenuWithPointer(g, new Point2D.Double(mainMenuModel.getPointX(), mainMenuModel.getPointY()));
+       // g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
         
         if(mainMenuModel.getPointer() != null) {
             drawChosenMenuWithPointer(g, mainMenuModel.getPointer());
             g.drawImage(cursor, (int) mainMenuModel.getPointer().getX(), (int)mainMenuModel.getPointer().getY(), null);
+        }
+        else
+        {
+            g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
+            g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
         }
 
         g.drawImage(leftNail, PARTY_BOARD_X + NAIL_LEFT_OFFSET_X, PARTY_BOARD_Y - NAIL_LEFT_OFFSET_Y, null);

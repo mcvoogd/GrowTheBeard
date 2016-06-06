@@ -83,7 +83,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private void initGameBoard() {
 //		test();
-//		new Images();
+
+		new Images();
 		scaleBackground();
 		addWoodImages();
 		wiimoteHandler.activateMotionSensing();
