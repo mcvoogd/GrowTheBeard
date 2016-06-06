@@ -24,9 +24,6 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/**
- * Created by FlorisBob on 27-May-16.
- */
 public class ControllerHandler implements ModelListener, KeyListener {
     private Controller controller;
     private Timer updateControllerTimer;
@@ -44,14 +41,14 @@ public class ControllerHandler implements ModelListener, KeyListener {
         //System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
-            if(event != null) {
-                this.controller = selectController(((NewModel) event).newModel);
-                if (!updateControllerTimer.isRunning())
-                    Logger.instance.log("VH001", "new controller (" + this.controller.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
+            this.controller = selectController(((NewModel) event).newModel);
+            if (!updateControllerTimer.isRunning())
+                Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
                 updateControllerTimer.start();
-            }
         }else
         {
+
+
             if (controller != null) controller.onModelEvent(event);
         }
 
