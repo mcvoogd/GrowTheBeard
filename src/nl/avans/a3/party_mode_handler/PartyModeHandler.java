@@ -25,7 +25,7 @@ public class PartyModeHandler {
         this.mode = mode;
         this.model = oldmodel;
         this.wiimoteHandler = wiimoteHandler;
-        gameCounter = 1;
+        gameCounter = 2;
     }
 
     public static void update()

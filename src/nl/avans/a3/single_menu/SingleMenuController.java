@@ -11,6 +11,8 @@ import nl.avans.a3.util.WiimoteHandler;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 
+import static nl.avans.a3.single_menu.SingleMenuModel.Mode.WOOD_CHOPPING;
+
 public class SingleMenuController implements Controller {
 
     private static final double SCREEN_OFFSET = 200.0;
@@ -27,8 +29,6 @@ public class SingleMenuController implements Controller {
     @Override
     public void update() {
         if(wiimoteHandler.isWiiMotesConnected()) {
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
-            }
             pointerLocation = new Point2D.Double(wiimoteHandler.getCenteredPointer(0).getX()*((1920.0 + SCREEN_OFFSET)/1024.0) - SCREEN_OFFSET/2, wiimoteHandler.getCenteredPointer(0).getY()*((1080.0 + SCREEN_OFFSET)/900.0) - SCREEN_OFFSET/2);
             model.setPointer(pointerLocation);
 
@@ -43,6 +43,14 @@ public class SingleMenuController implements Controller {
             }
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                 model.onMenuChoose(wiimoteHandler);
+            }
+
+            switch(model.getMode())
+            {
+                case WOOD_CHOPPING: model.onMenuChoose(wiimoteHandler);
+                case WOOD_DODGING:  model.onMenuChoose(wiimoteHandler);
+                case WOOD_JUMPING:  model.onMenuChoose(wiimoteHandler);
+                case MAINMENU:      model.onMenuChoose(wiimoteHandler);
             }
         }
     }

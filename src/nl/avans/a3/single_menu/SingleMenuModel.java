@@ -18,11 +18,12 @@ public class SingleMenuModel implements Model {
 
     private Point2D pointer;
     private int modeNumber;
+
     public enum Mode{
-        WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU
+        WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU, DEFAULT
     }
 
-    private Mode mode = Mode.WOOD_CHOPPING;
+    public Mode mode = Mode.WOOD_CHOPPING;
 
     @Override
     public void start() {
@@ -73,6 +74,16 @@ public class SingleMenuModel implements Model {
             case 2: this.mode = Mode.WOOD_JUMPING; break;
             case 3: this.mode = Mode.MAINMENU; break;
         }
+    }
+
+    public Mode getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(Mode mode)
+    {
+        this.mode = mode;
     }
 
     public int getModeNumber(){
