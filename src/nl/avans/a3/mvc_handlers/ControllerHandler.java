@@ -1,6 +1,8 @@
 package nl.avans.a3.mvc_handlers;
 
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.game_1.DummyMVC.Dummy_Controller;
+import nl.avans.a3.game_1.DummyMVC.Dummy_Model;
 import nl.avans.a3.game_2.Game_2_Controller;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Controller;
@@ -41,14 +43,13 @@ public class ControllerHandler implements ModelListener, KeyListener {
         //System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
+            System.out.println("<------------ game 1 is new model");
             this.controller = selectController(((NewModel) event).newModel);
             if (!updateControllerTimer.isRunning())
                 Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
                 updateControllerTimer.start();
         }else
         {
-
-
             if (controller != null) controller.onModelEvent(event);
         }
 
@@ -92,6 +93,10 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Game_3_Model){
             return new Game_3_Controller((Game_3_Model) model, wiimoteHandler);
+        }
+        if(model instanceof Dummy_Model)
+        {
+            return new Dummy_Controller();
         }
         return null;
     }
