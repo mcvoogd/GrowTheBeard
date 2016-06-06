@@ -23,7 +23,7 @@ public class MainMenuController implements Controller {
     private MainMenuModel model;
     private WiimoteHandler wiimoteHandler;
     private AdvancedPlayer player;
-    private boolean musicOn = false;
+    private boolean musicOn = true;
 
     public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
     {
@@ -65,8 +65,6 @@ public class MainMenuController implements Controller {
             case KeyEvent.VK_A : model.pointToLeft(); break;
             case KeyEvent.VK_D : model.pointToRight(); break;
             case KeyEvent.VK_P :
-                //WIP!
-                System.out.println("pressed P");
                 if(musicOn){
                     musicOn = false;
                     synchronized(this) {
@@ -81,7 +79,6 @@ public class MainMenuController implements Controller {
                     musicOn = true;
                 } break;
 
-            //case KeyEvent.VK_ALT : ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
          }
     }
 
