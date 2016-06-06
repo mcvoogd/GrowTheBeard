@@ -5,14 +5,27 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.single_menu.SingleMenuModel;
+import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class MainMenuModel implements Model{
     private Point2D pointer;
-    PartyModeHandler partyModeHandler;
+    private PartyModeHandler partyModeHandler;
+    private Rectangle2D partymode;
+    private Rectangle2D singlemode;
+    private boolean hasMenuSelected = false;
 
+    private final int PARTY_BOARD_X = 270;
+    private final int PARTY_BOARD_Y = 290;
+
+    private final int SINGLE_BOARD_X = 1290;
+    private final int SINGLE_BOARD_Y = 220;
+    private Image partyGame;
+    private Image singleGame;
 
     private int pointX = 0;
     private int pointY = 0;
@@ -25,11 +38,17 @@ public class MainMenuModel implements Model{
 
     @Override
     public void start() {
+        partyGame = ResourceHandler.getImage("res/menu/party.png");
+        singleGame = ResourceHandler.getImage("res/menu/single.png");
+        partymode = new Rectangle2D.Double(PARTY_BOARD_X, PARTY_BOARD_Y+160, partyGame.getWidth(null), partyGame.getHeight(null)-160);  // needs to go to model, should be there to be able to 'click' on it
+        singlemode = new Rectangle2D.Double(SINGLE_BOARD_X, SINGLE_BOARD_Y+120, singleGame.getWidth(null), singleGame.getHeight(null)-120);
+
     }
 
     @Override
     public void update() {
-
+        Point2D punt = new Point2D.Double(pointX, pointY);
+        checkIRinMenu(punt);
     }
 
     @Override
@@ -37,6 +56,21 @@ public class MainMenuModel implements Model{
 
     }
 
+    public void checkIRinMenu(Point2D cursor)
+    {
+        if(cursor != null) {
+            if (partymode.contains(cursor)) {
+                hasMenuSelected = true;
+                changeMode(MainMenuModel.Mode.CHOOSE_PARTY);
+            } else if (singlemode.contains(cursor)) {
+                hasMenuSelected = true;
+                changeMode(MainMenuModel.Mode.CHOOSE_SINGLE);
+            } else {
+                hasMenuSelected = false;
+                setMode(MainMenuModel.Mode.DEFAULT);
+            }
+        }
+    }
 
     public int getPointY() {
         return pointY;
@@ -64,6 +98,11 @@ public class MainMenuModel implements Model{
     public void pointToBottem()
     {
         pointY+= 10;
+    }
+
+    public boolean getHasMenuSelected()
+    {
+        return hasMenuSelected;
     }
 
     public void onMenuChoose(WiimoteHandler wiimoteHandler)

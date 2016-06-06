@@ -16,6 +16,7 @@ public class SingleMenuView implements View {
 
     private SingleMenuModel model;
     private BufferedImage background;
+    private Image cursor;
 
     public SingleMenuView(SingleMenuModel model){
         this.model = model;
@@ -24,6 +25,7 @@ public class SingleMenuView implements View {
     @Override
     public void start() {
         background = ResourceHandler.getImage("res/menu/background_Single.png");
+        cursor = ResourceHandler.getImage("res/menu/cursor.png");
     }
 
     @Override
@@ -31,13 +33,10 @@ public class SingleMenuView implements View {
         g.drawImage(background, 0, 0, null);
         g.setColor(Color.red);
         if(model.getPointer() != null)
-            g.fillOval((int) model.getPointer().getX(), (int) model.getPointer().getY(), 10, 10);
-        switch (model.getModeNumber()){
-            case 0: g.drawRect(160, 100, 830, 450); break;
-            case 1: g.drawRect(1010, 100, 830, 450); break;
-            case 2: g.drawRect(160, 585, 830, 450); break;
-            case 3: g.drawRect(1010, 585, 830, 450); break;
+        {
+            g.drawImage(cursor, (int) model.getPointer().getX(), (int) model.getPointer().getY(), null);
         }
+
     }
 
     @Override
