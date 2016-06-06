@@ -23,7 +23,7 @@ public class SingleMenuModel implements Model {
         WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU, DEFAULT
     }
 
-    public Mode mode = Mode.WOOD_CHOPPING;
+    public Mode mode = Mode.DEFAULT;
 
     @Override
     public void start() {
@@ -48,6 +48,7 @@ public class SingleMenuModel implements Model {
             case WOOD_JUMPING:  ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model())); break;
             case WOOD_CHOPPING: ModelHandler.instance.onModelEvent(new NewModel(this, new Game_3_Model())); break;
             case MAINMENU: ModelHandler.instance.changeModel(new NewModel(this, new MainMenuModel())); break;
+            case DEFAULT: break;
         }
 
     }
