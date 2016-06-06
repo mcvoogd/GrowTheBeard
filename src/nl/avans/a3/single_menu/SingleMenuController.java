@@ -44,14 +44,14 @@ public class SingleMenuController implements Controller {
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                 model.onMenuChoose(wiimoteHandler);
             }
-
-            switch(model.getMode())
-            {
-                case WOOD_CHOPPING: model.onMenuChoose(wiimoteHandler);
-                case WOOD_DODGING:  model.onMenuChoose(wiimoteHandler);
-                case WOOD_JUMPING:  model.onMenuChoose(wiimoteHandler);
-                case MAINMENU:      model.onMenuChoose(wiimoteHandler);
-            }
+//
+//            switch(model.getMode())
+//            {
+//                case WOOD_CHOPPING: model.onMenuChoose(wiimoteHandler);
+//                case WOOD_DODGING:  model.onMenuChoose(wiimoteHandler);
+//                case WOOD_JUMPING:  model.onMenuChoose(wiimoteHandler);
+//                case MAINMENU:      model.onMenuChoose(wiimoteHandler);
+//            }
         }
     }
 
