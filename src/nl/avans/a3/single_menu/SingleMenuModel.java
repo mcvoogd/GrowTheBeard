@@ -9,7 +9,9 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.WiimoteHandler;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Created by Harmen on 3-6-2016.
@@ -18,6 +20,10 @@ public class SingleMenuModel implements Model {
 
     private Point2D pointer;
     private int modeNumber;
+    private Rectangle2D game1 = new Rectangle2D.Double(160, 100, 830, 450);
+    private Rectangle2D game2 = new Rectangle2D.Double(1010, 100, 830, 450);
+    private Rectangle2D game3 = new Rectangle2D.Double(160, 585, 830, 450);
+    private Rectangle2D back = new Rectangle2D.Double(1010, 585, 830, 450);
 
     public enum Mode{
         WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU, DEFAULT
@@ -40,15 +46,43 @@ public class SingleMenuModel implements Model {
 
     }
 
+
+    private void getIRchosenMenu(Point2D cursor) {
+        if(game1.contains(cursor))
+        {
+            setMode(SingleMenuModel.Mode.WOOD_DODGING);
+        }else if(game2.contains(cursor))
+        {
+            setMode(SingleMenuModel.Mode.WOOD_CHOPPING);
+        }else if(game3.contains(cursor))
+        {
+            setMode(SingleMenuModel.Mode.WOOD_JUMPING);
+        }else if(back.contains(cursor))
+        {
+            setMode(SingleMenuModel.Mode.MAINMENU);
+        }else
+        {
+            setMode(SingleMenuModel.Mode.DEFAULT);
+        }
+    }
+
     public void onMenuChoose(WiimoteHandler wiimoteHandler)
     {
-        switch (mode)
-        {
-            case WOOD_DODGING: ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
-            case WOOD_JUMPING:  ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model())); break;
-            case WOOD_CHOPPING: ModelHandler.instance.onModelEvent(new NewModel(this, new Game_3_Model())); break;
-            case MAINMENU: ModelHandler.instance.changeModel(new NewModel(this, new MainMenuModel())); break;
-            case DEFAULT: break;
+        if(mode != Mode.DEFAULT) {
+            switch (mode) {
+                case WOOD_DODGING:
+                    ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler));
+                    break;
+                case WOOD_JUMPING:
+                    ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model()));
+                    break;
+                case WOOD_CHOPPING:
+                    ModelHandler.instance.onModelEvent(new NewModel(this, new Game_3_Model()));
+                    break;
+                case MAINMENU:
+                    ModelHandler.instance.changeModel(new NewModel(this, new MainMenuModel()));
+                    break;
+            }
         }
 
     }

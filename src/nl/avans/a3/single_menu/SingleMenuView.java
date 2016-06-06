@@ -16,18 +16,6 @@ public class SingleMenuView implements View {
 
     private SingleMenuModel model;
     private BufferedImage background;
-    private Rectangle2D game1 = new Rectangle2D.Double(160, 100, 830, 450);
-    private Rectangle2D game2 = new Rectangle2D.Double(1010, 100, 830, 450);
-    private Rectangle2D game3 = new Rectangle2D.Double(160, 585, 830, 450);
-    private Rectangle2D back = new Rectangle2D.Double(1010, 585, 830, 450);
-    private boolean isMenuChosen = false;
-
-    private enum ChosenMenu
-    {
-        GAME1, GAME2, GAME3, BACK, DEFAULT
-    }
-
-    public ChosenMenu current = ChosenMenu.GAME1;
 
     public SingleMenuView(SingleMenuModel model){
         this.model = model;
@@ -49,39 +37,6 @@ public class SingleMenuView implements View {
             case 1: g.drawRect(1010, 100, 830, 450); break;
             case 2: g.drawRect(160, 585, 830, 450); break;
             case 3: g.drawRect(1010, 585, 830, 450); break;
-        }
-
-        getIRchosenMenu(model.getPointer(), g);
-    }
-
-    private void getIRchosenMenu(Point2D cursor, Graphics2D g) {
-        if(game1.contains(cursor))
-        {
-            this.current = ChosenMenu.GAME1;
-            model.setMode(SingleMenuModel.Mode.WOOD_DODGING);
-            isMenuChosen = true;
-        }else if(game2.contains(cursor))
-        {
-            this.current = ChosenMenu.GAME2;
-            model.setMode(SingleMenuModel.Mode.WOOD_CHOPPING);
-            isMenuChosen = true;
-
-        }else if(game3.contains(cursor))
-        {
-            this.current = ChosenMenu.GAME3;
-            model.setMode(SingleMenuModel.Mode.WOOD_JUMPING);
-            isMenuChosen = true;
-
-        }else if(back.contains(cursor))
-        {
-            this.current = ChosenMenu.BACK;
-            model.setMode(SingleMenuModel.Mode.MAINMENU);
-            isMenuChosen = true;
-        }else
-        {
-            this.current = ChosenMenu.DEFAULT;
-            model.setMode(SingleMenuModel.Mode.DEFAULT);
-            isMenuChosen = false;
         }
     }
 
