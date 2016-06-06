@@ -30,7 +30,7 @@ public class MainMenuController implements Controller {
         this.model = model;
         this.wiimoteHandler = wiimoteHandler;
         wiimoteHandler.activateMotionSensing();
-        playMusic("C:/Users/kevintjeb/Desktop/music.mp3");
+        playMusic("res/theme_song.wav");
     }
     @Override
     public void update() {
@@ -75,7 +75,7 @@ public class MainMenuController implements Controller {
                     }
                 }
                 else{
-                    playMusic("C:/Users/kevintjeb/Desktop/music.mp3");
+                    playMusic("res/theme_song.wav");
                     musicOn = true;
                 } break;
 
