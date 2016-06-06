@@ -30,6 +30,12 @@ public class SingleMenuView implements View {
         g.setColor(Color.red);
         if(model.getPointer() != null)
             g.fillOval((int) model.getPointer().getX(), (int) model.getPointer().getY(), 10, 10);
+        switch (model.getModeNumber()){
+            case 0: g.drawRect(160, 100, 830, 450); break;
+            case 1: g.drawRect(1010, 100, 830, 450); break;
+            case 2: g.drawRect(160, 585, 830, 450); break;
+            case 3: g.drawRect(1010, 585, 830, 450); break;
+        }
     }
 
     @Override

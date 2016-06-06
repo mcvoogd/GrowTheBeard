@@ -31,9 +31,19 @@ public class SingleMenuController implements Controller {
             }
             pointerLocation = new Point2D.Double(wiimoteHandler.getCenteredPointer(0).getX()*((1920.0 + SCREEN_OFFSET)/1024.0) - SCREEN_OFFSET/2, wiimoteHandler.getCenteredPointer(0).getY()*((1080.0 + SCREEN_OFFSET)/900.0) - SCREEN_OFFSET/2);
             model.setPointer(pointerLocation);
-        }
-        if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_HOME) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_HOME)){
-            ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
+
+            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_HOME) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_HOME)) {
+                ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
+            }
+            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_LEFT) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_LEFT)) {
+                model.switchMenu(-1);
+            }
+            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_RIGHT) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_RIGHT)) {
+                model.switchMenu(1);
+            }
+            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                model.onMenuChoose(wiimoteHandler);
+            }
         }
     }
 

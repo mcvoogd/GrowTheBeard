@@ -52,4 +52,8 @@ public class PartyModeHandler {
             update();
         }
     }
+
+    public static Mode getCurrentMode(){
+        return mode;
+    }
 }

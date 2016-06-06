@@ -187,8 +187,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			else{
 				drawGameEnd(g2, 0);
 			}
-			if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
-				PartyModeHandler.notifyNextGame();
+			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
+				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
+					PartyModeHandler.notifyNextGame();
+				}
 			}
 		}
 		Toolkit.getDefaultToolkit().sync();
