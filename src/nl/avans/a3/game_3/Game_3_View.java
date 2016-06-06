@@ -30,14 +30,14 @@ public class Game_3_View implements View{
 
     @Override
     public void start() {
-        winner = new BufferedImage[2];
+        winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = (BufferedImage)  ResourceHandler.getImage("res/images_game1/banner.png");
         winscreen = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/background.png");
 
-        for(int i = 0; i < 2; i++){
-            winner[i] = winnerImage.getSubimage(0, (winnerImage.getHeight()/2 * i), winnerImage.getWidth(), winnerImage.getHeight()/2);
+        for(int i = 0; i < 3; i++){
+            winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
         }
 
    }
@@ -103,20 +103,11 @@ public class Game_3_View implements View{
 
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
 
-        Font font = new Font("Sansserif", Font.BOLD, 360);
-        FontMetrics fm = g.getFontMetrics(font);
-        g.setFont(font);
-        String s = "DRAW";
         switch(player)
         {
-            case 0 : g.setColor(Color.BLACK);
-                g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-                break; //default
-            case 1 :
-                g.drawImage(winner[0], 500, 100, null); break; //TEKST
-            case 2 :
-                g.drawImage(winner[1], 500, 100, null); break; //TEKST
-
+            case 0 :g.drawImage(winner[2], 500, 100, null); break; //TEKST
+            case 1 :g.drawImage(winner[0], 500, 100, null); break; //TEKST
+            case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
         }
 
         g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);

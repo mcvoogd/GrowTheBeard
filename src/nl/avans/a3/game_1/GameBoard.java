@@ -97,7 +97,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
 
-        winner = new BufferedImage[2];
+        winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winscreen = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/background.png");
@@ -219,20 +219,11 @@ public class GameBoard extends JPanel implements ActionListener {
 
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
 
-        Font font = new Font("Sansserif", Font.BOLD, 360);
-        FontMetrics fm = g.getFontMetrics(font);
-        g.setFont(font);
-        String s = "DRAW";
         switch(player)
         {
-            case 0 : g.setColor(Color.BLACK);
-                g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-                break; //default
-            case 1 :
-                g.drawImage(winner[0], 500, 100, null); break; //TEKST
-            case 2 :
-                g.drawImage(winner[1], 500, 100, null); break; //TEKST
-
+            case 0 :break; //default
+            case 1 :g.drawImage(winner[0], 500, 100, null); break; //TEKST
+            case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
         }
 
         g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
