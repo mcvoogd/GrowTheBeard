@@ -40,10 +40,8 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void onModelEvent(ModelEvent event) {
-        //System.out.println("ControllerHandler, onModelEvent("+event.getClass().getName()+")");
         if(event instanceof NewModel)
         {
-            System.out.println("<------------ game 1 is new model");
             this.controller = selectController(((NewModel) event).newModel);
             if (!updateControllerTimer.isRunning())
                 Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
