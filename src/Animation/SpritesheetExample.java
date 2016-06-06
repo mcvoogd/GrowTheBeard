@@ -60,8 +60,8 @@ class SpriteSheetPanel extends JPanel implements ActionListener {
 		timer.start();
 	}
 
-	// Timer, action performed. Update hier objects en/of world
-	// en dan issue een repaint()
+	// Timer, action performed. Use this to update the world and or objects
+	// after that call for a repaint
 	public void actionPerformed(ActionEvent arg0)
 	{	
 		if(!(index == 84))		
