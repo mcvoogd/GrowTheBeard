@@ -30,45 +30,37 @@ public class Game_2_Model implements Model
     final int GROUND_LEFT_WIDTH = 500;
     final int GROUND_LEFT_HEIGHT = 225;
 
-    private Timer gameTimer;
-    private Timer viewTimer;
-    private int time = 30;
-
     int bgX = 1920;
     int bgY = 1080;
 
     boolean inGame;
 
-    public enum PlayerState{JUMPING, ON_KINETIC}
+    public enum PlayerState{JUMPING, ON_PLATFORM}
     public enum PlatformState{FALLING, REMOVE}
 
     private class Collidiable
     {
         float x, y;
         final float width, height;
-        float movX, movY;
-        boolean kinetic;
-        Collidiable(float width, float height, boolean kinetic)
+        Collidiable(float width, float height)
         {
-            this.width = width; this.height = height; this.kinetic = kinetic;
-            x = y = movX = movY = 0;
+            this.width = width; this.height = height;
         }
-    }
 
-    boolean intersects(Collidiable a, Collidiable b)
-    {
-        return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height < b.y;
+        Rectangle getBounds() {return new Rectangle((int)x, (int)y, (int)width, (int)height);}
     }
 
     private class Player extends Collidiable
     {
-        PlayerState state;
+        PlayerState state = PlayerState.JUMPING;
         final int id;
         boolean jump = false;
+        float movX = 0;
+        Collidiable platform = null;
 
         Player(int id, float x, float y)
         {
-            super(PlAYER_WIDTH, PLAYER_HEIGHT, false);
+            super(PlAYER_WIDTH, PLAYER_HEIGHT);
             this.id = id;
             this.x = x;
             this.y = y;
@@ -77,8 +69,7 @@ public class Game_2_Model implements Model
 
         final int JUMP_DURATION = 75;
         final double JUMP_HEIGHT = 200;
-        final double v = JUMP_DURATION/Math.PI;
-        int jumpTicks = 0;
+        int jumpTicks = JUMP_DURATION;
 
         private double heightAt(double x)
         {
@@ -86,6 +77,14 @@ public class Game_2_Model implements Model
             // TODO fix the fancy curve
             //if (x < JUMP_DURATION/2.0) return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
             //else return (Math.sin((x-(JUMP_DURATION/4.0))/(JUMP_DURATION/Math.PI))*(JUMP_HEIGHT/2))+JUMP_HEIGHT/2;
+        }
+
+        private boolean isGoodIntersect(Rectangle platform)
+        {
+            if (getBounds().intersects(platform) == false) return false;
+            float centerX = x + width/2, centerY = y + height/2;
+            float pointX = platform.x-centerX, pointY = platform.y-centerY;
+            if (pointY < 0) return false;
         }
 
         public void update()
@@ -102,19 +101,24 @@ public class Game_2_Model implements Model
                 y += heightAt(jumpTicks)-heightAt(jumpTicks-1);
                 ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
                 if (++jumpTicks > JUMP_DURATION) {
-                    state = PlayerState.ON_KINETIC;
-                    ModelHandler.instance.onModelEvent(new G2_PlayerStateChange(G2_PlayerStateChange.State.WALK, id));
+                    jumpTicks--;
                 }
+                for (Platform platform : platforms)
+                    if (getBounds().intersects(platform.getBounds())) {
+                        this.platform = platform;
+                        state = PlayerState.ON_PLATFORM;
+                        y = platform.y + platform.height;
+                        break;
+                    }
             }
             else
             {
-                if (movX != 0) {
-                    x += movX * 5;
-                    // TODO handle the platform that you're standing on
-                }
+                x += movX * 5;
+                y = platform.y + platform.height;
             }
 
-            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PlAYER_WIDTH-2f);
+            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PlAYER_WIDTH);
+            y = MathExtended.clamp(y, -100, WORLD_HEIGHT_BOUND-PLAYER_HEIGHT);
             ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
             jump = false;
         }
@@ -126,39 +130,26 @@ public class Game_2_Model implements Model
 
     ArrayList<Platform> platforms;
 
+    int idCounter = 0;
     protected class Platform extends Collidiable
     {
-        PlatformState state;
-        boolean falling = false;
-        float x, y;
-        BufferedImage image;
+        float fallingSpeed;
+        final int platformId = idCounter++;
+        PlatformState state = PlatformState.FALLING;
+        final boolean canMoveTrough;
 
-        Platform(float x, float y) {
-            super(BLOCK_WIDTH, BLOCK_HEIGHT, true);
+        Platform(float x, float y, float width, float height, float fallingSpeed, boolean canMoveTrough) {
+            super(width, height);
             this.x = x;
             this.y = y;
-            image = ResourceHandler.getImage("res/images_game2/wood.png");
+            this.fallingSpeed = fallingSpeed;
+            this.canMoveTrough = canMoveTrough;
         }
-
-        final int FALL_DURATION = 500;
-        int fallTicks = 0;
 
         public void update() {
-            if (falling) {
-                for (int i = 0; i <= 2; i++) {
-                    platforms.get(i).y--;
-                    if (platforms.get(i).y < 100) {
-                        platforms.get(i).y = 1000;
-                    }
-                }
-            }
-            else {
-
-            }
-        }
-
-        public Rectangle getBounds() {
-            return new Rectangle((int)x, (int)y, BLOCK_WIDTH, BLOCK_HEIGHT);
+            y -= fallingSpeed;
+            if (y < -height)
+                state = PlatformState.REMOVE;
         }
     }
 
@@ -173,17 +164,7 @@ public class Game_2_Model implements Model
     public void start() {
         inGame = true;
         for (int i = 0; i < PLAYER_COUNT; i++)
-            players[i] = new Player(i, 100+75*i, 500);
-        for (int i = 0; i <= 2; i++)
-            platforms.add(new Platform(550 + 300 * i, 500 + 100 * i));
-        gameTimer = new Timer(time * 1000, e -> {
-            inGame = false;
-        });
-        gameTimer.start();
-        viewTimer = new Timer(1000, e -> {
-           time--;
-        });
-        viewTimer.start();
+            players[i] = new Player(i, 100+75*i, 700);
 
     }
 
