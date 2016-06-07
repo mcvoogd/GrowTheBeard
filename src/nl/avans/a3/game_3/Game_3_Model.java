@@ -1,5 +1,6 @@
 package nl.avans.a3.game_3;
 
+import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -18,9 +19,10 @@ public class Game_3_Model implements Model{
     private boolean hitPlayer1, hitPlayer2;
     private Timer countDownTimer;
     private int time = 30;
-    private boolean ingame = true;
+    private boolean inGame = true;
     private BufferedImage background;
     private ArrayList<Particle> particles;
+    private MainMenuModel.Mode chosenMode;
 
     private Random rand = new Random();
 
@@ -40,9 +42,11 @@ public class Game_3_Model implements Model{
         hitPlayer2 = true;
         scorePlayer1 = 0;
         scorePlayer2 = 0;
-        background = (BufferedImage) ResourceHandler.getImage("res/images_game3/background.png");
+        background = ResourceHandler.getImage("res/images_game3/background.png");
 
     }
+
+    // TODO magic values everywhere
 
     @Override
     public void start() {
@@ -52,7 +56,7 @@ public class Game_3_Model implements Model{
         trees[1] = new Tree(1720, 0, false);
         characters[0] = new Character(1, START_X, 480);
         characters[1] = new Character(2, 1920 - START_X - 328, 480); //screenwidth - startPlayer - widthPlayer
-        countDownTimer = new Timer(1000, e -> {time--; if(time == -1) ingame = false;} );
+        countDownTimer = new Timer(1000, e -> {time--; if(time == -1) inGame = false;} );
         countDownTimer.start();
     }
 
@@ -71,7 +75,7 @@ public class Game_3_Model implements Model{
             }
         }
 
-        if(!ingame)
+        if(!inGame)
         {
             countDownTimer.stop();
         }
@@ -118,6 +122,8 @@ public class Game_3_Model implements Model{
         return trees;
     }
 
+    // TODO change character's type to an enum
+
     public void damageTree(int tree, int damage, int character){
         trees[tree].damageTree(damage);
         switch(character)
@@ -151,9 +157,9 @@ public class Game_3_Model implements Model{
         return time;
     }
 
-    public boolean getIngame()
+    public boolean getInGame()
     {
-        return ingame;
+        return inGame;
     }
     public BufferedImage getBackground()
     {

@@ -2,6 +2,7 @@ package nl.avans.a3.mvc_handlers;
 
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Model;
+import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.ModelListener;
@@ -31,18 +32,20 @@ public class ModelHandler implements ModelListener{
     public void start()
     {
         //start with boot.
-
         changeModel(new NewModel(null, new BootModel()));
     }
 
     public void changeModel(NewModel event)
     {
-        Logger.instance.log("MH001", "model changed from ("+((event.oldModel == null) ? "" : event.oldModel.getClass().getName())+") to ("+event.newModel.getClass().getName()+")", Logger.LogType.DEBUG);
-        model = event.newModel;
-        if(event.oldModel != null) {
+        if(event.newModel != null) {
+                Logger.instance.log("MH001", "model changed from (" + ((event.oldModel == null) ? "" : event.oldModel.getClass().getName()) + ") to (" + event.newModel.getClass().getName() + ")", Logger.LogType.DEBUG);
+                model = event.newModel;
+            }
+        if(event.oldModel != null)
+        {
             event.oldModel.close();
         }
-            dispatchEvent(event);
+        dispatchEvent(event);
         model.start();
     }
 

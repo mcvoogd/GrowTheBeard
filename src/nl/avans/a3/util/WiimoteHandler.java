@@ -1,6 +1,5 @@
 package nl.avans.a3.util;
 
-import org.apache.commons.lang3.Pair;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.GForce;
@@ -12,6 +11,7 @@ import wiiusej.wiiusejevents.wiiuseapievents.*;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -70,8 +70,9 @@ public class WiimoteHandler {
             }
             bool[i] = true;
             wiimotes[i].setLeds(bool[0], bool[1], bool[2], bool[3]);
-            wiimotes[i].activateIRTRacking();
             wiimotes[i].setAlphaSmoothingValue(1);
+            wiimotes[i].activateIRTRacking();
+            wiimotes[i].activateMotionSensing();
             final int finalI = i;  // Java anonymous classes can't handle swag, but can handle final variables.
             wiimotes[i].addWiiMoteEventListeners(new WiimoteListener(){
                 @Override
@@ -500,10 +501,36 @@ public class WiimoteHandler {
     public void deactivateRumble(int wiiMoteID){
         wiimotes[wiiMoteID].deactivateRumble();
     }
-    
-//    public Pair<Integer, Integer> getPointer(int wiimoteID){
-//        //for();
-//    }
+
+
+    /**
+     * Returns an estimated point (center) in an area of 1024 * 900
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     * @return the estimated point
+     */
+    public Point2D getCenteredPointer(int wiimoteID){
+        Point2D point = new Point2D.Double(0, 0);
+        for(int i = 0; irSources[wiimoteID].length > i; i++){
+            point.setLocation(point.getX() + irSources[wiimoteID][i].getX(), point.getY() + irSources[wiimoteID][i].getY());
+        }
+        point.setLocation(point.getX()/irSources[wiimoteID].length, point.getY()/irSources[wiimoteID].length);
+        return point;
+    }
+
+    /**
+     * Returns the first point found by the IR camera in an area of 1024*900
+     * 
+     * @param wiimoteID index of list of connected wiimotes
+     * @return the estimated point
+     */
+    public Point2D getSinglePointer(int wiimoteID){
+        Point2D point = new Point2D.Double(0, 0);
+        if(irSources[wiimoteID].length > 0){
+            point.setLocation(irSources[wiimoteID][0].getX(), irSources[wiimoteID][0].getY());
+        }
+        return point;
+    }
 
     /**
      * Returns if the button of wiimote has been pressed.
@@ -599,6 +626,34 @@ public class WiimoteHandler {
         }
     }
 
+    public void activateIRTracking(){
+        if(wiimotes != null){
+            for(int i = 0; i < wiimotes.length; i++){
+                activateIRTracking(i);
+            }
+        }
+    }
+    
+    public void activateIRTracking(int wiimoteID){
+        if(wiimotes[wiimoteID] != null){
+            wiimotes[wiimoteID].activateIRTRacking();
+        }
+    }
+
+    public void deactivateIRTracking(){
+        if(wiimotes != null){
+            for(int i = 0; i < wiimotes.length; i++){
+                deactivateIRTracking(i);
+            }
+        }
+    }
+    
+    public void deactivateIRTracking(int wiimoteID){
+        if(wiimotes[wiimoteID] != null){
+            wiimotes[wiimoteID].deactivateIRTRacking();
+        }
+    }
+    
     public boolean isWiiMotesConnected() {
         if (wiimotes != null) {
             if (wiimotes.length > 0) {

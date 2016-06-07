@@ -17,6 +17,8 @@ import nl.avans.a3.main_menu.MainMenuView;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.single_menu.SingleMenuModel;
+import nl.avans.a3.single_menu.SingleMenuView;
 import nl.avans.a3.util.Logger;
 
 import javax.swing.*;
@@ -26,6 +28,7 @@ public class ViewHandler implements ModelListener{
     private View view;
     private JFrame frame;
     private JPanel panel;
+    private JPanel mvcPanel;
     private Timer repainter = new Timer(1000/60, e -> frame.repaint());
 
     public enum DisplayMode2{FULLSCREEN, WINDOW, BORDERLES_WINDOW}
@@ -77,17 +80,27 @@ public class ViewHandler implements ModelListener{
     @Override
     public void onModelEvent(ModelEvent event) {
         if (event instanceof NewModel){
+            if(frame.getContentPane() != mvcPanel && mvcPanel != null)
+            {
+                frame.setContentPane(mvcPanel);
+                frame.repaint();
+                frame.invalidate();
+                frame.revalidate();
+            }
+            panel = mvcPanel;
             if (view != null) view.close();
             view = selectedView(((NewModel)event).newModel);
-            Logger.instance.log("VH001", "new view ("+view.getClass().getName()+") has been loaded", Logger.LogType.DEBUG);
-            view.start();
-
+            if (view != null) {
+                Logger.instance.log("VH001", "new view (" + view.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
+                view.start();
+            }
         }else{
             if (view != null) view.onModelEvent(event);
         }
 
         if(event instanceof NewGameEvent)
         {
+            mvcPanel = (JPanel) frame.getContentPane();
             frame.setContentPane(((NewGameEvent) event).getPanel());
             frame.repaint();
             frame.invalidate();
@@ -101,7 +114,10 @@ public class ViewHandler implements ModelListener{
             return new BootView();
         }
         if(model instanceof MainMenuModel){
-            return new MainMenuView();
+            return new MainMenuView((MainMenuModel) model);
+        }
+        if(model instanceof SingleMenuModel){
+            return new SingleMenuView((SingleMenuModel) model);
         }
         if(model instanceof Game_Example_Model)
         {
@@ -111,7 +127,6 @@ public class ViewHandler implements ModelListener{
         {
             return new Game_2_View((Game_2_Model)model);
         }
-
         if(model instanceof Game_3_Model) {
             return new Game_3_View((Game_3_Model) model);
         }

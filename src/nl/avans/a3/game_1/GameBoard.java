@@ -1,5 +1,10 @@
 package nl.avans.a3.game_1;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.main_menu.MainMenuModel;
+import nl.avans.a3.mvc_handlers.ModelHandler;
+import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.EasyTransformer;
+import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.game_1.Util.Images;
 
@@ -39,17 +44,30 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<WoodBlock> woodBlocks;
 	
 	private boolean inGame;
+
+	// TODO remove these variables if we don't need them
 	private boolean blockIsFallen;
 
 	private boolean player1Win;
 	private boolean player2Win;
 
-	private final int SCHERM_BREEDTE = 1920;
-	private final int SCHERM_HOOGTE = 1080;
+	private final int SCREEN_WIDTH = 1920;
+	private final int SCREEN_HEIGHT = 1080;
 
 	private final int START_X_PLAYER1 = 640;
 	private final int START_X_PLAYER2 = 1280;
 	private final int PLAYER_Y = -100;
+
+	private BufferedImage text;
+    private double textScale = 0.05;
+    private static final double CHANGE_SPEED = 0.0005;
+    private double change = CHANGE_SPEED;
+    private static final double MAX_SCALE = 0.15;
+    private static final double MIN_SCALE = 0.1;
+
+    private BufferedImage winScreen;
+    private BufferedImage[] winner;
+    private BufferedImage winnerImage;
 
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
@@ -62,6 +80,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<Particle> particles;
 	private boolean playerCollision = false;
 
+	private final int WOODBLOCK_START_COUNT = 3;
+
 	public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
 		initGameBoard();
@@ -69,7 +89,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 
 	private void initGameBoard() {
-//		test();
+		//test(); // TODO can this be removed?
+
 		new Images();
 		scaleBackground();
 		addWoodImages();
@@ -77,15 +98,24 @@ public class GameBoard extends JPanel implements ActionListener {
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
+		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		inGame = true;
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
 
-		initWoodBlocks();
+        winner = new BufferedImage[3];
+        text = ResourceHandler.getImage("res/images_scoreboard/text.png");
+        winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
+        winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
+
+		for(int i = 0; i < 3; i++){
+			winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+		}
+
+        initWoodBlocks();
 		if (inGame) {
-			endTimer = new Timer(time * 1000, e -> inGame = !inGame);
+			endTimer = new Timer(time * 1000, e -> inGame = false);
 			endTimer.start();
 
 			timeLeft = new Timer(1000, e -> {
@@ -101,9 +131,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+
+		for (int i = 0; i < WOODBLOCK_START_COUNT; i++)
+			woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 	}
 
 	@Override
@@ -136,6 +166,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
+
+//			// TODO can this be removed?
 //			g2.setColor(new Color(0x161BFF));
 //			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
 //			g2.setColor(new Color(0x2CE21C));
@@ -153,19 +185,26 @@ public class GameBoard extends JPanel implements ActionListener {
 			for(Particle p : particles){
 				p.draw(g2);
 			}
-		}
-
-		if (!inGame) {
+		}else {
 			wiimoteHandler.deactivateRumble(0);
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
-				drawGameEnd(g, 1);
+				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
+			}else if (scorePlayer2 > scorePlayer1) {
+				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
+			}else if(scorePlayer2 == scorePlayer1)
+			{
+				drawGameEnd(g2, GameResult.DRAW);
 			}
-			if (scorePlayer2 > scorePlayer1) {
-				drawGameEnd(g, 2);
+			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
+				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
+					PartyModeHandler.notifyNextGame();
+				}
 			}
-			else{
-				//drawGameEnd(g);
+			else {
+				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+					ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
+				}
 			}
 		}
 		Toolkit.getDefaultToolkit().sync();
@@ -180,35 +219,31 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-	private void drawGameEnd(Graphics g, int player) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(Images.game1Winscreen.getScaledInstance(1920, 1080, BufferedImage.SCALE_DEFAULT), 0, 0, null);
-		Font font = new Font("Sansserif", Font.BOLD, 360);
-		FontMetrics fm = getFontMetrics(font);
-		g2.setFont(font);
-		String s = "DRAW";
-		switch(player)
-		{
-			case 0 : g.setColor(Color.BLACK);
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-				break; //default
-			case 1 :
-				s = "WINNER";
-				g.setColor(new Color(50, 200, 55));
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-				break;
-			case 2 :
-				s = "WINNER";
-				g.setColor(new Color(200, 50, 50));
-				g.drawString(s, ((1920/2) - (fm.stringWidth(s) / 2)), 300);
-		}
+	private enum GameResult {PLAYER_1_WIN, PLAYER_2_WIN, DRAW}
 
-		g2.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
-		g2.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
+    private void drawGameEnd(Graphics2D g, GameResult winner) {
 
+        g.drawImage(winScreen, 0, 0, 1920, 1080, null);
 
-	}
+        textScale += change;
+        if(textScale > MAX_SCALE){
+            change = -CHANGE_SPEED;
+        }else if(textScale < MIN_SCALE){
+            change = CHANGE_SPEED;
+        }
 
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
+
+        switch(winner)
+        {
+			case DRAW : g.drawImage(this.winner[2], 500, 100, null); break;
+			case PLAYER_1_WIN: g.drawImage(this.winner[0], 500, 100, null); break; //TEKST
+			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
+        }
+
+		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
+    }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		inGame();
@@ -266,7 +301,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			Rectangle rect1 = woodBlock.getBounds();
 			boolean hit = false;
 			if (rect3.intersects(rect1)) {
-				scorePlayer1--;
+				scorePlayer1-=2;
 				hit = true;
 				rumble(0);
 				if (scorePlayer1 < 0) {
@@ -274,7 +309,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 			if (rect2.intersects(rect1)) {
-				scorePlayer2--;
+				scorePlayer2-=2;
 				hit = true;
 				rumble(1);
 				if (scorePlayer2 < 0) {

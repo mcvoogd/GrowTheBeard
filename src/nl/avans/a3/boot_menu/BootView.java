@@ -26,16 +26,18 @@ public class BootView implements View{
     private Image text;
 
     private double textScale = 0;
+    private static final double CHANGE_SPEED = 0.01;
+    private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 1.5;
     private static final double MIN_SCALE = 1.0;
+
     private static final int Y_OFFSET = 400;
     private static final int BEARD_OFFSET = 860;
     private static final int BEARD_HEIGHT_OFFSET = 610;
     private static final int TEXT_OFFSET = 850;
     private static final int TEXT_HEIGHT_OFFSET = 590;
     private static final int DOUBLE_ROTATION = 720;
-    private static final double CHANGE_SPEED = 0.01;
-    private double change = CHANGE_SPEED;
+
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
 

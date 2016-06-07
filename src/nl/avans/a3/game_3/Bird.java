@@ -1,12 +1,9 @@
 package nl.avans.a3.game_3;
 
-import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
-import sun.util.BuddhistCalendar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Bird {

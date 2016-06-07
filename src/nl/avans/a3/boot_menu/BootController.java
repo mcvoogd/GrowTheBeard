@@ -18,21 +18,18 @@ public class BootController implements Controller{
         this.bootModel = model;
         this.wiimoteHandler = wiimoteHandler;
     }
-    @Override
-    public void onModelEvent(ModelEvent event) {
-
-    }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void onModelEvent(ModelEvent event) {}
 
-    }
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode())
         {
-            case KeyEvent.VK_ESCAPE : System.exit(0); // break; is not needed // TODO can you change this back Kevin? love Flobo
+            case KeyEvent.VK_ESCAPE : System.exit(0); // break; is not needed // TODO can you change this back Kevin? love Flobo // It's been several days now...
             case KeyEvent.VK_A : aPressed = true; break;
             case KeyEvent.VK_B : bPressed = true; break;
             case KeyEvent.VK_SPACE : aPressed = bPressed = true; break;

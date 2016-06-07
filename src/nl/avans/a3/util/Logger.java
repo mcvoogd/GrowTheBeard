@@ -128,7 +128,7 @@ public class Logger
         // logs the log with the cale's code path
         log(code, Thread.currentThread().getStackTrace()[2].toString(), message, type);
     }
-    
+
     /**
      * @param code the unique code that identifies the log (maybe left empty)
      * @param codePath a code path to the log (used to find the code that calls the log)
