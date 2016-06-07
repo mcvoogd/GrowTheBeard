@@ -77,8 +77,8 @@ class Player extends Sprite {
 		if (xPos < 1) {
 			xPos = 1;
 		}
-		if (xPos > 1870) {
-			xPos = 1870;
+		if (xPos > 1770) {
+			xPos = 1770;
 		}
 		setPlayerImage();
 	}
