@@ -47,8 +47,7 @@ public class MainMenuModel implements Model{
 
     @Override
     public void update() {
-        Point2D punt = new Point2D.Double(pointX, pointY);
-        checkIRinMenu(punt);
+        checkIRinMenu(pointer);
     }
 
     @Override

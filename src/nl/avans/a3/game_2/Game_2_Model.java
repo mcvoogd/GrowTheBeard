@@ -220,7 +220,6 @@ public class Game_2_Model implements Model
         if (player > 1) return; // TODO proper warnings
         if (Math.abs(move)>1) return;
         players[player].movX = move;
-        //System.out.println("player" + player + ", moveX = " + players[player].movX);
     }
 
     public void setJump(boolean pressed, int player) {

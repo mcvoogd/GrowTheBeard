@@ -1,5 +1,6 @@
 package nl.avans.a3.game_3;
 
+import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -21,6 +22,7 @@ public class Game_3_Model implements Model{
     private boolean inGame = true;
     private BufferedImage background;
     private ArrayList<Particle> particles;
+    private MainMenuModel.Mode chosenMode;
 
     private Random rand = new Random();
 

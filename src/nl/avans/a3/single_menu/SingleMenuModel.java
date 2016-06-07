@@ -12,14 +12,15 @@ import nl.avans.a3.util.WiimoteHandler;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 /**
  * Created by Harmen on 3-6-2016.
  */
 public class SingleMenuModel implements Model {
-
     private Point2D pointer;
     private int modeNumber;
+    private MainMenuModel.Mode chosenMode = MainMenuModel.Mode.CHOOSE_SINGLE;
     private Rectangle2D game1 = new Rectangle2D.Double(160, 100, 830, 450);
     private Rectangle2D game2 = new Rectangle2D.Double(1010, 100, 830, 450);
     private Rectangle2D game3 = new Rectangle2D.Double(160, 585, 830, 450);
@@ -33,12 +34,11 @@ public class SingleMenuModel implements Model {
 
     @Override
     public void start() {
-
     }
 
     @Override
     public void update() {
-
+        getIRchosenMenu(pointer);
     }
 
     @Override
@@ -53,6 +53,7 @@ public class SingleMenuModel implements Model {
             setMode(SingleMenuModel.Mode.WOOD_DODGING);
         }else if(game2.contains(cursor))
         {
+            System.out.println("contains cursor");
             setMode(SingleMenuModel.Mode.WOOD_CHOPPING);
         }else if(game3.contains(cursor))
         {
