@@ -22,9 +22,10 @@ public class Game_3_Controller implements Controller{
     @Override
     public void update() {
         gameModel.update();
-        float pitch1 = 0;
-        float pitch2 = 0;
+        float pitch1;
+        float pitch2;
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
+            // TODO could these pitch values be removed?
             float pitch = wiimoteHandler.getPitch(0);
             pitch1 = wiimoteHandler.getPitch(0);
             pitch2 = wiimoteHandler.getPitch(1);
@@ -57,7 +58,7 @@ public class Game_3_Controller implements Controller{
                 gameModel.setHitPlayer(2, true);
             }
             if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
-                if (!gameModel.getIngame()) {
+                if (!gameModel.getInGame()) {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                         PartyModeHandler.notifyNextGame();
                     }

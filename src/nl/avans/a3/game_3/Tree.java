@@ -8,13 +8,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 public class Tree {
 
-    private int hitpoints;
+    private int hitPoints;
     private int x;
     private int y;
+    // TODO can these be removed?
     private int width;
     private int height;
     private BufferedImage[] sprites;
@@ -29,7 +29,7 @@ public class Tree {
     private Timer treeFlashTimer;
     private boolean leftOrRight;
     private boolean fading = false;
-    private final int MAXHITPOINTS = 250;
+    private final int MAX_HIT_POINTS = 250;
     private BufferedImage image;
     private BufferedImage trunk;
     private int xOffset;
@@ -41,7 +41,8 @@ public class Tree {
 
     public Tree(int x, int y, boolean leftOrRight)
     {
-        hitpoints = MAXHITPOINTS;
+        // TODO magic numbers al over the place
+        hitPoints = MAX_HIT_POINTS;
         this.x = x;
         this.y = y;
         width = 100;
@@ -51,15 +52,15 @@ public class Tree {
         sprites = new BufferedImage[6];
         if(!leftOrRight) {
             xOffset = 7;
-            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_right.png");
-            for(int i = 0; i < 6; i++){
+            image = ResourceHandler.getImage("res/images_game3/tree_right.png");
+            if (image != null) for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(211 * i, 0, 211, 852);
             }
         }else
         {
             xOffset = -7;
-            image = (BufferedImage) ResourceHandler.getImage("res/images_game3/tree_left.png");
-            for(int i = 0; i < 6; i++){
+            image = ResourceHandler.getImage("res/images_game3/tree_left.png");
+            if (image != null) for(int i = 0; i < 6; i++){
                 sprites[i] = image.getSubimage(185 * i, 0, 185, 852);
             }
         }
@@ -93,19 +94,19 @@ public class Tree {
                 ir.remove();
             }
         }
-        if(hitpoints <= 200) // eerste cut
+        if(hitPoints <= 200) // first cut
         {
             changeSprite(sprites[2]);
         }
-        if(hitpoints <= 150) // tweede cut
+        if(hitPoints <= 150) // second cut
         {
             changeSprite(sprites[3]);
         }
-        if(hitpoints <= 100) // derde cut
+        if(hitPoints <= 100) // three cut
         {
             changeSprite(sprites[4]);
         }
-        if(hitpoints <= 0) // boom valt.
+        if(hitPoints <= 0) // boom falls.
         {
             changeSprite(sprites[5]);
             if(!fallen){
@@ -120,6 +121,7 @@ public class Tree {
 
     public void draw(Graphics2D g)
     {
+        // TODO magic numbers again
         if(!fallen) {
             if(treeFlashTimer.isRunning()) {
                 if(treeVisible && switched) {
@@ -184,7 +186,7 @@ public class Tree {
         fallen = false;
         alpha = 1.0f;
         fading = true;
-        hitpoints = MAXHITPOINTS;
+        hitPoints = MAX_HIT_POINTS;
         changeSprite(sprites[1]);
         damageNumbers.clear();
     }
@@ -193,7 +195,7 @@ public class Tree {
     {
         if(!fading) {
             if (!fallen) {
-                this.hitpoints -= damage;
+                this.hitPoints -= damage;
                 Color hitColor = Color.RED;
                 if (damage < 10) {
                     hitColor = new Color(255, 250, 30);
@@ -211,8 +213,8 @@ public class Tree {
                 } else {
                     addDamageNumber(x - 50, y + 800, damage, hitColor);
                 }
-                if (hitpoints < 0) {
-                    hitpoints = 0;
+                if (hitPoints < 0) {
+                    hitPoints = 0;
                 }
                 this.damage = damage;
             }
@@ -233,6 +235,8 @@ public class Tree {
         return false;
     }
 
+
+    // TODO an enum would be better for this
     /**
      * read this to see what the boolean is used for.
      * @param leftOrRight : TRUE for left, FALSE for RIGHT.
@@ -242,7 +246,7 @@ public class Tree {
             rotator = new Timer(1000/60, e->
         {
             if(leftOrRight)
-            {
+            { // TODO change this with rotation += Math.ceiling(rotation/10)*0.2
                 if(rotation < maxRotation)
                 {
                     if(rotation >= 0 && rotation <= 10)
