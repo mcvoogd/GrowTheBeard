@@ -69,7 +69,7 @@ class SpriteSheetPanel extends JPanel implements ActionListener {
 		repaint();
 	}
 	
-	// Hier alleen tekenen ! Nooit een repaint() !!
+	// Just draw here!! No repaint
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
