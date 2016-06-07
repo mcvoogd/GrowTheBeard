@@ -1,4 +1,7 @@
 package nl.avans.a3.game_1;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.main_menu.MainMenuModel;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
@@ -198,6 +201,11 @@ public class GameBoard extends JPanel implements ActionListener {
 					PartyModeHandler.notifyNextGame();
 				}
 			}
+			else {
+				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+					ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
+				}
+			}
 		}
 		Toolkit.getDefaultToolkit().sync();
 	}
@@ -233,8 +241,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
-		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
-        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
