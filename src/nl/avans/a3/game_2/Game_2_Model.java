@@ -2,6 +2,7 @@ package nl.avans.a3.game_2;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.MathExtended;
 import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
@@ -19,10 +20,15 @@ public class Game_2_Model implements Model
     final int PLAYER_COUNT = 2;
     final int WORLD_WIDTH_BOUND = 1920;
     final int WORLD_HEIGHT_BOUND = 1080;
-    final int PLAYER_HEIGHT = 164;
-    final int PlAYER_WIDTH = 112;
+    final int PLAYER_HEIGHT = 267;
+    final int PlAYER_WIDTH = 80;
     final int BLOCK_WIDTH = 50;
     final int BLOCK_HEIGHT = 20;
+
+    final int GROUND_LEFT_X = 0;
+    final int GROUND_LEFT_Y = 0;
+    final int GROUND_LEFT_WIDTH = 500;
+    final int GROUND_LEFT_HEIGHT = 225;
 
     private Timer gameTimer;
     private Timer viewTimer;
@@ -104,10 +110,12 @@ public class Game_2_Model implements Model
             {
                 if (movX != 0) {
                     x += movX * 5;
-                    ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
                     // TODO handle the platform that you're standing on
                 }
             }
+
+            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PlAYER_WIDTH-2f);
+            ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
             jump = false;
         }
 

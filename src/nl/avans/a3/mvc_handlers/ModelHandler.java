@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 
 public class ModelHandler implements ModelListener{
+    public static final boolean DEBUG_MODE = true;
+
     public ArrayList<ModelListener> listeners = new ArrayList<>();
     public void addListener(ModelListener listener) {
         if (listener != null && listeners.contains(listener) == false) {

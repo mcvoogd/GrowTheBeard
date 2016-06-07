@@ -64,7 +64,7 @@ public class MainMenuView implements View {
         }
         rotation += speed;
 
-      //  g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
+        g.drawImage(cursor, mainMenuModel.getPointX(), mainMenuModel.getPointY(), null);
         if(mainMenuModel.getPointer() != null) {
             drawChosenMenuWithPointer(g);
             g.drawImage(cursor, (int) mainMenuModel.getPointer().getX(), (int)mainMenuModel.getPointer().getY(), null);

@@ -1,6 +1,7 @@
 package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -12,7 +13,6 @@ import java.util.ArrayList;
  * Created by Thijs on 2-6-2016.
  */
 public class Game_2_View implements View {
-
     private Game_2_Model model;
 
     public Game_2_View(Game_2_Model model)
@@ -67,6 +67,9 @@ public class Game_2_View implements View {
         g.setFont(new Font("Verdana", Font.BOLD, 68));
         g.drawString("" + model.getTime(), 960, 100); //TODO improve logics
 
+        for (int i = 0; i <= 2; i++)
+            g.drawImage(model.platforms.get(i).image, (int) model.platforms.get(i).x, (int) model.platforms.get(i).y, null);
+
         for (Player player : players) {
             if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
             {
@@ -74,10 +77,17 @@ public class Game_2_View implements View {
                 player.selectedAnimation++;
             }
 
-            g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y+model.PLAYER_HEIGHT, null);
+            final int PLAYER_X_OFFSET = -53;
+
+            g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
         }
-        for (int i = 0; i <= 2; i++)
-            g.drawImage(model.platforms.get(i).image, (int) model.platforms.get(i).x, (int) model.platforms.get(i).y, null);
+
+        if (ModelHandler.DEBUG_MODE == false) return;
+
+        g.setColor(Color.PINK);
+        for (Player player : players)
+            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PlAYER_WIDTH, model.PLAYER_HEIGHT);
+        g.drawRect(model.GROUND_LEFT_X, 1080-model.GROUND_LEFT_Y-model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
     }
 
     @Override
