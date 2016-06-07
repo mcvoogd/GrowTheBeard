@@ -2,7 +2,7 @@ package nl.avans.a3.mvc_handlers;
 
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.game_1.DummyMVC.DummyController;
-import nl.avans.a3.game_1.DummyMVC.Dummy_Model;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
 import nl.avans.a3.game_2.Game_2_Controller;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Controller;
@@ -92,7 +92,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         if(model instanceof Game_3_Model){
             return new Game_3_Controller((Game_3_Model) model, wiimoteHandler);
         }
-        if(model instanceof Dummy_Model)
+        if(model instanceof DummyModel)
         {
             return new DummyController();
         }

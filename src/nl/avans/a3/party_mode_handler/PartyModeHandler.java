@@ -2,7 +2,7 @@ package nl.avans.a3.party_mode_handler;
 
 import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
-import nl.avans.a3.game_1.DummyMVC.Dummy_Model;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.main_menu.MainMenuModel;
@@ -37,7 +37,7 @@ public class PartyModeHandler {
             case CHOOSE_PARTY:
                 switch(gameCounter)
                 {
-                    case 1 : ModelHandler.instance.changeModel(new NewModel(model, new Dummy_Model())); ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
+                    case 1 : ModelHandler.instance.changeModel(new NewModel(model, new DummyModel())); ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
                     case 2 : ModelHandler.instance.changeModel(new NewModel(model, new Game_3_Model())); break;//TODO switch these games when game 2 is done.
                     case 3 : ModelHandler.instance.changeModel(new NewModel(model, new Game_2_Model())); break;
                 }
