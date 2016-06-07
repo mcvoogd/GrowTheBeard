@@ -46,8 +46,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private boolean player1Win;
 	private boolean player2Win;
 
-	private final int SCHERM_BREEDTE = 1920;
-	private final int SCHERM_HOOGTE = 1080;
+	private final int SCREEN_WIDTH = 1920;
+	private final int SCREEN_HEIGHT = 1080;
 
 	private final int START_X_PLAYER1 = 640;
 	private final int START_X_PLAYER2 = 1280;
@@ -91,7 +91,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(SCHERM_BREEDTE, SCHERM_HOOGTE));
+		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		inGame = true;
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
