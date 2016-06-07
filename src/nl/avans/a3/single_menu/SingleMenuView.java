@@ -36,6 +36,7 @@ public class SingleMenuView implements View {
         {
             g.drawImage(cursor, (int) model.getPointer().getX(), (int) model.getPointer().getY(), null);
         }
+        g.drawRect(30, 0, 100, 100);
 
     }
 

@@ -24,7 +24,7 @@ public class SingleMenuModel implements Model {
     private Rectangle2D game1 = new Rectangle2D.Double(160, 100, 830, 450);
     private Rectangle2D game2 = new Rectangle2D.Double(1010, 100, 830, 450);
     private Rectangle2D game3 = new Rectangle2D.Double(160, 585, 830, 450);
-    private Rectangle2D back = new Rectangle2D.Double(1010, 585, 830, 450);
+    private Rectangle2D back = new Rectangle2D.Double(0, 0, 100, 100);
 
     public enum Mode{
         WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU, DEFAULT
@@ -53,7 +53,6 @@ public class SingleMenuModel implements Model {
             setMode(SingleMenuModel.Mode.WOOD_DODGING);
         }else if(game2.contains(cursor))
         {
-            System.out.println("contains cursor");
             setMode(SingleMenuModel.Mode.WOOD_CHOPPING);
         }else if(game3.contains(cursor))
         {

@@ -106,9 +106,9 @@ public class GameBoard extends JPanel implements ActionListener {
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
 
-        for(int i = 0; i < 2; i++){
-            winner[i] = winnerImage.getSubimage(0, (winnerImage.getHeight()/2 * i), winnerImage.getWidth(), winnerImage.getHeight()/2);
-        }
+		for(int i = 0; i < 3; i++){
+			winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+		}
 
         initWoodBlocks();
 		if (inGame) {
@@ -229,6 +229,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
         switch(winner)
         {
+			case DRAW : g.drawImage(this.winner[2], 500, 100, null); break;
 			case PLAYER_1_WIN: g.drawImage(this.winner[0], 500, 100, null); break; //TEKST
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
