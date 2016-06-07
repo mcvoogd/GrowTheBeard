@@ -523,7 +523,6 @@ public class WiimoteHandler {
         Point2D point = new Point2D.Double(0, 0);
         if(irSources[wiimoteID].length > 0){
             point.setLocation(irSources[wiimoteID][0].getX(), irSources[wiimoteID][0].getY());
-            System.out.println(irSources[wiimoteID][0]);  // Prints irsource, should never print null
         }
         return point;
     }
@@ -658,6 +657,10 @@ public class WiimoteHandler {
             return false;
         }
         return false;
+    }
+    
+    public int numberOfWiimotesConnected(){
+        return wiimotes.length;
     }
 
     public boolean[] getPeakValue(int wiiMote){
