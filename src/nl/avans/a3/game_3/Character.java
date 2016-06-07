@@ -1,5 +1,6 @@
 package nl.avans.a3.game_3;
 
+import com.sun.org.apache.regexp.internal.RE;
 import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
@@ -10,10 +11,11 @@ import java.awt.image.BufferedImage;
 public class Character {
 
     private int playerNumber, x, y;
-    private BufferedImage playerImage, armImage, mainImage;
+    private BufferedImage playerImage, armImage, mainImage, beardImage;
     private boolean chop;
     private Timer timer;
     private int imageNumber = 0;
+    private int beardNumber = 5;
 
     public Character(int playerNumber, int x, int y){
         this.playerNumber = playerNumber;
@@ -42,9 +44,11 @@ public class Character {
 
         if(playerNumber == 1){
             g2.drawImage(playerImage, x + 307, y, -614, 480, null);
+            g2.drawImage(beardImage, x + 307, y, -614, 469, null);
             g2.drawImage(armImage, x + 307, y, -614, 480, null);
         }else{
             g2.drawImage(playerImage, x, y, 614, 480, null);
+            g2.drawImage(beardImage, x, y, 614, 469, null);
             g2.drawImage(armImage, x, y, 614, 480, null);
         }
     }
@@ -59,6 +63,21 @@ public class Character {
             BufferedImage image = ResourceHandler.getImage("res/images_game3/person2.png");
             playerImage = image != null ? image.getSubimage(614 * imageNumber, 0, 614, 469) : null;
             armImage = image != null ? image.getSubimage(614 * (imageNumber + 1), 0, 614, 469) : null;
+        }
+        BufferedImage beardImage = ResourceHandler.getImage("res/images_game3/beard.png").getSubimage(614 * beardNumber, 0, 614, 469 * 3);
+        switch (imageNumber){
+            case 0:
+                this.beardImage = beardImage.getSubimage(0, 469, 614, 469);
+                break;
+            case 2:
+                this.beardImage = beardImage.getSubimage(0, 0, 614, 469);
+                break;
+            case 4:
+                this.beardImage = beardImage.getSubimage(0, 0, 614, 469);
+                break;
+            case 6:
+                this.beardImage = beardImage.getSubimage(0, 469*2, 614, 469);
+                break;
         }
 
     }

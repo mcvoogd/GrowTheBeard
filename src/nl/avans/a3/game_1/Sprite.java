@@ -8,6 +8,7 @@ class Sprite {
 	protected boolean visible;
 	protected int width, height;
 	protected Image image;
+	protected Image image2;
 	
 	public Sprite(int xPos, int yPos) {
 		this.xPos = xPos;
@@ -28,8 +29,17 @@ class Sprite {
 	protected void setImage(Image image){
 		this.image = image;
 	}
+
+	protected void setImage2(Image image2){
+		this.image2 = image2;
+	}
+
 	public Image getImage() {
 		return image;
+	}
+
+	public Image getImage2() {
+		return image2;
 	}
 	
 	public int getX() {

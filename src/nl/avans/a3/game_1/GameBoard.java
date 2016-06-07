@@ -198,8 +198,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 
 		if (player1.getVisible() && player2.getVisible()) {
-			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
 			g2.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getBeard(0), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getImage2(), player2.getX(), player2.getY(), this);
+			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getBeard(3), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getImage2(), player1.getX(), player1.getY(), this);
 		}
 	}
 
@@ -225,8 +229,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
-		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
-        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
+		g.drawImage(Images.player1.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
