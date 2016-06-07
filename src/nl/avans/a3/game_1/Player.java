@@ -25,6 +25,7 @@ class Player extends Sprite {
 		floor = yPos;
 		this.gameBoard = gameBoard;
 		this.number = number;
+		new Images();
 		initPlayer();
 	}
 	

@@ -38,6 +38,12 @@ public class MainMenuController implements Controller {
         if(wiimoteHandler.isWiiMotesConnected()) {
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
                 //ModelHandler.instance.onModelEvent(new MainMenuEvent());
+                synchronized(this) {
+                    if(player != null) {
+                        player.stop();
+                        player = null;
+                    }
+                }
                 model.onMenuChoose(wiimoteHandler);
             }
             double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET/2;

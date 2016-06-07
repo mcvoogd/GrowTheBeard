@@ -12,7 +12,6 @@ public class Game_3_Controller implements Controller{
     private Game_3_Model gameModel;
     private WiimoteHandler wiimoteHandler;
 
-
     public Game_3_Controller(Game_3_Model gameModel, WiimoteHandler wiimoteHandler){
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
