@@ -62,7 +62,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private static final double MAX_SCALE = 0.15;
     private static final double MIN_SCALE = 0.1;
 
-    private BufferedImage winscreen;
+    private BufferedImage winScreen;
     private BufferedImage[] winner;
     private BufferedImage winnerImage;
 
@@ -77,6 +77,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<Particle> particles;
 	private boolean playerCollision = false;
 
+	private final int WOODBLOCK_START_COUNT = 3;
+
 	public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
 		initGameBoard();
@@ -84,7 +86,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 
 	private void initGameBoard() {
-//		test();
+//		test(); // TODO can this be removed?
 
 		new Images();
 		scaleBackground();
@@ -101,8 +103,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
         winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
-        winnerImage = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/winner.png");
-        winscreen = (BufferedImage) ResourceHandler.getImage("res/images_scoreboard/background.png");
+        winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
+        winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
 
         for(int i = 0; i < 2; i++){
             winner[i] = winnerImage.getSubimage(0, (winnerImage.getHeight()/2 * i), winnerImage.getWidth(), winnerImage.getHeight()/2);
@@ -110,7 +112,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
         initWoodBlocks();
 		if (inGame) {
-			endTimer = new Timer(time * 1000, e -> inGame = !inGame);
+			endTimer = new Timer(time * 1000, e -> inGame = false);
 			endTimer.start();
 
 			timeLeft = new Timer(1000, e -> {
@@ -126,9 +128,9 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private void initWoodBlocks() {
 		woodBlocks = new ArrayList<>();
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
-		woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
+
+		for (int i = 0; i < WOODBLOCK_START_COUNT; i++)
+			woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
 	}
 
 	@Override
@@ -161,6 +163,8 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
+
+			// TODO can this be removed?
 //			g2.setColor(new Color(0x161BFF));
 //			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
 //			g2.setColor(new Color(0x2CE21C));
@@ -182,13 +186,13 @@ public class GameBoard extends JPanel implements ActionListener {
 			wiimoteHandler.deactivateRumble(0);
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
-				drawGameEnd(g2, 1);
+				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
 			}
 			if (scorePlayer2 > scorePlayer1) {
-				drawGameEnd(g2, 2);
+				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
 			}
 			else{
-				drawGameEnd(g2, 0);
+				drawGameEnd(g2, GameResult.DRAW);
 			}
 			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
 				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
@@ -208,9 +212,11 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 	}
 
-    private void drawGameEnd(Graphics2D g, int player) {
+	private enum GameResult {PLAYER_1_WIN, PLAYER_2_WIN, DRAW}
 
-        g.drawImage(winscreen, 0, 0, 1920, 1080, null);
+    private void drawGameEnd(Graphics2D g, GameResult winner) {
+
+        g.drawImage(winScreen, 0, 0, 1920, 1080, null);
 
         textScale += change;
         if(textScale > MAX_SCALE){
@@ -221,11 +227,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
 
-        switch(player)
+        switch(winner)
         {
-            case 0 :break; //default
-            case 1 :g.drawImage(winner[0], 500, 100, null); break; //TEKST
-            case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
+			case PLAYER_1_WIN: g.drawImage(this.winner[0], 500, 100, null); break; //TEKST
+			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
         g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
