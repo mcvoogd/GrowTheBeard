@@ -1,6 +1,9 @@
 package nl.avans.a3.game_3;
 
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.main_menu.MainMenuModel;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.WiimoteHandler;
@@ -56,6 +59,12 @@ public class Game_3_Controller implements Controller{
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                         PartyModeHandler.notifyNextGame();
                     }
+                }
+            }
+            else
+            {
+                if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                    ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
                 }
             }
         }

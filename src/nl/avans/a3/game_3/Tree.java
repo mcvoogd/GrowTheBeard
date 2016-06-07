@@ -279,7 +279,6 @@ public class Tree {
                     {
                         rotation += 2.4;
                     }
-
                 }
             }else
             {
