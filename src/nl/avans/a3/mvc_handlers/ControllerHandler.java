@@ -14,6 +14,7 @@ import nl.avans.a3.event.NewModel;
 import nl.avans.a3.single_menu.SingleMenuController;
 import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.Logger;
+import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.boot_menu.BootController;
 import nl.avans.a3.boot_menu.BootModel;
@@ -30,12 +31,17 @@ public class ControllerHandler implements ModelListener, KeyListener {
     private Controller controller;
     private Timer updateControllerTimer;
     private static WiimoteHandler wiimoteHandler;
+    private SoundPlayer player;
+    private boolean musicOn = true;
 
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
         updateControllerTimer = new Timer(1000/60, e -> { if(controller != null)controller.update();});
         wiimoteHandler = new WiimoteHandler();
+        player = new SoundPlayer("res/music/theme_song.wav");
+        player.start();
+
     }
 
     @Override
@@ -60,6 +66,15 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (musicOn) {
+                player.stop();
+                musicOn = false;
+            } else if (!musicOn) {
+                player.start();
+                musicOn = true;
+            }
+        }
         if (controller != null) controller.keyPressed(e);
     }
 
