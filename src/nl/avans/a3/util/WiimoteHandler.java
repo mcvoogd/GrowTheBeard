@@ -208,12 +208,8 @@ public class WiimoteHandler {
         newValues[1] = gForceWiimoteList.get(wiimoteID).getLast().getY();
         newValues[2] = gForceWiimoteList.get(wiimoteID).getLast().getZ();
         for(int i = 0; i < wiimotes.length; i++) {
-                if ((oldValue[wiimoteID][i] - newValues[i]) > 0.5) {
-                    peakValue[wiimoteID][i] = true;
-                } else {
-                    peakValue[wiimoteID][i] = false;
-                }
-                oldValue[wiimoteID][i] = newValues[i];
+            peakValue[wiimoteID][i] = (oldValue[wiimoteID][i] - newValues[i]) > 0.5;
+            oldValue[wiimoteID][i] = newValues[i];
         }
     }
     
@@ -447,7 +443,6 @@ public class WiimoteHandler {
     private void setButton(int wiimoteID, Buttons button, boolean value){
         /**
          * since this also writes false to pressedButtons, it may happen that at too short presses, no button press will be registered.
-         * TODO: testing needed
          */
         pressedButtons.get(wiimoteID).put(button, value);
         heldButtons.get(wiimoteID).put(button, value);
@@ -528,6 +523,7 @@ public class WiimoteHandler {
         Point2D point = new Point2D.Double(0, 0);
         if(irSources[wiimoteID].length > 0){
             point.setLocation(irSources[wiimoteID][0].getX(), irSources[wiimoteID][0].getY());
+            System.out.println(irSources[wiimoteID][0]);  // Prints irsource, should never print null
         }
         return point;
     }

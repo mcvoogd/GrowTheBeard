@@ -14,7 +14,6 @@ public class Tree {
     private int hitPoints;
     private int x;
     private int y;
-    // TODO can these be removed?
     private int width;
     private int height;
     private BufferedImage[] sprites;
@@ -151,8 +150,7 @@ public class Tree {
             }
         }
         else {
-           if(fallen && (rotation > maxRotation || rotation < -maxRotation))
-           {
+           if(rotation > maxRotation || rotation < -maxRotation){
                alphaTimer.start();
            }
             //alphacomposite to fade away!
@@ -228,24 +226,20 @@ public class Tree {
 
     public boolean isDamaged()
     {
-        if(damage > 0)
-        {
-            return true;
-        }
-        return false;
+        return damage > 0;
     }
 
 
     // TODO an enum would be better for this
     /**
      * read this to see what the boolean is used for.
-     * @param leftOrRight : TRUE for left, FALSE for RIGHT.
+     * @param isLeft: true for left, false for right.
      */
-    public void drawFallingAnimation(boolean leftOrRight)
+    public void drawFallingAnimation(boolean isLeft)
     {
             rotator = new Timer(1000/60, e->
         {
-            if(leftOrRight)
+            if(isLeft)
             { // TODO change this with rotation += Math.ceiling(rotation/10)*0.2
                 if(rotation < maxRotation)
                 {
@@ -285,7 +279,6 @@ public class Tree {
                     {
                         rotation += 2.4;
                     }
-
                 }
             }else
             {
@@ -341,6 +334,4 @@ public class Tree {
     {
         return damageNumbers;
     }
-
-
 }

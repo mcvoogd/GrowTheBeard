@@ -17,6 +17,8 @@ public class Game_3_View implements View{
     private BufferedImage winnerImage;
     private BufferedImage text;
 
+    private final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
     private double textScale = 0.05;
     private static final double CHANGE_SPEED = 0.0005;
     private double change = CHANGE_SPEED;
@@ -52,9 +54,7 @@ public class Game_3_View implements View{
             gameModel.getTrees()[0].draw(g);
             gameModel.getTrees()[1].draw(g);
 
-            // TODO fix the magic values
-
-            g.drawImage(banner, 0, -25, 1920, 180, null);
+            g.drawImage(banner, 0, -25, WIDTH, 180, null);
             g.setFont(tf);
             g.setColor(new Color(159, 44, 22));
             g.drawString("" + gameModel.getTime(), 960 - (ft.stringWidth("" + gameModel.getTime()) / 2) + 90, 80);
@@ -93,9 +93,7 @@ public class Game_3_View implements View{
 
     private void drawGameEnd(Graphics2D g, int player) {
 
-        // TODO fix these magic numbers
-
-        g.drawImage(winScreen, 0, 0, 1920, 1080, null);
+        g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
 
         textScale += change;
         if(textScale > MAX_SCALE){
@@ -104,7 +102,7 @@ public class Game_3_View implements View{
             change = CHANGE_SPEED;
         }
 
-        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (1920/2) - text.getWidth(null)/2, 200), null);
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (WIDTH/2) - text.getWidth(null)/2, 200), null);
 
         switch(player)
         {
@@ -113,8 +111,8 @@ public class Game_3_View implements View{
             case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
         }
 
-        g.drawImage(gameModel.getPlayerImage(1),(1920/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
-        g.drawImage(gameModel.getPlayerImage(2), (1920/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+        g.drawImage(gameModel.getPlayerImage(1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
+        g.drawImage(gameModel.getPlayerImage(2), (WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
     }
 
 

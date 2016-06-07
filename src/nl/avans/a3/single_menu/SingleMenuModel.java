@@ -9,14 +9,9 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.WiimoteHandler;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
-/**
- * Created by Harmen on 3-6-2016.
- */
 public class SingleMenuModel implements Model {
     private Point2D pointer;
     private int modeNumber;

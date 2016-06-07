@@ -45,11 +45,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	
 	private boolean inGame;
 
-	// TODO remove these variables if we don't need them
 	private boolean blockIsFallen;
-
-	private boolean player1Win;
-	private boolean player2Win;
 
 	private final int SCREEN_WIDTH = 1920;
 	private final int SCREEN_HEIGHT = 1080;
@@ -60,7 +56,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private BufferedImage text;
     private double textScale = 0.05;
-    private static final double CHANGE_SPEED = 0.0005;
+    private static final double CHANGE_SPEED = 0.005;
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;
     private static final double MIN_SCALE = 0.1;
@@ -147,12 +143,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
 			g2.translate(0, -40);
-			for (WoodBlock w : woodBlocks) {
-				if (w.getVisible()) {
-					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null);
-
-				}
-			}
+			woodBlocks.stream().filter(Sprite::getVisible).forEach(w -> 
+					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null));
 			g2.setTransform(oldFrom);
 			Font tf = new Font("Verdana", Font.BOLD, 68);
 			FontMetrics ft = g2.getFontMetrics(tf);
@@ -166,22 +158,14 @@ public class GameBoard extends JPanel implements ActionListener {
 
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
-
-//			// TODO can this be removed?
-//			g2.setColor(new Color(0x161BFF));
-//			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
-//			g2.setColor(new Color(0x2CE21C));
-//			g2.drawString("Score speler 2: " + scorePlayer2, 1500, 1050);
-
+            
 			g2.setColor(Color.BLACK);
 			g2.translate(0, 850);
 			g2.translate(-1, -1);
 			g2.translate(0, -40);
 
 			drawPlayers(g);
-
-
-
+            
 			for(Particle p : particles){
 				p.draw(g2);
 			}
@@ -394,7 +378,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	}
 
 	public void checkRumble(){
-		if(player1Rumble){
+        //noinspection Duplicates
+        if(player1Rumble){
 			rumbleCounter1++;
 			if(rumbleCounter1 > rumbleTime){
 				player1Rumble = false;
@@ -402,7 +387,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 		}
 
-		if(player2Rumble){
+        //noinspection Duplicates
+        if(player2Rumble){
 			rumbleCounter2++;
 			if(rumbleCounter2 > rumbleTime){
 				player2Rumble = false;
@@ -420,10 +406,5 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public boolean getPlayerCollision(){
 		return  playerCollision;
-	}
-
-	public void test(){
-		time = 5;
-		scorePlayer2 = 100;
 	}
 }
