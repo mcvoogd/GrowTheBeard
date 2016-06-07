@@ -1,5 +1,7 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
+import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -180,6 +182,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			{
 				drawGameEnd(g2, GameResult.DRAW);
 			}
+
 			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
 				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 					PartyModeHandler.notifyNextGame();
@@ -187,7 +190,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 			else {
 				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-					ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
+					ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
 				}
 			}
 		}

@@ -6,6 +6,7 @@ import nl.avans.a3.boot_menu.BootView;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_2.Game_2_View;
 import nl.avans.a3.game_3.Game_3_Model;
@@ -79,7 +80,8 @@ public class ViewHandler implements ModelListener{
 
     @Override
     public void onModelEvent(ModelEvent event) {
-        if (event instanceof NewModel){
+        if (event instanceof NewModel)
+        {
             if(frame.getContentPane() != mvcPanel && mvcPanel != null)
             {
                 frame.setContentPane(mvcPanel);
@@ -89,10 +91,13 @@ public class ViewHandler implements ModelListener{
             }
             panel = mvcPanel;
             if (view != null) view.close();
-            view = selectedView(((NewModel)event).newModel);
-            if (view != null) {
-                Logger.instance.log("VH001", "new view (" + view.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
-                view.start();
+            if(view != selectedView(((NewModel) event).newModel))   {
+                System.out.println(view + " view < + " + selectedView(((NewModel) event).newModel) + " new view <");
+                view = selectedView(((NewModel) event).newModel);
+                if (view != null) {
+                    Logger.instance.log("VH001", "new view (" + view.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);
+                    view.start();
+                }
             }
         }else{
             if (view != null) view.onModelEvent(event);
@@ -129,6 +134,11 @@ public class ViewHandler implements ModelListener{
         }
         if(model instanceof Game_3_Model) {
             return new Game_3_View((Game_3_Model) model);
+        }
+        if(model instanceof DummyModel)
+        {
+            System.out.println("returned NULL < viewhandler");
+            return null;
         }
         return null;
     }

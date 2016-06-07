@@ -2,6 +2,7 @@ package nl.avans.a3.single_menu;
 
 import nl.avans.a3.event.NewGameEvent;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.main_menu.MainMenuModel;
@@ -66,8 +67,7 @@ public class SingleMenuModel implements Model {
         if(mode != Mode.DEFAULT) {
             switch (mode) {
                 case WOOD_DODGING:
-                    ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler));
-                    break;
+                    ModelHandler.instance.changeModel(new NewModel(null, new DummyModel())); ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
                 case WOOD_JUMPING:
                     ModelHandler.instance.onModelEvent(new NewModel(this, new Game_2_Model()));
                     break;
