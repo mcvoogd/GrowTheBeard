@@ -32,7 +32,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
     private Timer updateControllerTimer;
     private static WiimoteHandler wiimoteHandler;
     private SoundPlayer player;
-    private boolean musicOn = true;
+    private boolean musicOn = false;
 
     public ControllerHandler()
     {

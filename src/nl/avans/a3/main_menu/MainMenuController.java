@@ -14,7 +14,6 @@ public class MainMenuController implements Controller {
     private static final double SCREEN_OFFSET = 400.0;
     private MainMenuModel model;
     private WiimoteHandler wiimoteHandler;
-    private boolean musicOn = true;
 
     public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
     {
@@ -26,12 +25,12 @@ public class MainMenuController implements Controller {
     @Override
     public void update() {
         model.update();
-        if(wiimoteHandler.isWiiMotesConnected()) {
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
-                model.onMenuChoose(wiimoteHandler);
-              }
-            double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET/2;
-            double yPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getY())) ? -100 : wiimoteHandler.getSinglePointer(0).getY() * ((1080.0 + SCREEN_OFFSET) / 900.0) - SCREEN_OFFSET/2;
+        if (wiimoteHandler.isWiiMotesConnected()) {
+                if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
+                    model.onMenuChoose(wiimoteHandler);
+                }
+            double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET / 2;
+            double yPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getY())) ? -100 : wiimoteHandler.getSinglePointer(0).getY() * ((1080.0 + SCREEN_OFFSET) / 900.0) - SCREEN_OFFSET / 2;
             Point2D pointerLocation = new Point2D.Double(xPos, yPos);
             model.setPointer(pointerLocation);
         }

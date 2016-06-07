@@ -38,18 +38,17 @@ public class SingleMenuController implements Controller {
                 if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_HOME)) {
                     ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
                 }
-                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_LEFT)) {
-                    model.switchMenu(-1);
-                }
-                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_RIGHT)) {
-                    model.switchMenu(1);
-                }
-                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
-                    model.onMenuChoose(wiimoteHandler);
-                }
+//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_LEFT)) {
+//                    model.switchMenu(-1);
+//                }
+//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_RIGHT)) {
+//                    model.switchMenu(1);
+//                }
+//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
+//                    model.onMenuChoose(wiimoteHandler);
+//                }
 
                 if(wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)){
-                    System.out.println("checked");
                     switch (model.getMode()) {
                         case WOOD_CHOPPING:
                             model.onMenuChoose(wiimoteHandler);
