@@ -1,7 +1,7 @@
 package nl.avans.a3.mvc_handlers;
 
 import nl.avans.a3.event.ModelEvent;
-import nl.avans.a3.game_1.DummyMVC.Dummy_Controller;
+import nl.avans.a3.game_1.DummyMVC.dummyController;
 import nl.avans.a3.game_1.DummyMVC.Dummy_Model;
 import nl.avans.a3.game_2.Game_2_Controller;
 import nl.avans.a3.game_2.Game_2_Model;
@@ -94,7 +94,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Dummy_Model)
         {
-            return new Dummy_Controller();
+            return new dummyController();
         }
         return null;
     }

@@ -2,7 +2,7 @@ package nl.avans.a3.game_1.DummyMVC;
 
 import nl.avans.a3.mvc_interfaces.Model;
 
-public class Dummy_Model implements Model {
+public class dummyModel implements Model {
     @Override
     public void start() {
 
