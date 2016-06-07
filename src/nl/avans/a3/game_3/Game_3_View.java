@@ -19,7 +19,7 @@ public class Game_3_View implements View{
 
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
-    private double textScale = 0.05;
+    private double textScale = 0.1;
     private static final double CHANGE_SPEED = 0.0005;
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;

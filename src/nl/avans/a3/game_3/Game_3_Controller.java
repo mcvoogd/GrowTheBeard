@@ -54,17 +54,16 @@ public class Game_3_Controller implements Controller{
             if (pitch2 < -80 && pitch2 > -100) {
                 gameModel.setHitPlayer(2, true);
             }
-            if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
-                if (!gameModel.getInGame()) {
+            //NEEDS TO BE DUPLICATE.
+            if (!gameModel.getInGame()) {
+                if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                         PartyModeHandler.notifyNextGame();
                     }
-                }
-            }
-            else
-            {
-                if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-                    ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
+                } else {
+                    if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+                    }
                 }
             }
         }

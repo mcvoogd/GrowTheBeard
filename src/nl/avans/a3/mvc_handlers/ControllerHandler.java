@@ -14,6 +14,7 @@ import nl.avans.a3.event.NewModel;
 import nl.avans.a3.single_menu.SingleMenuController;
 import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.Logger;
+import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 import nl.avans.a3.boot_menu.BootController;
 import nl.avans.a3.boot_menu.BootModel;
@@ -30,12 +31,17 @@ public class ControllerHandler implements ModelListener, KeyListener {
     private Controller controller;
     private Timer updateControllerTimer;
     private static WiimoteHandler wiimoteHandler;
+    private SoundPlayer player;
+    private boolean musicOn = false;
 
     public ControllerHandler()
     {
         ModelHandler.instance.addListener(this);
         updateControllerTimer = new Timer(1000/60, e -> { if(controller != null)controller.update();});
         wiimoteHandler = new WiimoteHandler();
+        player = new SoundPlayer("res/music/theme_song.wav");
+        player.start();
+
     }
 
     @Override
@@ -46,9 +52,21 @@ public class ControllerHandler implements ModelListener, KeyListener {
             if (!updateControllerTimer.isRunning())
                 Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
                 updateControllerTimer.start();
-        }else
+        }
+        else
         {
             if (controller != null) controller.onModelEvent(event);
+        }
+
+        if(!(controller instanceof BootController) && !(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
+        {
+            checkSound();
+        }else
+        {
+           if(!musicOn)
+           {
+               player.start();
+           }
         }
 
     }
@@ -60,12 +78,26 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+           checkSound();
+        }
         if (controller != null) controller.keyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (controller != null) controller.keyReleased(e);
+    }
+
+    public void checkSound()
+    {
+        if (musicOn) {
+            player.stop();
+            musicOn = false;
+        } else if (!musicOn) {
+            player.start();
+            musicOn = true;
+        }
     }
 
     private static Controller selectController(Model model)
@@ -83,6 +115,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Game_Example_Model)
         {
+
             return new Game_Example_Controller((Game_Example_Model) model, wiimoteHandler);
         }
         if (model instanceof Game_2_Model)

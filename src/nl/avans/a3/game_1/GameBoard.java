@@ -1,5 +1,7 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
+import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -55,7 +57,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int PLAYER_Y = -100;
 
 	private BufferedImage text;
-    private double textScale = 0.05;
+    private double textScale = 0.1;
     private static final double CHANGE_SPEED = 0.005;
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;
@@ -180,6 +182,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			{
 				drawGameEnd(g2, GameResult.DRAW);
 			}
+
 			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
 				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 					PartyModeHandler.notifyNextGame();
@@ -187,7 +190,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			}
 			else {
 				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-					ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
+					ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
 				}
 			}
 		}
@@ -198,8 +201,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 
 		if (player1.getVisible() && player2.getVisible()) {
-			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
 			g2.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getBeard(0), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getImage2(), player2.getX(), player2.getY(), this);
+			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getBeard(3), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getImage2(), player1.getX(), player1.getY(), this);
 		}
 	}
 
@@ -225,8 +232,8 @@ public class GameBoard extends JPanel implements ActionListener {
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
-		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
-        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
+		g.drawImage(Images.player1.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
