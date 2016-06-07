@@ -85,6 +85,7 @@ public class Game_2_Model implements Model
             float centerX = x + width/2, centerY = y + height/2;
             float pointX = platform.x-centerX, pointY = platform.y-centerY;
             if (pointY < 0) return false;
+            return true;
         }
 
         public void update()
@@ -185,10 +186,6 @@ public class Game_2_Model implements Model
     @Override
     public void close() {
 
-    }
-
-    public int getTime() {
-        return time;
     }
 
     public void checkCollision() {

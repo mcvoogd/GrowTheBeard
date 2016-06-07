@@ -65,10 +65,6 @@ public class Game_2_View implements View {
 
         g.setColor(Color.RED);
         g.setFont(new Font("Verdana", Font.BOLD, 68));
-        g.drawString("" + model.getTime(), 960, 100); //TODO improve logics
-
-        for (int i = 0; i <= 2; i++)
-            g.drawImage(model.platforms.get(i).image, (int) model.platforms.get(i).x, (int) model.platforms.get(i).y, null);
 
         for (Player player : players) {
             if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
