@@ -41,6 +41,8 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<WoodBlock> woodBlocks;
 	
 	private boolean inGame;
+
+	// TODO remove these variables if we don't need them
 	private boolean blockIsFallen;
 
 	private boolean player1Win;
