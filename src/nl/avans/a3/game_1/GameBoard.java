@@ -86,7 +86,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 
 	private void initGameBoard() {
-//		test(); // TODO can this be removed?
+		//test(); // TODO can this be removed?
 
 		new Images();
 		scaleBackground();
@@ -164,7 +164,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			Font pf = new Font("Calibri", Font.PLAIN, 48);
 			g2.setFont(pf);
 
-			// TODO can this be removed?
+//			// TODO can this be removed?
 //			g2.setColor(new Color(0x161BFF));
 //			g2.drawString("Score speler 1: " + scorePlayer1, 50, 1050);
 //			g2.setColor(new Color(0x2CE21C));
@@ -187,11 +187,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
 				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
-			}
-			if (scorePlayer2 > scorePlayer1) {
+			}else if (scorePlayer2 > scorePlayer1) {
 				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
-			}
-			else{
+			}else if(scorePlayer2 == scorePlayer1)
+			{
 				drawGameEnd(g2, GameResult.DRAW);
 			}
 			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
@@ -294,7 +293,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			Rectangle rect1 = woodBlock.getBounds();
 			boolean hit = false;
 			if (rect3.intersects(rect1)) {
-				scorePlayer1--;
+				scorePlayer1-=2;
 				hit = true;
 				rumble(0);
 				if (scorePlayer1 < 0) {
@@ -302,7 +301,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 			if (rect2.intersects(rect1)) {
-				scorePlayer2--;
+				scorePlayer2-=2;
 				hit = true;
 				rumble(1);
 				if (scorePlayer2 < 0) {
