@@ -74,7 +74,7 @@ public class Game_2_View implements View {
                 player.selectedAnimation++;
             }
 
-            g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y, null);
+            g.drawImage(player.animation[player.selectedAnimation], (int) player.x, 1080 - (int) player.y+model.PLAYER_HEIGHT, null);
         }
         for (int i = 0; i <= 2; i++)
             g.drawImage(model.platforms.get(i).image, (int) model.platforms.get(i).x, (int) model.platforms.get(i).y, null);
