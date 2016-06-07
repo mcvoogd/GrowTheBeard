@@ -55,7 +55,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private final int PLAYER_Y = -100;
 
 	private BufferedImage text;
-    private double textScale = 0.05;
+    private double textScale = 0.1;
     private static final double CHANGE_SPEED = 0.005;
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;

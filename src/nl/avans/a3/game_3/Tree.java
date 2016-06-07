@@ -237,22 +237,95 @@ public class Tree {
      */
     public void drawFallingAnimation(boolean isLeft)
     {
-        rotator = new Timer(1000/60, e-> {
+        rotator = new Timer(1000/60, e->
+        {
             if(isLeft)
             { // TODO change this with rotation += Math.ceiling(rotation/10)*0.2
-                if(rotation < maxRotation){
-                    rotation = rotation < 1 ? 1 : rotation;
-                    rotation += Math.round(rotation/10)*0.2;
+                if(rotation < maxRotation)
+                {
+                    if(rotation >= 0 && rotation <= 10)
+                    {
+                        rotation += 0.2;
+                    }else
+                    if(rotation >= 10 && rotation <= 20)
+                    {
+                        rotation += 0.4;
+                    }else
+                    if(rotation >= 20 && rotation <= 30)
+                    {
+                        rotation += 0.6;
+                    }else
+                    if(rotation > 30 && rotation <= 40)
+                    {
+                        rotation += 0.8;
+                    }else
+                    if(rotation > 40 && rotation <= 50)
+                    {
+                        rotation += 1.2;
+                    }else
+                    if(rotation > 50 && rotation <= 60)
+                    {
+                        rotation += 1.8;
+                    }else
+                    if(rotation >= 60 && rotation <= 70)
+                    {
+                        rotation += 2.0;
+                    }else
+                    if(rotation >= 70 && rotation <= 80)
+                    {
+                        rotation += 2.2;
+                    }else
+                    if(rotation > 80 && rotation <= maxRotation)
+                    {
+                        rotation += 2.4;
+                    }
                 }
-            }else{
+            }else
+            {
                 if(rotation > -maxRotation)
-                    rotation = rotation > -1 ? -1 : rotation;
-                    rotation -= Math.round(rotation/10)*0.2;
+                    if(rotation <= 0 && rotation >= -10)
+                    {
+                        rotation -= 0.2;
+                    }else
+                    if(rotation <= -10 && rotation >= -20)
+                    {
+                        rotation -= 0.4;
+                    }else
+                    if(rotation <= -20 && rotation >= -30)
+                    {
+                        rotation -= 0.6;
+                    }else
+                    if(rotation <= -30 && rotation >= -40)
+                    {
+                        rotation -= 0.8;
+                    }else
+                    if(rotation <= -40 && rotation >= -50)
+                    {
+                        rotation -= 1.2;
+                    }else
+                    if(rotation < -50 && rotation >= -60)
+                    {
+                        rotation -= 1.8;
+                    }else
+                    if(rotation < -60 && rotation >= -70)
+                    {
+                        rotation -= 2.0;
+                    }else
+                    if(rotation < -70 && rotation >= -80)
+                    {
+                        rotation -= 2.2;
+                    }else
+                    if(rotation < -80 && rotation >= -maxRotation)
+
+                    {
+                        rotation -= 2.4;
+                    }
             }
 
         });
         rotator.start();
     }
+
 
     public void addDamageNumber(int x, int y, int damage, Color color)
     {
@@ -261,6 +334,6 @@ public class Tree {
 
     public ArrayList<DamageNumber> getDamageNumbers()
     {
-        return damageNumbers;
+          return damageNumbers;
     }
 }

@@ -34,7 +34,7 @@ public class SingleMenuController implements Controller {
             Point2D pointerLocation = new Point2D.Double(xPos, yPos);
             model.setPointer(pointerLocation);
 
-            for(int i = 0; wiimoteHandler.numberOfWiimotesConnected() < i; i++){
+            for(int i = 0; i < wiimoteHandler.numberOfWiimotesConnected(); i++){
                 if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_HOME)) {
                     ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
                 }
@@ -49,6 +49,7 @@ public class SingleMenuController implements Controller {
                 }
 
                 if(wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)){
+                    System.out.println("checked");
                     switch (model.getMode()) {
                         case WOOD_CHOPPING:
                             model.onMenuChoose(wiimoteHandler);
