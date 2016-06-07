@@ -89,6 +89,7 @@ public class ViewHandler implements ModelListener{
                 frame.invalidate();
                 frame.revalidate();
             }
+            //TODO something goes wrong when playing game1 in single mode. check view.
             panel = mvcPanel;
             if (view != null) view.close();
             if(view != selectedView(((NewModel) event).newModel))   {
