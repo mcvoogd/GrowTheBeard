@@ -22,8 +22,6 @@ public class Game_3_Model implements Model{
     private boolean inGame = true;
     private BufferedImage background;
     private ArrayList<Particle> particles;
-    private MainMenuModel.Mode chosenMode;
-
     private Random rand = new Random();
 
     public int getScorePlayer1() {

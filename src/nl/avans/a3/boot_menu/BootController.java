@@ -33,7 +33,7 @@ public class BootController implements Controller{
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_F : ModelHandler.instance.onModelEvent(new NewModel(bootModel, new Game_2_Model())); break;
-            case KeyEvent.VK_ESCAPE : System.exit(0); // break; is not needed // TODO can you change this back Kevin? love Flobo // It's been several days now...
+            case KeyEvent.VK_ESCAPE : System.exit(0); break;
             case KeyEvent.VK_A : aPressed = true; break;
             case KeyEvent.VK_B : bPressed = true; break;
             case KeyEvent.VK_SPACE : aPressed = bPressed = true; break;
