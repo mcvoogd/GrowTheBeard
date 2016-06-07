@@ -5,7 +5,7 @@ import nl.avans.a3.mvc_interfaces.Controller;
 
 import java.awt.event.KeyEvent;
 
-public class dummyController implements Controller {
+public class DummyController implements Controller {
     @Override
     public void update() {
 

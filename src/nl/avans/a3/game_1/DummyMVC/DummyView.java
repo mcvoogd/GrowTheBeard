@@ -6,7 +6,7 @@ import nl.avans.a3.mvc_interfaces.View;
 import java.awt.*;
 
 
-public class dummyView implements View{
+public class DummyView implements View{
     @Override
     public void start() {
 
