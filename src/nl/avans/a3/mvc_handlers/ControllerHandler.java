@@ -52,9 +52,21 @@ public class ControllerHandler implements ModelListener, KeyListener {
             if (!updateControllerTimer.isRunning())
                 Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
                 updateControllerTimer.start();
-        }else
+        }
+        else
         {
             if (controller != null) controller.onModelEvent(event);
+        }
+
+        if(!(controller instanceof BootController) && !(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
+        {
+            checkSound();
+        }else
+        {
+           if(!musicOn)
+           {
+               player.start();
+           }
         }
 
     }
@@ -67,13 +79,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (musicOn) {
-                player.stop();
-                musicOn = false;
-            } else if (!musicOn) {
-                player.start();
-                musicOn = true;
-            }
+           checkSound();
         }
         if (controller != null) controller.keyPressed(e);
     }
@@ -81,6 +87,17 @@ public class ControllerHandler implements ModelListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if (controller != null) controller.keyReleased(e);
+    }
+
+    public void checkSound()
+    {
+        if (musicOn) {
+            player.stop();
+            musicOn = false;
+        } else if (!musicOn) {
+            player.start();
+            musicOn = true;
+        }
     }
 
     private static Controller selectController(Model model)
@@ -98,6 +115,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Game_Example_Model)
         {
+
             return new Game_Example_Controller((Game_Example_Model) model, wiimoteHandler);
         }
         if (model instanceof Game_2_Model)
