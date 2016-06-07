@@ -34,31 +34,31 @@ public class SingleMenuController implements Controller {
             Point2D pointerLocation = new Point2D.Double(xPos, yPos);
             model.setPointer(pointerLocation);
 
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_HOME) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_HOME)) {
-                ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
-            }
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_LEFT) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_LEFT)) {
-                model.switchMenu(-1);
-            }
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_RIGHT) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_RIGHT)) {
-                model.switchMenu(1);
-            }
-            if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-                model.onMenuChoose(wiimoteHandler);
-            }
+            for(int i = 0; wiimoteHandler.numberOfWiimotesConnected() < i; i++){
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_HOME)) {
+                    ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
+                }
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_LEFT)) {
+                    model.switchMenu(-1);
+                }
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_RIGHT)) {
+                    model.switchMenu(1);
+                }
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
+                    model.onMenuChoose(wiimoteHandler);
+                }
 
-            if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A))
-
-            {
-                switch (model.getMode()) {
-                    case WOOD_CHOPPING:
-                        model.onMenuChoose(wiimoteHandler);
-                    case WOOD_DODGING:
-                        model.onMenuChoose(wiimoteHandler);
-                    case WOOD_JUMPING:
-                        model.onMenuChoose(wiimoteHandler);
-                    case MAINMENU:
-                        model.onMenuChoose(wiimoteHandler);
+                if(wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)){
+                    switch (model.getMode()) {
+                        case WOOD_CHOPPING:
+                            model.onMenuChoose(wiimoteHandler);
+                        case WOOD_DODGING:
+                            model.onMenuChoose(wiimoteHandler);
+                        case WOOD_JUMPING:
+                            model.onMenuChoose(wiimoteHandler);
+                        case MAINMENU:
+                            model.onMenuChoose(wiimoteHandler);
+                    }
                 }
             }
         }
