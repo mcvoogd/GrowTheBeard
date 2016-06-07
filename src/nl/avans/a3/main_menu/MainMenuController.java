@@ -38,13 +38,13 @@ public class MainMenuController implements Controller {
         if(wiimoteHandler.isWiiMotesConnected()) {
             if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
                 //ModelHandler.instance.onModelEvent(new MainMenuEvent());
+                model.onMenuChoose(wiimoteHandler);
                 synchronized(this) {
                     if(player != null) {
                         player.stop();
                         player = null;
                     }
                 }
-                model.onMenuChoose(wiimoteHandler);
             }
             double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET/2;
             double yPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getY())) ? -100 : wiimoteHandler.getSinglePointer(0).getY() * ((1080.0 + SCREEN_OFFSET) / 900.0) - SCREEN_OFFSET/2;
@@ -62,7 +62,6 @@ public class MainMenuController implements Controller {
     public void keyPressed(KeyEvent a) {
         switch (a.getKeyCode())
         {
-            case KeyEvent.VK_F : ModelHandler.instance.changeModel(new NewModel(model, new Game_2_Model())); break;
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
             case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
             case KeyEvent.VK_G: model.onMenuChoose(wiimoteHandler); break;

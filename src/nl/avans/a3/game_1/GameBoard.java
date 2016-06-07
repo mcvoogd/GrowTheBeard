@@ -1,4 +1,7 @@
 package nl.avans.a3.game_1;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.main_menu.MainMenuModel;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
@@ -82,7 +85,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
 
 	private void initGameBoard() {
-//		test(); // TODO can this be removed?
+		//test(); // TODO can this be removed?
 
 		new Images();
 		scaleBackground();
@@ -102,9 +105,9 @@ public class GameBoard extends JPanel implements ActionListener {
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
 
-        for(int i = 0; i < 2; i++){
-            winner[i] = winnerImage.getSubimage(0, (winnerImage.getHeight()/2 * i), winnerImage.getWidth(), winnerImage.getHeight()/2);
-        }
+		for(int i = 0; i < 3; i++){
+			winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+		}
 
         initWoodBlocks();
 		if (inGame) {
@@ -171,16 +174,20 @@ public class GameBoard extends JPanel implements ActionListener {
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
 				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
-			}
-			if (scorePlayer2 > scorePlayer1) {
+			}else if (scorePlayer2 > scorePlayer1) {
 				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
-			}
-			else{
+			}else if(scorePlayer2 == scorePlayer1)
+			{
 				drawGameEnd(g2, GameResult.DRAW);
 			}
 			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
 				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 					PartyModeHandler.notifyNextGame();
+				}
+			}
+			else {
+				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+					ModelHandler.instance.changeModel(new NewModel(null , new MainMenuModel()));
 				}
 			}
 		}
@@ -213,12 +220,13 @@ public class GameBoard extends JPanel implements ActionListener {
 
         switch(winner)
         {
+			case DRAW : g.drawImage(this.winner[2], 500, 100, null); break;
 			case PLAYER_1_WIN: g.drawImage(this.winner[0], 500, 100, null); break; //TEKST
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
-        g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) - 200), 450, 1315/4, 1922/4, null);
-        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), ((1920/2) - (1315/8) + 200), 450, 1315/4, 1922/4, null);
+		g.drawImage(Images.player1.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
+        g.drawImage(Images.player2.getSubimage(0, 0, 1315, 1922), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -277,7 +285,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			Rectangle rect1 = woodBlock.getBounds();
 			boolean hit = false;
 			if (rect3.intersects(rect1)) {
-				scorePlayer1--;
+				scorePlayer1-=2;
 				hit = true;
 				rumble(0);
 				if (scorePlayer1 < 0) {
@@ -285,7 +293,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 			if (rect2.intersects(rect1)) {
-				scorePlayer2--;
+				scorePlayer2-=2;
 				hit = true;
 				rumble(1);
 				if (scorePlayer2 < 0) {
