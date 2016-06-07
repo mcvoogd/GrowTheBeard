@@ -53,12 +53,12 @@ public class Character {
         // TODO way to manny magic numbers these could all be generated based on the image and the image number
         if(playerNumber == 1){
             BufferedImage image = ResourceHandler.getImage("res/images_game3/person1.png");
-            playerImage = image.getSubimage(614 * imageNumber, 0, 614, 469);
-            armImage = image.getSubimage(614 * (imageNumber + 1), 0, 614, 469);
+            playerImage = image != null ? image.getSubimage(614 * imageNumber, 0, 614, 469) : null;
+            armImage = image != null ? image.getSubimage(614 * (imageNumber + 1), 0, 614, 469) : null;
         }else{
             BufferedImage image = ResourceHandler.getImage("res/images_game3/person2.png");
-            playerImage = image.getSubimage(614 * imageNumber, 0, 614, 469);
-            armImage = image.getSubimage(614 * (imageNumber + 1), 0, 614, 469);
+            playerImage = image != null ? image.getSubimage(614 * imageNumber, 0, 614, 469) : null;
+            armImage = image != null ? image.getSubimage(614 * (imageNumber + 1), 0, 614, 469) : null;
         }
 
     }

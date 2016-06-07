@@ -9,9 +9,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by Harmen on 3-6-2016.
- */
 public class SingleMenuView implements View {
 
     private SingleMenuModel model;
