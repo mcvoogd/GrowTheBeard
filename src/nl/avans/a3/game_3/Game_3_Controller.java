@@ -39,7 +39,7 @@ public class Game_3_Controller implements Controller{
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             float max1 = wiimoteHandler.getMax(0);
             float max2 = wiimoteHandler.getMax(1);
-            if(!gameModel.getInGame()) {
+            if(gameModel.getInGame()) {
                 if (wiimoteHandler.getPeakValue(0)[0]) {
                     if (gameModel.getHitPlayer(1)) {
                         gameModel.damageTree(0, (int) (max1 * 10), 1);
@@ -68,15 +68,17 @@ public class Game_3_Controller implements Controller{
                     gameModel.setHitPlayer(2, true);
                 }
                 //NEEDS TO BE DUPLICATE.
-                if (!gameModel.getInGame()) {
-                    if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
-                        if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-                            PartyModeHandler.notifyNextGame();
-                        }
-                    } else {
-                        if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-                            ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
-                        }
+
+            }
+            else
+            {
+                if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
+                    if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        PartyModeHandler.notifyNextGame();
+                    }
+                } else {
+                    if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
                     }
                 }
             }
