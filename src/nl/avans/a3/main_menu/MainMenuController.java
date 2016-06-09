@@ -1,10 +1,10 @@
 package nl.avans.a3.main_menu;
 
-import nl.avans.a3.event.MainMenuEvent;
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
-import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -26,9 +26,11 @@ public class MainMenuController implements Controller {
     public void update() {
         model.update();
         if (wiimoteHandler.isWiiMotesConnected()) {
-                if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A)) {
+            for(int i = 0 ; i < wiimoteHandler.numberOfWiimotesConnected(); i++) {
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
                     model.onMenuChoose(wiimoteHandler);
                 }
+            }
             double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET / 2;
             double yPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getY())) ? -100 : wiimoteHandler.getSinglePointer(0).getY() * ((1080.0 + SCREEN_OFFSET) / 900.0) - SCREEN_OFFSET / 2;
             Point2D pointerLocation = new Point2D.Double(xPos, yPos);
@@ -46,12 +48,13 @@ public class MainMenuController implements Controller {
         switch (a.getKeyCode())
         {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
-            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
+            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new NewModel(null, new Game_3_Model())); break;
             case KeyEvent.VK_G: model.onMenuChoose(wiimoteHandler); break;
             case KeyEvent.VK_W : model.pointToTop(); break;
             case KeyEvent.VK_S : model.pointToBottem(); break;
             case KeyEvent.VK_A : model.pointToLeft(); break;
             case KeyEvent.VK_D : model.pointToRight(); break;
+
 
          }
     }
