@@ -31,7 +31,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
     private Controller controller;
     private Timer updateControllerTimer;
     private static WiimoteHandler wiimoteHandler;
-    private SoundPlayer player;
+    private SoundPlayer mainMenuSound;
     private boolean musicOn = false;
 
     public ControllerHandler()
@@ -39,9 +39,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         ModelHandler.instance.addListener(this);
         updateControllerTimer = new Timer(1000/60, e -> { if(controller != null)controller.update();});
         wiimoteHandler = new WiimoteHandler();
-     //   player = new SoundPlayer("res/music/theme_song.wav");
-      //  player.start();
-
+        mainMenuSound = new SoundPlayer("res/music/theme_song.wav");
     }
 
     @Override
@@ -53,22 +51,18 @@ public class ControllerHandler implements ModelListener, KeyListener {
                 Logger.instance.log("VH001", "new controller (" + ((this.controller != null) ? this.controller.getClass().getName() : null) + ") has been loaded", Logger.LogType.DEBUG);
                 updateControllerTimer.start();
         }
-        else
-        {
-            if (controller != null) controller.onModelEvent(event);
-        }
-//
-//        if(!(controller instanceof BootController) && !(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
-//        {
-//            checkSound();
-//        }else
-//        {
-//           if(!musicOn)
-//           {
-//               player.start();
-//           }
-//        }
+        else if (controller != null) controller.onModelEvent(event);
 
+        if(!(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
+        {
+            musicOn = false;
+            mainMenuSound.stop();
+        }
+        else if(!musicOn)
+           {
+               mainMenuSound.loop(30);
+               musicOn = true;
+           }
     }
 
     @Override
@@ -78,10 +72,10 @@ public class ControllerHandler implements ModelListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            if(player != null)
+        if (e.getKeyCode() == KeyEvent.VK_Q) {
+            if(mainMenuSound != null)
             {
-                player.start();
+                mainMenuSound.start();
             }
         }
         if (controller != null) controller.keyPressed(e);
@@ -108,7 +102,6 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Game_Example_Model)
         {
-
             return new Game_Example_Controller((Game_Example_Model) model, wiimoteHandler);
         }
         if (model instanceof Game_2_Model)

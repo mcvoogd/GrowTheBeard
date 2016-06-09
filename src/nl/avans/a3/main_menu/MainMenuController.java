@@ -5,6 +5,7 @@ import nl.avans.a3.event.NewModel;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
+import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -54,8 +55,6 @@ public class MainMenuController implements Controller {
             case KeyEvent.VK_S : model.pointToBottem(); break;
             case KeyEvent.VK_A : model.pointToLeft(); break;
             case KeyEvent.VK_D : model.pointToRight(); break;
-
-
          }
     }
 
@@ -66,6 +65,7 @@ public class MainMenuController implements Controller {
 
     @Override
     public void onModelEvent(ModelEvent event) {
+
     }
 
 }

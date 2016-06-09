@@ -5,6 +5,7 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ import java.util.HashMap;
  */
 public class Game_2_View implements View {
     private Game_2_Model model;
-
+    private BufferedImage[] waterfallAnimation;
+    private int animatieCount;
+    private BufferedImage selectedImage;
     public Game_2_View(Game_2_Model model)
     {
         this.model = model;
@@ -34,7 +37,7 @@ public class Game_2_View implements View {
             this.x = x;
             this.y = y;
             animation = new BufferedImage[4];
-            for (int i =0 ; i < 4; i++)
+            for (int i = 0 ; i < 4; i++)
                 animation[i] = playerImage.getSubimage(playerImage.getWidth()/4*i, 0, playerImage.getWidth()/4, playerImage.getHeight());
         }
     }
@@ -56,14 +59,27 @@ public class Game_2_View implements View {
 
     @Override
     public void start() {
+        waterfallAnimation = new BufferedImage[4];
+        BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
+        for(int i = 0; i < 3; i++)
+        {
+            waterfallAnimation[i] = image.getSubimage(0, 1080*i, 1920, 1080);
+        }
+        selectedImage = waterfallAnimation[0];
+        new Timer(200, e -> {
+            switch (animatieCount)
+            {
+                case 0 : selectedImage = waterfallAnimation[0]; animatieCount = 1; break;
+                case 1 : selectedImage = waterfallAnimation[1]; animatieCount = 2; break;
+                case 2 : selectedImage = waterfallAnimation[2]; animatieCount = 0; break;
+            }
+        }).start();
 
     }
 
     @Override
     public void draw(Graphics2D g) {
-        BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
-        g.drawImage(image.getSubimage(0, 0, 1920, 1080), 0, 0, null);
-
+        g.drawImage(selectedImage, 0, 0, null);
         g.setColor(Color.RED);
         g.setFont(new Font("Verdana", Font.BOLD, 68));
 
