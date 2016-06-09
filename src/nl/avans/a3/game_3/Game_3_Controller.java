@@ -10,6 +10,7 @@ import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Game_3_Controller implements Controller{
 
@@ -23,7 +24,19 @@ public class Game_3_Controller implements Controller{
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
-        chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
+        //chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
+
+        ArrayList<String> clips = new ArrayList<>();
+        clips.add("res/music/game3/chop2.wav");
+        clips.add("res/music/game3/chop3.wav");
+        clips.add("res/music/game3/chop5.wav");
+        clips.add("res/music/game3/chop6.wav");
+        clips.add("res/music/game3/chop7.wav");
+        clips.add("res/music/game3/chop8.wav");
+        clips.add("res/music/game3/chop9.wav");
+        clips.add("res/music/game3/chop10.wav");
+
+        chopSoundPlayer = new SoundPlayer(clips);
      //   backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
       //  birdPlayer = new SoundPlayer(null); //FIXME ADD BIRD SOUNDS!
     }
@@ -42,7 +55,7 @@ public class Game_3_Controller implements Controller{
                     gameModel.damageTree(0, (int) (max1 * 10), 1);
                     gameModel.setHitPlayer(1, false);
                     gameModel.startHit(1);
-                    chopSoundPlayer.playOnce(1000);
+                    chopSoundPlayer.playRandomOnce(10);
                 }
             }
 
@@ -51,7 +64,7 @@ public class Game_3_Controller implements Controller{
                     gameModel.damageTree(1, (int) (max2 * 10), 2);
                     gameModel.setHitPlayer(2, false);
                     gameModel.startHit(2);
-                    chopSoundPlayer.playOnce(1000);
+                    chopSoundPlayer.playRandomOnce(10);
 
                 }
             }
@@ -97,7 +110,7 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.startHit(2);
             gameModel.damageTree(1, 25, 2);
-            chopSoundPlayer.playOnce(1000);
+            chopSoundPlayer.playRandomOnce(10);
         }
         if(e.getKeyCode() == KeyEvent.VK_S)
         {
