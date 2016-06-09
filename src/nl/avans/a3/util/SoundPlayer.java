@@ -48,6 +48,7 @@ public class SoundPlayer
                 AudioInputStream sound = AudioSystem.getAudioInputStream(new File(s));
                 clip = AudioSystem.getClip();
                 clip.open(sound);
+
                 this.clips.add(clip);
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
@@ -84,11 +85,14 @@ public class SoundPlayer
         if(clips.get(clipID) != null) {
             selectedClip = clips.get(clipID);
         }
-        }
+    }
 
-    public void loop()
+    public void loop(float volumeReduction)
     {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        FloatControl gainControl =
+                (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-volumeReduction); // Reduce volume by 10 decibels.
+        selectedClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public boolean isPlaying()
@@ -96,6 +100,10 @@ public class SoundPlayer
         return isplaying;
     }
 
+    /**
+     * Method to play a song for a certain ammount of time.
+     * @param time : time to play the song for in milliseconds.
+     */
     public void playRandomOnce(int time)
     {
         getRandomClip();
@@ -103,11 +111,7 @@ public class SoundPlayer
         resetClip();
     }
 
-    /**
-     * Method to play a song for a certain ammount of time.
-     * @param time : time to play the song for in milliseconds.
-     */
-    public void playOnce(int time)
+    public void playOnce()
     {
         start();
     }
