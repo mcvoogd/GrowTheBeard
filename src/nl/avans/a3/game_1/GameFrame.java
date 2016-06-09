@@ -3,7 +3,7 @@ import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 class GameFrame extends JFrame {
 	
@@ -18,16 +18,13 @@ class GameFrame extends JFrame {
 		setResizable(false);
 
 		setTitle("Game 01 -- WOODBLOCKS!!");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				GameFrame gf = new GameFrame();
-				gf.setVisible(true);
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            GameFrame gf = new GameFrame();
+            gf.setVisible(true);
+        });
 	}
 }
