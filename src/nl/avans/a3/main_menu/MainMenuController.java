@@ -1,13 +1,10 @@
 package nl.avans.a3.main_menu;
 
-import nl.avans.a3.event.MainMenuEvent;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
-import nl.avans.a3.single_menu.SingleMenuModel;
-import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;

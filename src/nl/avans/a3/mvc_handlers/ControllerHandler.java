@@ -39,8 +39,8 @@ public class ControllerHandler implements ModelListener, KeyListener {
         ModelHandler.instance.addListener(this);
         updateControllerTimer = new Timer(1000/60, e -> { if(controller != null)controller.update();});
         wiimoteHandler = new WiimoteHandler();
-        player = new SoundPlayer("res/music/theme_song.wav");
-        player.start();
+     //   player = new SoundPlayer("res/music/theme_song.wav");
+      //  player.start();
 
     }
 
@@ -57,17 +57,17 @@ public class ControllerHandler implements ModelListener, KeyListener {
         {
             if (controller != null) controller.onModelEvent(event);
         }
-
-        if(!(controller instanceof BootController) && !(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
-        {
-            checkSound();
-        }else
-        {
-           if(!musicOn)
-           {
-               player.start();
-           }
-        }
+//
+//        if(!(controller instanceof BootController) && !(controller instanceof MainMenuController) && !(controller instanceof SingleMenuController))
+//        {
+//            checkSound();
+//        }else
+//        {
+//           if(!musicOn)
+//           {
+//               player.start();
+//           }
+//        }
 
     }
 
@@ -79,7 +79,10 @@ public class ControllerHandler implements ModelListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_P) {
-           checkSound();
+            if(player != null)
+            {
+                player.start();
+            }
         }
         if (controller != null) controller.keyPressed(e);
     }
@@ -89,16 +92,6 @@ public class ControllerHandler implements ModelListener, KeyListener {
         if (controller != null) controller.keyReleased(e);
     }
 
-    public void checkSound()
-    {
-        if (musicOn) {
-            player.stop();
-            musicOn = false;
-        } else if (!musicOn) {
-            player.start();
-            musicOn = true;
-        }
-    }
 
     private static Controller selectController(Model model)
     {
