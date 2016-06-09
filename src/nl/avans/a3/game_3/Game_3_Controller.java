@@ -23,8 +23,8 @@ public class Game_3_Controller implements Controller{
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
-        chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.mp3");
-        backgroundMusic = new SoundPlayer("res/music/game3/nature.mp3");
+        chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
+        backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
       //  birdPlayer = new SoundPlayer(null); //FIXME ADD BIRD SOUNDS!
     }
 
@@ -42,8 +42,7 @@ public class Game_3_Controller implements Controller{
                     gameModel.damageTree(0, (int) (max1 * 10), 1);
                     gameModel.setHitPlayer(1, false);
                     gameModel.startHit(1);
-                    chopSoundPlayer.start();
-                    System.out.println("chopsound started");
+                    chopSoundPlayer.playOnce(100);
                 }
             }
 
@@ -52,6 +51,8 @@ public class Game_3_Controller implements Controller{
                     gameModel.damageTree(1, (int) (max2 * 10), 2);
                     gameModel.setHitPlayer(2, false);
                     gameModel.startHit(2);
+                    chopSoundPlayer.playOnce(100);
+
                 }
             }
             pitch1 = wiimoteHandler.getPitch(0);
@@ -96,7 +97,7 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.startHit(2);
             gameModel.damageTree(1, 25, 2);
-            chopSoundPlayer.start();
+            chopSoundPlayer.playOnce(100);
             System.out.println("chopsound started");
 
         }
