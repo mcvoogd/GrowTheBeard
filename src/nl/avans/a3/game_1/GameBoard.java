@@ -103,6 +103,7 @@ public class GameBoard extends JPanel implements ActionListener {
         new Timer(5000, e1 -> {
             if(notTriggerd){
                 inGame = true;
+                preScreen = false;
                 notTriggerd = false;
             }
         }).start();
