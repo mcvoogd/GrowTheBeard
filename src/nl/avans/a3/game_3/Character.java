@@ -1,6 +1,7 @@
 package nl.avans.a3.game_3;
 
 import com.sun.org.apache.regexp.internal.RE;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
@@ -15,14 +16,20 @@ public class Character {
     private boolean chop;
     private Timer timer;
     private int imageNumber = 0;
-    private int beardNumber = 5;
+    private int beardNumber;
 
     public Character(int playerNumber, int x, int y){
         this.playerNumber = playerNumber;
         this.x = x;
         this.y = y;
+        if(playerNumber == 1){
+            beardNumber = Beard.beardPlayer1;
+        }else{
+            beardNumber = Beard.beardPlayer2;
+        }
         initImage();
         setImage(0);
+
 
         timer = new Timer(300/3, e -> {
             setImageNumber(getImageNumber() + 2);
@@ -64,6 +71,7 @@ public class Character {
             playerImage = image != null ? image.getSubimage(614 * imageNumber, 0, 614, 469) : null;
             armImage = image != null ? image.getSubimage(614 * (imageNumber + 1), 0, 614, 469) : null;
         }
+        System.out.println("Beard: " + beardNumber);
         BufferedImage beardImage = ResourceHandler.getImage("res/images_game3/beard.png").getSubimage(614 * beardNumber, 0, 614, 469 * 3);
         switch (imageNumber){
             case 0:

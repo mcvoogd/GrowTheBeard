@@ -7,7 +7,6 @@ import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.mvc_interfaces.View;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class MainMenuView implements View {
@@ -29,10 +28,8 @@ public class MainMenuView implements View {
 
     private final int NAIL_RIGHT_OFFSET_X = 200;
     private final int NAIL_RIGHT_OFFSET_Y = 35;
-
     
     private double rotation = 0.0;
-    private boolean triggered = false;
     private double speed = 0.5;
 
     private Rectangle2D partymode;
@@ -68,9 +65,7 @@ public class MainMenuView implements View {
         if(mainMenuModel.getPointer() != null) {
             drawChosenMenuWithPointer(g);
             g.drawImage(cursor, (int) mainMenuModel.getPointer().getX(), (int)mainMenuModel.getPointer().getY(), null);
-        }
-        else
-        {
+        }else{
             g.drawImage(singleGame, SINGLE_BOARD_X, SINGLE_BOARD_Y, null);
             g.drawImage(partyGame, PARTY_BOARD_X, PARTY_BOARD_Y, null);
         }
@@ -85,7 +80,6 @@ public class MainMenuView implements View {
     }
 
     public void drawChosenMenuWithPointer(Graphics2D g){
-
         if(mainMenuModel.getHasMenuSelected()) {
             switch (mainMenuModel.getMode()) {
                 case CHOOSE_PARTY:

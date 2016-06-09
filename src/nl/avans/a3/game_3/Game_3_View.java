@@ -2,6 +2,7 @@ package nl.avans.a3.game_3;
 
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -24,6 +25,8 @@ public class Game_3_View implements View{
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;
     private static final double MIN_SCALE = 0.1;
+
+    private boolean updateScore;
 
     public Game_3_View(Game_3_Model gameModel){
         this.gameModel = gameModel;
@@ -88,6 +91,7 @@ public class Game_3_View implements View{
             {
                 drawGameEnd(g, 0);
             }
+            if(!updateScore){updateScore();}
         }
     }
 
@@ -124,5 +128,18 @@ public class Game_3_View implements View{
     @Override
     public void onModelEvent(ModelEvent event) {
 
+    }
+
+    public void updateScore(){
+        if (gameModel.getScorePlayer1() > gameModel.getScorePlayer2()) {
+            Beard.beardPlayer1 += 2;
+            Beard.beardPlayer2 -= 1;
+            if(Beard.beardPlayer2 < 0) Beard.beardPlayer2 = 0;
+        }else if (gameModel.getScorePlayer2() > gameModel.getScorePlayer1()) {
+            Beard.beardPlayer2 += 2;
+            Beard.beardPlayer1 -= 1;
+            if(Beard.beardPlayer1 < 0) Beard.beardPlayer1 = 0;
+        }
+        updateScore = true;
     }
 }

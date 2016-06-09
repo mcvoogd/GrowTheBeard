@@ -27,7 +27,7 @@ public class MainMenuController implements Controller {
         model.update();
         if (wiimoteHandler.isWiiMotesConnected()) {
             for(int i = 0 ; i < wiimoteHandler.numberOfWiimotesConnected(); i++) {
-                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
+                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {;
                     model.onMenuChoose(wiimoteHandler);
                 }
             }

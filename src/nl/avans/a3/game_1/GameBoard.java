@@ -5,6 +5,7 @@ import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
@@ -79,16 +80,15 @@ public class GameBoard extends JPanel implements ActionListener {
 	private boolean playerCollision = false;
 
 	private final int WOODBLOCK_START_COUNT = 3;
+    private boolean notTriggerd = true;
+    private boolean preScreen;
 
-	public GameBoard(WiimoteHandler wiimoteHandler) {
+    public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
 		initGameBoard();
 	}
-
-
+	
 	private void initGameBoard() {
-		//test(); // TODO can this be removed?
-
 		new Images();
 		scaleBackground();
 		addWoodImages();
@@ -97,7 +97,17 @@ public class GameBoard extends JPanel implements ActionListener {
 		setFocusable(true);
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		inGame = true;
+        inGame = false;
+        preScreen = true;
+        
+        new Timer(5000, e1 -> {
+            if(notTriggerd){
+                inGame = true;
+                preScreen = false;
+                notTriggerd = false;
+            }
+        }).start();
+        
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
@@ -139,61 +149,65 @@ public class GameBoard extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
-		if (inGame) {
-			g2.drawImage(background, 0, 0, null);
-			AffineTransform oldFrom = g2.getTransform();
-			g2.translate(0, 850);
-			g2.translate(-1, -1);
-			g2.translate(0, -40);
-			woodBlocks.stream().filter(Sprite::getVisible).forEach(w -> 
-					g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null));
-			g2.setTransform(oldFrom);
-			Font tf = new Font("Verdana", Font.BOLD, 68);
-			FontMetrics ft = g2.getFontMetrics(tf);
+        if(preScreen){
+            g2.drawImage(background, 0, 0, null);
+            g2.drawImage(background, 0, 0, null);  // replace with image with instructions
+        }else{
+            if(inGame){
+                g2.drawImage(background, 0, 0, null);
+                AffineTransform oldFrom = g2.getTransform();
+                g2.translate(0, 850);
+                g2.translate(-1, -1);
+                g2.translate(0, -40);
+                woodBlocks.stream().filter(Sprite::getVisible).forEach(w ->
+                        g2.drawImage(w.getImage(), EasyTransformer.rotateAroundCenterWithOffset(w.getImage(), w.getRotation(), 0, 0, w.getX(), w.getY()), null));
+                g2.setTransform(oldFrom);
+                Font tf = new Font("Verdana", Font.BOLD, 68);
+                FontMetrics ft = g2.getFontMetrics(tf);
 
-			g2.drawImage(Images.rescaleImage(1920,160, Images.banner), 0, 930, null);
-			g2.setColor(new Color(159, 44, 22));
-			g2.setFont(tf);
-			g2.drawString("" + time, 960 - (ft.stringWidth("" + time)/2) + 90, 1030);
+                g2.drawImage(Images.rescaleImage(1920, 160, Images.banner), 0, 930, null);
+                g2.setColor(new Color(159, 44, 22));
+                g2.setFont(tf);
+                g2.drawString("" + time, 960 - (ft.stringWidth("" + time) / 2) + 90, 1030);
 
 
+                Font pf = new Font("Calibri", Font.PLAIN, 48);
+                g2.setFont(pf);
 
-			Font pf = new Font("Calibri", Font.PLAIN, 48);
-			g2.setFont(pf);
-            
-			g2.setColor(Color.BLACK);
-			g2.translate(0, 850);
-			g2.translate(-1, -1);
-			g2.translate(0, -40);
+                g2.setColor(Color.BLACK);
+                g2.translate(0, 850);
+                g2.translate(-1, -1);
+                g2.translate(0, -40);
 
-			drawPlayers(g);
-            
-			for(Particle p : particles){
-				p.draw(g2);
-			}
-		}else {
-			wiimoteHandler.deactivateRumble(0);
-			wiimoteHandler.deactivateRumble(1);
-			if (scorePlayer1 > scorePlayer2) {
-				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
-			}else if (scorePlayer2 > scorePlayer1) {
-				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
-			}else if(scorePlayer2 == scorePlayer1)
-			{
-				drawGameEnd(g2, GameResult.DRAW);
-			}
+                drawPlayers(g);
 
-			if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
-				if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
-					PartyModeHandler.notifyNextGame();
-				}
-			}
-			else {
-				if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
-					ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
-				}
-			}
-		}
+                for(Particle p : particles){
+                    p.draw(g2);
+                }
+            }else{
+                wiimoteHandler.deactivateRumble(0);
+                wiimoteHandler.deactivateRumble(1);
+                if(scorePlayer1 > scorePlayer2){
+                    Beard.beardPlayer1 = 2;
+                    drawGameEnd(g2, GameResult.PLAYER_1_WIN);
+                }else if(scorePlayer2 > scorePlayer1){
+                    Beard.beardPlayer2 = 2;
+                    drawGameEnd(g2, GameResult.PLAYER_2_WIN);
+                }else if(scorePlayer2 == scorePlayer1){
+                    drawGameEnd(g2, GameResult.DRAW);
+                }
+
+                if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
+                    if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
+                        PartyModeHandler.notifyNextGame();
+                    }
+                }else{
+                    if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
+                        ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+                    }
+                }
+            }
+        }
 		Toolkit.getDefaultToolkit().sync();
 	}
 
@@ -202,10 +216,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		if (player1.getVisible() && player2.getVisible()) {
 			g2.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
-			g2.drawImage(player2.getBeard(0), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getBeard(Beard.beardPlayer1), player2.getX(), player2.getY(), this);
 			g2.drawImage(player2.getImage2(), player2.getX(), player2.getY(), this);
 			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
-			g2.drawImage(player1.getBeard(3), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getBeard(Beard.beardPlayer2), player1.getX(), player1.getY(), this);
 			g2.drawImage(player1.getImage2(), player1.getX(), player1.getY(), this);
 		}
 	}

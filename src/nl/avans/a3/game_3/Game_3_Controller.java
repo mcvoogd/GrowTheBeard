@@ -10,6 +10,7 @@ import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Game_3_Controller implements Controller{
 
@@ -23,9 +24,11 @@ public class Game_3_Controller implements Controller{
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
-        chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
-     //   backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
-      //  birdPlayer = new SoundPlayer(null); //FIXME ADD BIRD SOUNDS!
+        //chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
+
+        chopSoundPlayer = new SoundPlayer(getArrayListWithClips());
+        backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
+        backgroundMusic.loop(30);
     }
 
     @Override
@@ -36,36 +39,39 @@ public class Game_3_Controller implements Controller{
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             float max1 = wiimoteHandler.getMax(0);
             float max2 = wiimoteHandler.getMax(1);
-
-            if (wiimoteHandler.getPeakValue(0)[0]) {
-                if (gameModel.getHitPlayer(1)) {
-                    gameModel.damageTree(0, (int) (max1 * 10), 1);
-                    gameModel.setHitPlayer(1, false);
-                    gameModel.startHit(1);
-                    chopSoundPlayer.playOnce(1000);
+            if(gameModel.getInGame()) {
+                if (wiimoteHandler.getPeakValue(0)[0]) {
+                    if (gameModel.getHitPlayer(1)) {
+                        gameModel.damageTree(0, (int) (max1 * 10), 1);
+                        gameModel.setHitPlayer(1, false);
+                        gameModel.startHit(1);
+                        chopSoundPlayer.playRandomOnce(10);
+                    }
                 }
-            }
 
-            if (wiimoteHandler.getPeakValue(1)[0]) {
-                if (gameModel.getHitPlayer(2)) {
-                    gameModel.damageTree(1, (int) (max2 * 10), 2);
-                    gameModel.setHitPlayer(2, false);
-                    gameModel.startHit(2);
-                    chopSoundPlayer.playOnce(1000);
+                if (wiimoteHandler.getPeakValue(1)[0]) {
+                    if (gameModel.getHitPlayer(2)) {
+                        gameModel.damageTree(1, (int) (max2 * 10), 2);
+                        gameModel.setHitPlayer(2, false);
+                        gameModel.startHit(2);
+                        chopSoundPlayer.playRandomOnce(10);
 
+                    }
                 }
-            }
-            pitch1 = wiimoteHandler.getPitch(0);
-            if (pitch1 < -80 && pitch1 > -100) {
-                gameModel.setHitPlayer(1, true);
-            }
+                pitch1 = wiimoteHandler.getPitch(0);
+                if (pitch1 < -80 && pitch1 > -100) {
+                    gameModel.setHitPlayer(1, true);
+                }
 
-            pitch2 = wiimoteHandler.getPitch(1);
-            if (pitch2 < -80 && pitch2 > -100) {
-                gameModel.setHitPlayer(2, true);
+                pitch2 = wiimoteHandler.getPitch(1);
+                if (pitch2 < -80 && pitch2 > -100) {
+                    gameModel.setHitPlayer(2, true);
+                }
+                //NEEDS TO BE DUPLICATE.
+
             }
-            //NEEDS TO BE DUPLICATE.
-            if (!gameModel.getInGame()) {
+            else
+            {
                 if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                         PartyModeHandler.notifyNextGame();
@@ -77,8 +83,7 @@ public class Game_3_Controller implements Controller{
                 }
             }
         }
-
-  }
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -93,11 +98,12 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_P){
             gameModel.startHit(1);
             gameModel.damageTree(0, 25, 1);
+            chopSoundPlayer.playRandomOnce(10);
         }
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.startHit(2);
             gameModel.damageTree(1, 25, 2);
-            chopSoundPlayer.playOnce(1000);
+            chopSoundPlayer.playRandomOnce(10);
         }
         if(e.getKeyCode() == KeyEvent.VK_S)
         {
@@ -114,6 +120,19 @@ public class Game_3_Controller implements Controller{
     @Override
     public void onModelEvent(ModelEvent event) {
 
+    }
+
+    private ArrayList<String> getArrayListWithClips() {
+        ArrayList<String> clips = new ArrayList<>();
+        clips.add("res/music/game3/chop2.wav");
+        clips.add("res/music/game3/chop3.wav");
+        clips.add("res/music/game3/chop5.wav");
+        clips.add("res/music/game3/chop6.wav");
+        clips.add("res/music/game3/chop7.wav");
+        clips.add("res/music/game3/chop8.wav");
+        clips.add("res/music/game3/chop9.wav");
+        clips.add("res/music/game3/chop10.wav");
+        return clips;
     }
 
 }

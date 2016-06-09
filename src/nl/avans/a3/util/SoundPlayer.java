@@ -1,27 +1,35 @@
 package nl.avans.a3.util;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class SoundPlayer
 {
     private Clip clip;
-    private Clip backupClip;
-    Timer t = null;
+    private Timer t = null;
+    private int time = 100;
     private boolean isplaying = false;
+    private Clip selectedClip;
+    private ArrayList<Clip> clips = new ArrayList<>();
 
     public SoundPlayer(String URL)
     {
         try
         {
+            t = new Timer(time, e -> {
+                if (isplaying) {
+                    stop();
+                    resetClip();
+                    t.restart();
+                }
+            });
             AudioInputStream sound = AudioSystem.getAudioInputStream(new File(URL));
             clip = AudioSystem.getClip();
             clip.open(sound);
-            backupClip = clip;
-            System.out.println("lenght : " + clip.getFrameLength());
+            selectedClip = clip;
         }
         catch(Exception e)
         {
@@ -29,27 +37,62 @@ public class SoundPlayer
         }
     }
 
+    /**
+     * constructor for different clips.
+     */
+    public SoundPlayer(ArrayList<String> clips)
+    {
+        for(String s : clips)
+        {
+            try {
+                AudioInputStream sound = AudioSystem.getAudioInputStream(new File(s));
+                clip = AudioSystem.getClip();
+                clip.open(sound);
+
+                this.clips.add(clip);
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     public void start()
     {
-        clip.setFramePosition(0);
-        clip.start();
+        selectedClip.setFramePosition(0);
+        selectedClip.start();
         isplaying = true;
     }
 
     public void stop()
     {
-        clip.stop();
+        selectedClip.stop();
         isplaying = false;
     }
 
     public void resetClip()
     {
-        clip = backupClip;
+        selectedClip.setFramePosition(0);
     }
 
-    public void loop()
+    public void getRandomClip()
     {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        int clipID = (int) (Math.random()*clips.size());
+        if(clips.get(clipID) != null) {
+            selectedClip = clips.get(clipID);
+        }
+    }
+
+    public void loop(float volumeReduction)
+    {
+        FloatControl gainControl =
+                (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-volumeReduction); // Reduce volume by 10 decibels.
+        selectedClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public boolean isPlaying()
@@ -61,15 +104,15 @@ public class SoundPlayer
      * Method to play a song for a certain ammount of time.
      * @param time : time to play the song for in milliseconds.
      */
-    public void playOnce(int time)
+    public void playRandomOnce(int time)
+    {
+        getRandomClip();
+        start();
+        resetClip();
+    }
+
+    public void playOnce()
     {
         start();
-        t = new Timer(time, e -> {
-            if (isplaying) {
-                stop();
-                t.stop();
-            }
-        });
-        t.start();
     }
 }
