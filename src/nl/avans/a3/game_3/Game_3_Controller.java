@@ -6,6 +6,7 @@ import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
+import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -14,11 +15,17 @@ public class Game_3_Controller implements Controller{
 
     private Game_3_Model gameModel;
     private WiimoteHandler wiimoteHandler;
+    private SoundPlayer chopSoundPlayer;
+    private SoundPlayer backgroundMusic;
+    private SoundPlayer birdPlayer;
 
     public Game_3_Controller(Game_3_Model gameModel, WiimoteHandler wiimoteHandler){
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
+        chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.mp3");
+        backgroundMusic = new SoundPlayer("res/music/game3/nature.mp3");
+      //  birdPlayer = new SoundPlayer(null); //FIXME ADD BIRD SOUNDS!
     }
 
     @Override
@@ -35,6 +42,8 @@ public class Game_3_Controller implements Controller{
                     gameModel.damageTree(0, (int) (max1 * 10), 1);
                     gameModel.setHitPlayer(1, false);
                     gameModel.startHit(1);
+                    chopSoundPlayer.start();
+                    System.out.println("chopsound started");
                 }
             }
 
@@ -87,6 +96,9 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.startHit(2);
             gameModel.damageTree(1, 25, 2);
+            chopSoundPlayer.start();
+            System.out.println("chopsound started");
+
         }
         if(e.getKeyCode() == KeyEvent.VK_S)
         {

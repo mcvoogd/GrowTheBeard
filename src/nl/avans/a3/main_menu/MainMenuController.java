@@ -2,8 +2,11 @@ package nl.avans.a3.main_menu;
 
 import nl.avans.a3.event.MainMenuEvent;
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
+import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
@@ -46,12 +49,13 @@ public class MainMenuController implements Controller {
         switch (a.getKeyCode())
         {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
-            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new MainMenuEvent()); break;
+            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new NewModel(null, new Game_3_Model())); break;
             case KeyEvent.VK_G: model.onMenuChoose(wiimoteHandler); break;
             case KeyEvent.VK_W : model.pointToTop(); break;
             case KeyEvent.VK_S : model.pointToBottem(); break;
             case KeyEvent.VK_A : model.pointToLeft(); break;
             case KeyEvent.VK_D : model.pointToRight(); break;
+
 
          }
     }
