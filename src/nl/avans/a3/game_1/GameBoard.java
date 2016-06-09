@@ -97,16 +97,16 @@ public class GameBoard extends JPanel implements ActionListener {
 		setFocusable(true);
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        inGame = false;
+        inGame = true;
         preScreen = true;
         
-        new Timer(5000, e1 -> {
-            if(notTriggerd){
-                inGame = true;
-                preScreen = false;
-                notTriggerd = false;
-            }
-        }).start();
+//        new Timer(5000, e1 -> { //FIXME REMCO FIX IT!q
+//            if(notTriggerd){
+//                inGame = true;
+//                preScreen = false;
+//                notTriggerd = false;
+//            }
+//        }).start();
         
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
@@ -149,10 +149,11 @@ public class GameBoard extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
-        if(preScreen){
-            g2.drawImage(background, 0, 0, null);
-            g2.drawImage(background, 0, 0, null);  // replace with image with instructions
-        }else{
+//        if(preScreen){
+//            g2.drawImage(background, 0, 0, null);
+//            g2.drawImage(background, 0, 0, null);  // replace with image with instructions
+//        }else
+				{
             if(inGame){
                 g2.drawImage(background, 0, 0, null);
                 AffineTransform oldFrom = g2.getTransform();
@@ -210,6 +211,7 @@ public class GameBoard extends JPanel implements ActionListener {
         }
 		Toolkit.getDefaultToolkit().sync();
 	}
+
 
 	private void drawPlayers(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
