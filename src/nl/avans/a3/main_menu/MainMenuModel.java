@@ -48,8 +48,8 @@ public class MainMenuModel implements Model{
     @Override
     public void update() {
         checkIRinMenu(pointer);
-        Point2D dummy = new Point2D.Double(pointX, pointY);
-        checkDummyCursor(dummy);
+       // Point2D dummy = new Point2D.Double(pointX, pointY);
+      //  checkDummyCursor(dummy);
     }
 
     @Override
