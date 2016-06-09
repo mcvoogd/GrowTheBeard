@@ -5,6 +5,7 @@ import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
@@ -175,8 +176,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			wiimoteHandler.deactivateRumble(0);
 			wiimoteHandler.deactivateRumble(1);
 			if (scorePlayer1 > scorePlayer2) {
+				Beard.beardPlayer1 = 2;
 				drawGameEnd(g2, GameResult.PLAYER_1_WIN);
 			}else if (scorePlayer2 > scorePlayer1) {
+				Beard.beardPlayer2 = 2;
 				drawGameEnd(g2, GameResult.PLAYER_2_WIN);
 			}else if(scorePlayer2 == scorePlayer1)
 			{
@@ -202,10 +205,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 		if (player1.getVisible() && player2.getVisible()) {
 			g2.drawImage(player2.getImage(), player2.getX(), player2.getY(), this);
-			g2.drawImage(player2.getBeard(0), player2.getX(), player2.getY(), this);
+			g2.drawImage(player2.getBeard(Beard.beardPlayer1), player2.getX(), player2.getY(), this);
 			g2.drawImage(player2.getImage2(), player2.getX(), player2.getY(), this);
 			g2.drawImage(player1.getImage(), player1.getX(), player1.getY(), this);
-			g2.drawImage(player1.getBeard(3), player1.getX(), player1.getY(), this);
+			g2.drawImage(player1.getBeard(Beard.beardPlayer2), player1.getX(), player1.getY(), this);
 			g2.drawImage(player1.getImage2(), player1.getX(), player1.getY(), this);
 		}
 	}
