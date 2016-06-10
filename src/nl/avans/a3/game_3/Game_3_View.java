@@ -122,6 +122,38 @@ public class Game_3_View implements View{
 
         g.drawImage(gameModel.getPlayerImage(1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
         g.drawImage(gameModel.getPlayerImage(2), (WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+        int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
+        int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
+        switch (player){
+            case 0:
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                break;
+            case 1:
+                if(gameModel.getBeardCounter() < 10 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(oldBeard1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                }else if(gameModel.getBeardCounter() < 20 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                }else{
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                    gameModel.setBeardCounter(0);
+                    gameModel.setSwitchBeardCounter(gameModel.getSwitchBeardCounter() + 1);
+                }
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                break;
+            case 2:
+                if(gameModel.getBeardCounter() < 10 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(oldBeard2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                }else if(gameModel.getBeardCounter() < 20 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                }else{
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                    gameModel.setBeardCounter(0);
+                    gameModel.setSwitchBeardCounter(gameModel.getSwitchBeardCounter() + 1);
+                }
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                break;
+        }
     }
 
 

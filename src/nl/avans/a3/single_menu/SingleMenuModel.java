@@ -31,8 +31,7 @@ public class SingleMenuModel implements Model {
 
     @Override
     public void start() {
-        Beard.beardPlayer1 = 0;
-        Beard.beardPlayer2 = 0;
+
     }
 
     @Override
