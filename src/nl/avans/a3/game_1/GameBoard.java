@@ -69,10 +69,13 @@ public class GameBoard extends JPanel implements ActionListener {
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
 	private BufferedImage[] woodImages = new BufferedImage[3];
-    private BufferedImage instructions;
+    private BufferedImage[] instructions;
+    private BufferedImage chosenImage;
+    private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 
-	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
-	private boolean player1Rumble, player2Rumble;
+    private Timer switchInstructionsTimer;
+    private int switchInstructionsCounter = 0;
+    private boolean player1Rumble, player2Rumble;
 	private int rumbleCounter1, rumbleCounter2, rumbleTime = 5;
 
 	private ArrayList<Particle> particles;
@@ -80,8 +83,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private final int WOODBLOCK_START_COUNT = 3;
     private boolean notTriggerd = true;
-
-
 
 	private boolean preScreen;
 
@@ -110,15 +111,26 @@ public class GameBoard extends JPanel implements ActionListener {
 		particles = new ArrayList<>();
 
         winner = new BufferedImage[3];
-        instructions = ResourceHandler.getImage("res/images_game1/instructions.png");
+        instructions = new BufferedImage[3];
+        chosenImage = ResourceHandler.getImage("res/images_game1/instructions.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
 
+        switchInstructionsTimer = new Timer(1000, e -> {
+            switch(switchInstructionsCounter)
+            {
+                case 0 : switchInstructionsCounter = 1; break;
+                case 1 : switchInstructionsCounter = 2; break;
+                case 2 : switchInstructionsCounter = 0; break;
+            }
+        });
 		for(int i = 0; i < 3; i++){
 			winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+            instructions[i] = chosenImage.getSubimage(0, (1080*i), 1920, 1080);
 		}
 
+        switchInstructionsTimer.start();
         initWoodBlocks();
 
 			endTimer = new Timer(time * 1000, e -> inGame = false);
@@ -146,7 +158,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
         if(preScreen){
-            g2.drawImage(background, 0, 0, null); //make instructions
+            g2.drawImage(background, 0, 0, null);
+            g2.drawImage(Images.rescaleImage(1920, 160, Images.banner), 0, 930, null);
+            g2.drawImage(instructions[switchInstructionsCounter], 0, 0, null); //make instructions
             player1.checkWiiMote(wiimoteHandler, 0);
         }else{
             if(inGame){
@@ -380,6 +394,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 gameLogicTimer.start();
 				timeLeft.start();
 				endTimer.start();
+                switchInstructionsTimer.stop();
             }
 
         }
