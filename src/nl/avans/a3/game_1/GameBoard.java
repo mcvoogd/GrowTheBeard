@@ -89,6 +89,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private int beardCounter;
 	private BufferedImage playerWin1, playerWin2;
 	private BufferedImage[] beards = new BufferedImage[6];
+	private int blinkCounter = 0;
 
     public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
@@ -495,27 +496,31 @@ public class GameBoard extends JPanel implements ActionListener {
 				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				break;
 			case PLAYER_1_WIN:
-				if(beardCounter < 25){
+				if(beardCounter < 10 && blinkCounter < 3){
 					g.drawImage(beards[0], (1920/2) - (1315/8) - 500, 300, null);
 					System.out.println("OLD");
-				}else if (beardCounter < 50){
-					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+				}else if (beardCounter < 20 && blinkCounter < 3){
+					g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
 				}else{
-					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+					g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
 					beardCounter = 0;
+					blinkCounter++;
 				}
+				g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
 				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				break;
 			case PLAYER_2_WIN:
-				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) + 530, 300, null);
-				if(beardCounter < 25){
+				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8)  - 500, 300, null);
+				g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) + 530, 300, null);
+				if(beardCounter < 10  && blinkCounter < 3){
 					System.out.println("OLD");
 					g.drawImage(beards[0], (1920/2) - (1315/8) + 530, 300, null);
-				}else if (beardCounter < 50){
-					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+				}else if (beardCounter < 20 && blinkCounter < 3){
+					g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				}else{
-					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+					g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 					beardCounter = 0;
+					blinkCounter++;
 				}
 				break;
 		}
