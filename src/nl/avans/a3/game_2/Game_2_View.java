@@ -18,7 +18,7 @@ import java.util.Random;
 public class Game_2_View implements View {
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
-    final int framesPerAnimationFrame = 5;
+    final int framesPerAnimationFrame = 40;
     private int waterfallIndex = 0;
     public Game_2_View(Game_2_Model model)
     {
@@ -33,7 +33,7 @@ public class Game_2_View implements View {
         BufferedImage[] animation;
         int selectedAnimation = 0;
         int animationTicksLeft = -1;
-        Player(float x, float y, BufferedImage playerImage)
+        Player(float x, float y, BufferedImage playerImage, int id)
         {
             this.x = x;
             this.y = y;
@@ -139,7 +139,7 @@ public class Game_2_View implements View {
             G2_NewObject newObject = (G2_NewObject)event;
             if (newObject.player) {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
-                players.add(new Player(newObject.x, newObject.y, image));
+                players.add(new Player(newObject.x, newObject.y, image, newObject.id));
                 System.out.println("added a new player to view");
             }else
             {
