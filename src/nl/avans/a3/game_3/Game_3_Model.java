@@ -25,7 +25,11 @@ public class Game_3_Model implements Model{
     private Random rand = new Random();
     private int switchInstructionsCounter = 0;
     private Timer switchInstructionsTimer;
+    private BufferedImage[] beards = new BufferedImage[6];
+
     private boolean preScreen = true;
+
+    private int beardCounter, switchBeardCounter;
 
     public int getScorePlayer1() {
         return scorePlayer1;
@@ -52,6 +56,10 @@ public class Game_3_Model implements Model{
         scorePlayer1 = 0;
         scorePlayer2 = 0;
         background = ResourceHandler.getImage("res/images_game3/background.png");
+        BufferedImage imageBeard = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
+        for (int i = 0; i < 6; i++) {
+            beards[i] = imageBeard.getSubimage(311 * i, 0, 311, 577);
+        }
      }
 
     // TODO magic values everywhere
@@ -83,15 +91,17 @@ public class Game_3_Model implements Model{
                     it.remove();
                 }
             }
+            characters[0].update();
+            characters[1].update();
+            bird.update();
+            if (bird.getWait()) {
+                bird.setWait(rand.nextInt(300));
+            }
         }else  if (!inGame) {
             countDownTimer.stop();
+            beardCounter++;
         }
-        characters[0].update();
-        characters[1].update();
-        bird.update();
-        if (bird.getWait()) {
-            bird.setWait(rand.nextInt(300));
-        }
+
 
 
 
@@ -217,4 +227,14 @@ public class Game_3_Model implements Model{
     public Bird getBird(){
         return bird;
     }
+
+    public BufferedImage getBeards(int beardNumber){ return beards[beardNumber]; }
+
+    public int getBeardCounter() {return beardCounter;}
+
+    public void setBeardCounter(int beardCounter) {this.beardCounter = beardCounter;}
+
+    public int getSwitchBeardCounter() {return switchBeardCounter;}
+
+    public void setSwitchBeardCounter(int switchBeardCounter) {this.switchBeardCounter = switchBeardCounter;}
 }
