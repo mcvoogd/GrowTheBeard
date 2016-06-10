@@ -1,15 +1,9 @@
 package nl.avans.a3.game_2;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import nl.avans.a3.event.NewModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.MathExtended;
-import nl.avans.a3.util.ResourceHandler;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,7 +17,7 @@ public class Game_2_Model implements Model
     final int WORLD_HEIGHT_BOUND = 1080;
 
     final int PLAYER_HEIGHT = 267;
-    final int PlAYER_WIDTH = 80;
+    final int PLAYER_WIDTH = 80;
 
     final int BLOCK_WIDTH = 160;
     final int BLOCK_HEIGHT = 50;
@@ -37,8 +31,8 @@ public class Game_2_Model implements Model
     final int GROUND_LEFT_HEIGHT = 470;
 
     final int PLAYER_SPAWN_Y = GROUND_LEFT_Y+GROUND_LEFT_HEIGHT+1;
-    final int PLAYER_SPAWN_X_1 = PlAYER_WIDTH;
-    final int PLAYER_SPAWN_X_2 = (int)(PlAYER_WIDTH*3);
+    final int PLAYER_SPAWN_X_1 = PLAYER_WIDTH;
+    final int PLAYER_SPAWN_X_2 = (int)(PLAYER_WIDTH*3);
 
     final int GROUND_RIGHT_X = 1400;
     final int GROUND_RIGHT_Y = -275;
@@ -53,6 +47,12 @@ public class Game_2_Model implements Model
     final int BLOCK_SPAWN_X_1 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*0+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
     final int BLOCK_SPAWN_X_2 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*1+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
     final int BLOCK_SPAWN_X_3 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*2+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
+
+    final int BASKET_X = 1400;
+    final int BASKET_Y = 300;
+
+    final int WOODSTACK_X = 0;
+    final int WOODSTACK_Y = 300;
 
     public enum PlayerState{JUMPING, ON_PLATFORM}
     public enum PlatformState{FALLING, REMOVE}
@@ -74,17 +74,19 @@ public class Game_2_Model implements Model
         PlayerState state = PlayerState.JUMPING;
         final int id;
         boolean jump = false;
+        int score;
         float movX = 0;
         Platform platform = null;
         final float spawnX,  spawnY;
+        boolean hasBlock = false;
 
         Player(int id, float x, float y)
         {
-            super(PlAYER_WIDTH, PLAYER_HEIGHT);
+            super(PLAYER_WIDTH, PLAYER_HEIGHT);
             this.id = id;
             spawnX = this.x = x;
             spawnY= this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, false, false, x, y));
         }
 
         final int JUMP_DURATION = 60;
@@ -150,6 +152,17 @@ public class Game_2_Model implements Model
             }
             else
             {
+                for (WoodStack woodStack : woodStacks) {
+                    if (getBounds().intersects(woodStack.getBounds())) {
+                        hasBlock = true;
+                    }
+                }
+                for (Basket basket : baskets) {
+                    if (getBounds().intersects(basket.getBounds()) && hasBlock == true) {
+                        score++;
+                        hasBlock = false;
+                    }
+                }
                 if (platform.state == PlatformState.REMOVE)
                 {
                     state = PlayerState.JUMPING;
@@ -166,7 +179,7 @@ public class Game_2_Model implements Model
                 }
             }
 
-            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PlAYER_WIDTH);
+            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PLAYER_WIDTH);
             y = MathExtended.clamp(y, WORLD_HEIGHT_LOW_BOUND*2, WORLD_HEIGHT_BOUND-PLAYER_HEIGHT/2);
             if (y <= WORLD_HEIGHT_LOW_BOUND)
             {
@@ -180,8 +193,11 @@ public class Game_2_Model implements Model
         }
 
         public Rectangle getBounds() {
-            return new Rectangle((int)x, (int)y, PlAYER_WIDTH, PLAYER_HEIGHT);
+            return new Rectangle((int)x, (int)y, PLAYER_WIDTH, PLAYER_HEIGHT);
         }
+        public boolean getHasBlock() { return hasBlock; }
+        public void setHasBlock(boolean hasBlock) { this.hasBlock = hasBlock; }
+        public int getScore() { return score; }
     }
 
     ArrayList<Platform> platforms;
@@ -220,7 +236,7 @@ public class Game_2_Model implements Model
         int id = idCounter++;
         Woodblock(float x, float y) {
             super(x, y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_FALL_SPEED , true);
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, false, x, y));
         }
 
         public void update()
@@ -232,9 +248,36 @@ public class Game_2_Model implements Model
 
     Player[] players = new Player[PLAYER_COUNT];
 
+    protected class Basket extends Collidiable {
+        int id = 3;
+
+        Basket(float x, float y, float width, float height) {
+            super(width, height);
+            this.x = x;
+            this.y = y;
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, true, false, x, y));
+        }
+    }
+    ArrayList<Basket> baskets;
+
+    protected class WoodStack extends Collidiable {
+        int id = 4;
+
+        WoodStack(float x, float y, float width, float height) {
+            super(width, height);
+            this.x = x;
+            this.y = y;
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, true, x, y));
+        }
+    }
+    ArrayList<WoodStack> woodStacks;
+
+
     public Game_2_Model()
     {
         platforms = new ArrayList<>();
+        baskets = new ArrayList<>();
+        woodStacks = new ArrayList<>();
     }
 
     @Override
@@ -259,6 +302,10 @@ public class Game_2_Model implements Model
         platforms.add(new Woodblock(BLOCK_SPAWN_X_3, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION*2));
         platforms.add(new Woodblock(BLOCK_SPAWN_X_1, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
         platforms.add(new Woodblock(BLOCK_SPAWN_X_3, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
+
+        baskets.add(new Basket(BASKET_X, BASKET_Y, 100, 100));
+
+        woodStacks.add(new WoodStack(WOODSTACK_X, WOODSTACK_Y, 100, 100));
     }
 
     Random rand = new Random(System.currentTimeMillis());
