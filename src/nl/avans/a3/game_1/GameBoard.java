@@ -141,6 +141,7 @@ public class GameBoard extends JPanel implements ActionListener {
 				scorePlayer2++;
 			});
 		cutPlayerImage();
+
 		cutBeards();
 
 		gameLogicTimer = new Timer(1000/60, this);
