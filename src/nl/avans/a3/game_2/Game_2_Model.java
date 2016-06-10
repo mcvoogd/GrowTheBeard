@@ -102,7 +102,7 @@ public class Game_2_Model implements Model
         private boolean isGoodIntersect(Rectangle platform) // assumes the rectangle already intercepts
         {
             Rectangle self = getBounds();
-            if (platform.y+platform.height-self.y > 10) return false; // we are to high
+            if (platform.y+platform.height-self.y > 20) return false; // we are to high
             if (self.x + self.width < platform.x) return false; // we are to far left
             if (platform.x+platform.width < self.x) return false; // we are to far right
             return true;
