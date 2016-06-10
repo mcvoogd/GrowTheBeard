@@ -9,6 +9,7 @@ import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class Game_3_Controller implements Controller{
     private SoundPlayer birdPlayer;
     private float pitch1;
     private float pitch2;
+
 
     public Game_3_Controller(Game_3_Model gameModel, WiimoteHandler wiimoteHandler){
         this.gameModel = gameModel;
