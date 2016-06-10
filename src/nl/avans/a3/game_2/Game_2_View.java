@@ -18,7 +18,7 @@ import java.util.Random;
 public class Game_2_View implements View {
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
-    final int framesPerAnimationFrame = 4;
+    final int framesPerAnimationFrame = 5;
     private int waterfallIndex = 0;
     public Game_2_View(Game_2_Model model)
     {
@@ -143,7 +143,7 @@ public class Game_2_View implements View {
                 System.out.println("added a new player to view");
             }else
             {
-                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int)(rand.nextFloat()*3)));
+                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int)(rand.nextFloat()*3*framesPerAnimationFrame)));
             }
         }
         else if (event instanceof G2_ObjectMove)
