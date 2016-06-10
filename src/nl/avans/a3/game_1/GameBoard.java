@@ -69,6 +69,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
 	private BufferedImage[] woodImages = new BufferedImage[3];
+    private BufferedImage instructions;
 
 	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 	private boolean player1Rumble, player2Rumble;
@@ -105,6 +106,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		particles = new ArrayList<>();
 
         winner = new BufferedImage[3];
+        instructions = ResourceHandler.getImage("res/images_game1/instructions.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
