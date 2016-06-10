@@ -5,6 +5,7 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.single_menu.SingleMenuModel;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.ResourceHandler;
 import nl.avans.a3.util.WiimoteHandler;
 
@@ -42,7 +43,8 @@ public class MainMenuModel implements Model{
         singleGame = ResourceHandler.getImage("res/menu/single.png");
         partymode = new Rectangle2D.Double(PARTY_BOARD_X, PARTY_BOARD_Y+160, partyGame.getWidth(null), partyGame.getHeight(null)-160);  // needs to go to model, should be there to be able to 'click' on it
         singlemode = new Rectangle2D.Double(SINGLE_BOARD_X, SINGLE_BOARD_Y+120, singleGame.getWidth(null), singleGame.getHeight(null)-120);
-
+        Beard.beardPlayer1 = 0;
+        Beard.beardPlayer2 = 0;
     }
 
     @Override
