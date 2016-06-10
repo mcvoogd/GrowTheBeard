@@ -28,16 +28,18 @@ public class Game_3_View implements View{
     private BufferedImage[] instructions;
     private BufferedImage chosenImage;
     private boolean updateScore;
-
+    private BufferedImage[] playerImage;
+    private BufferedImage playerImages;
     public Game_3_View(Game_3_Model gameModel){
         this.gameModel = gameModel;
     }
 
     @Override
     public void start() {
-
+        playerImage = new BufferedImage[2];
         winner = new BufferedImage[3];
-        chosenImage = ResourceHandler.getImage("res/images_game1/instruction.png");
+        playerImages = ResourceHandler.getImage("res/images_scoreboard/person");
+        chosenImage = ResourceHandler.getImage("res/images_game3/instruction.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
@@ -46,6 +48,10 @@ public class Game_3_View implements View{
         for(int i = 0; i < 3; i++){
             winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
             instructions[i] = chosenImage.getSubimage(0, 1080*i, 1920, 1080);
+        }
+        for(int i = 0; i < 2; i++)
+        {
+            playerImage[i] = playerImages.getSubimage(311*i, 0, 311, 577);
         }
    }
 
@@ -122,8 +128,9 @@ public class Game_3_View implements View{
             case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
         }
 
-        g.drawImage(gameModel.getPlayerImage(1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
-        g.drawImage(gameModel.getPlayerImage(2), (WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+        g.drawImage(playerImage[0],(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
+        g.drawImage(playerImage[1], (WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+
         int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
         int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
         switch (player){

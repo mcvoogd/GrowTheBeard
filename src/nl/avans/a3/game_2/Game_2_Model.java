@@ -54,12 +54,6 @@ public class Game_2_Model implements Model
     final int BLOCK_SPAWN_X_2 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*1+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
     final int BLOCK_SPAWN_X_3 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*2+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
 
-    final int BASKET_X = 1400;
-    final int BASKET_Y = 300;
-
-    final int WOODSTACK_X = 0;
-    final int WOODSTACK_Y = 300;
-
     public enum PlayerState{JUMPING, ON_PLATFORM}
     public enum PlatformState{FALLING, REMOVE}
 
@@ -79,9 +73,7 @@ public class Game_2_Model implements Model
     {
         PlayerState state = PlayerState.JUMPING;
         final int id;
-        int score;
         boolean jump = false;
-        boolean hasBlock = false;
         float movX = 0;
         Platform platform = null;
         final float spawnX,  spawnY;
@@ -92,7 +84,7 @@ public class Game_2_Model implements Model
             this.id = id;
             spawnX = this.x = x;
             spawnY= this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, false, false, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, x, y));
         }
 
         final int JUMP_DURATION = 60;
@@ -158,17 +150,6 @@ public class Game_2_Model implements Model
             }
             else
             {
-                for (WoodStack woodStack : woodStacks) {
-                    if (getBounds().intersects(woodStack.getBounds())) {
-                        hasBlock = true;
-                    }
-                }
-                for (Basket basket : baskets) {
-                    if (getBounds().intersects(basket.getBounds()) && hasBlock == true) {
-                        score++;
-                        hasBlock = false;
-                    }
-                }
                 if (platform.state == PlatformState.REMOVE)
                 {
                     state = PlayerState.JUMPING;
@@ -201,9 +182,6 @@ public class Game_2_Model implements Model
         public Rectangle getBounds() {
             return new Rectangle((int)x, (int)y, PlAYER_WIDTH, PLAYER_HEIGHT);
         }
-        public boolean getHasBlock() { return hasBlock; }
-        public void setHasBlock(boolean hasBlock) { this.hasBlock = hasBlock; }
-        public int getScore() { return score; }
     }
 
     ArrayList<Platform> platforms;
@@ -242,7 +220,7 @@ public class Game_2_Model implements Model
         int id = idCounter++;
         Woodblock(float x, float y) {
             super(x, y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_FALL_SPEED , true);
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, false, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, x, y));
         }
 
         public void update()
@@ -252,37 +230,11 @@ public class Game_2_Model implements Model
         }
     }
 
-    protected class Basket extends Collidiable {
-        int id = 3;
-
-        Basket(float x, float y, float width, float height) {
-            super(width, height);
-            this.x = x;
-            this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, true, false, x, y));
-        }
-    }
-    ArrayList<Basket> baskets;
-
-    protected class WoodStack extends Collidiable {
-        int id = 4;
-
-        WoodStack(float x, float y, float width, float height) {
-            super(width, height);
-            this.x = x;
-            this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, true, x, y));
-        }
-    }
-    ArrayList<WoodStack> woodStacks;
-
     Player[] players = new Player[PLAYER_COUNT];
 
     public Game_2_Model()
     {
         platforms = new ArrayList<>();
-        baskets = new ArrayList<>();
-        woodStacks = new ArrayList<>();
     }
 
     @Override
@@ -307,10 +259,6 @@ public class Game_2_Model implements Model
         platforms.add(new Woodblock(BLOCK_SPAWN_X_3, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION*2));
         platforms.add(new Woodblock(BLOCK_SPAWN_X_1, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
         platforms.add(new Woodblock(BLOCK_SPAWN_X_3, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
-
-        baskets.add(new Basket(BASKET_X, BASKET_Y, 100, 100));
-
-        woodStacks.add(new WoodStack(WOODSTACK_X, WOODSTACK_Y, 100, 100));
     }
 
     Random rand = new Random(System.currentTimeMillis());

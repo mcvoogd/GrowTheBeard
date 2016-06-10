@@ -1,12 +1,11 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.event.NewModel;
+import nl.avans.a3.game_1.DummyMVC.DummyModel;
+import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
-import nl.avans.a3.util.Beard;
-import nl.avans.a3.util.EasyTransformer;
-import nl.avans.a3.util.ResourceHandler;
-import nl.avans.a3.util.WiimoteHandler;
+import nl.avans.a3.util.*;
 import nl.avans.a3.game_1.Util.Images;
 
 import java.awt.Color;
@@ -90,9 +89,17 @@ public class GameBoard extends JPanel implements ActionListener {
 	private BufferedImage playerWin1, playerWin2;
 	private BufferedImage[] beards = new BufferedImage[6];
 	private int blinkCounter = 0;
+    
+    private ArrayList<String> hitSounds = new ArrayList<>();
+    private SoundPlayer soundPlayer;
 
     public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
+        hitSounds.add("res/music/wood_hit_1");
+        hitSounds.add("res/music/wood_hit_2");
+        hitSounds.add("res/music/wood_hit_3");
+        hitSounds.add("res/music/wood_hit_4");
+        soundPlayer = new SoundPlayer(hitSounds);
 		initGameBoard();
 	}
 	
@@ -134,14 +141,13 @@ public class GameBoard extends JPanel implements ActionListener {
         switchInstructionsTimer.start();
         initWoodBlocks();
 
-			endTimer = new Timer(time * 1000, e -> inGame = false);
-			timeLeft = new Timer(1000, e -> {
-				time--;
-				scorePlayer1++;
-				scorePlayer2++;
-			});
+		endTimer = new Timer(time * 1000, e -> inGame = false);
+		timeLeft = new Timer(1000, e -> {
+			time--;
+			scorePlayer1++;
+			scorePlayer2++;
+		});
 		cutPlayerImage();
-
 		cutBeards();
 
 		gameLogicTimer = new Timer(1000/60, this);
@@ -222,7 +228,6 @@ public class GameBoard extends JPanel implements ActionListener {
         }
 		Toolkit.getDefaultToolkit().sync();
 	}
-
 
 	private void drawPlayers(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -350,9 +355,7 @@ public class GameBoard extends JPanel implements ActionListener {
 					particles.add(new Particle(woodBlock.getX(), woodBlock.getY(), i*36));
 				}
 				it.remove();
-
 			}
-
 		}
 		while(woodBlocks.size() < 4){
 			woodBlocks.add(new WoodBlock(getRandomInt(10, 1880), -1000, -getRandom(2,1),  woodImages[getRandom(2,0)], getRandom(360,0)));
@@ -398,7 +401,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				endTimer.start();
                 switchInstructionsTimer.stop();
             }
-
         }
 	}
 
