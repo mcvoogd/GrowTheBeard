@@ -84,6 +84,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private boolean preScreen;
 
+	private int beardCounter;
+	private BufferedImage playerWin1, playerWin2;
+	private BufferedImage[] beards = new BufferedImage[6];
+
     public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
 		initGameBoard();
@@ -114,17 +118,16 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 
         initWoodBlocks();
-		if (inGame) {
-			endTimer = new Timer(time * 1000, e -> inGame = false);
-			endTimer.start();
 
+			endTimer = new Timer(time * 1000, e -> inGame = false);
 			timeLeft = new Timer(1000, e -> {
 				time--;
 				scorePlayer1++;
 				scorePlayer2++;
 			});
-			timeLeft.start();
-		}
+		cutPlayerImage();
+		cutBeards();
+
 		gameLogicTimer = new Timer(1000/60, this);
 	}
 
@@ -238,8 +241,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			case PLAYER_2_WIN: g.drawImage(this.winner[1], 500, 100, null); break; //TEKST
         }
 
-		g.drawImage(Images.player1.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) - 500, 400, 1315/4, 1922/4,  null);
-        g.drawImage(Images.player2.getSubimage(0, 0, 168, 248), (1920/2) - (1315/8) + 530, 400, 1315/4, 1922/4, null);
+		g.drawImage(playerWin1, (1920/2) - (1315/8) - 500, 300, null);
+        g.drawImage(playerWin2, (1920/2) - (1315/8) + 530, 300, null);
+
+		drawBeard(winner, g);
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -260,6 +265,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			repaint();
 			player1.checkWiiMote(wiimoteHandler, 0);
 			player2.checkWiiMote(wiimoteHandler, 1);
+
 		}
 	}
 
@@ -368,8 +374,10 @@ public class GameBoard extends JPanel implements ActionListener {
         if(!prescreen)
         {
             inGame = true;
-            if(!gameLogicTimer.isRunning()) {
+            if(!gameLogicTimer.isRunning() && !timeLeft.isRunning() && !endTimer.isRunning() ) {
                 gameLogicTimer.start();
+				timeLeft.start();
+				endTimer.start();
             }
 
         }
@@ -447,5 +455,59 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public boolean getPlayerCollision(){
 		return  playerCollision;
+	}
+
+	private void cutPlayerImage(){
+		BufferedImage image = ResourceHandler.getImage("res/images_scoreboard/person.png");
+		playerWin1 = image.getSubimage(0, 0, 311, 577);
+		playerWin2 = image.getSubimage(311, 0, 311, 577);
+	}
+
+	private void drawBeard(GameResult gameResult, Graphics2D g){
+		g.drawImage(playerWin1, (1920/2) - (1315/8) - 500, 300, null);
+		g.drawImage(playerWin2, (1920/2) - (1315/8) + 530, 300, null);
+		beardCounter++;
+		int oldBeard1 = Beard.beardPlayer1 - 2;
+		if(oldBeard1 < 0) {oldBeard1 = 0;}
+		int oldBeard2 = Beard.beardPlayer2 - 2;
+		if(oldBeard2 < 0){oldBeard2 = 0;}
+		switch(gameResult)
+		{
+			case DRAW :
+				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
+				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
+				break;
+			case PLAYER_1_WIN:
+				if(beardCounter < 25){
+					g.drawImage(beards[0], (1920/2) - (1315/8) - 500, 300, null);
+					System.out.println("OLD");
+				}else if (beardCounter < 50){
+					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+				}else{
+					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+					beardCounter = 0;
+				}
+				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
+				break;
+			case PLAYER_2_WIN:
+				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) + 530, 300, null);
+				if(beardCounter < 25){
+					System.out.println("OLD");
+					g.drawImage(beards[0], (1920/2) - (1315/8) + 530, 300, null);
+				}else if (beardCounter < 50){
+					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+				}else{
+					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+					beardCounter = 0;
+				}
+				break;
+		}
+	}
+
+	private void cutBeards(){
+		BufferedImage image = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
+		for(int i = 0; i < 6; i++){
+			beards[i] = image.getSubimage(311 * i, 0, 311, 577);
+		}
 	}
 }
