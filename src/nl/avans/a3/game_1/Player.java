@@ -223,7 +223,6 @@ class Player extends Sprite {
             if(wiimoteHandler.getIsButtonPressed(id, WiimoteHandler.Buttons.KEY_A)) {
                 {
                     gameBoard.setPreScreen(false);
-                    System.out.println("wow");
                 }
             }
         }
