@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Thijs on 2-6-2016.
@@ -17,8 +18,8 @@ import java.util.HashMap;
 public class Game_2_View implements View {
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
-    private int animatieCount;
-    private BufferedImage selectedImage;
+    final int framesPerAnimationFrame = 4;
+    private int waterfallIndex = 0;
     public Game_2_View(Game_2_Model model)
     {
         this.model = model;
@@ -44,14 +45,21 @@ public class Game_2_View implements View {
 
     private ArrayList<Player> players = new ArrayList<>();
 
+    BufferedImage[] platfrom_images;
     private class Platform {
         float x, y;
-        BufferedImage image;
+        int animationCount;
 
-        Platform(float x, float y) {
+        Platform(float x, float y, int animationCount) {
             this.x = x;
             this.y = y;
-            image = ResourceHandler.getImage("res/images_game2/wood.png");
+            this.animationCount = animationCount;
+        }
+
+        BufferedImage getImage()
+        {
+            animationCount = ((animationCount+1)%(4*framesPerAnimationFrame));
+            return platfrom_images[animationCount/framesPerAnimationFrame];
         }
     }
 
@@ -59,33 +67,32 @@ public class Game_2_View implements View {
 
     @Override
     public void start() {
-        waterfallAnimation = new BufferedImage[4];
+        waterfallAnimation = new BufferedImage[3];
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         for(int i = 0; i < 3; i++)
         {
             waterfallAnimation[i] = image.getSubimage(0, 1080*i, 1920, 1080);
         }
-        selectedImage = waterfallAnimation[0];
-        new Timer(200, e -> {
-            switch (animatieCount)
-            {
-                case 0 : selectedImage = waterfallAnimation[0]; animatieCount = 1; break;
-                case 1 : selectedImage = waterfallAnimation[1]; animatieCount = 2; break;
-                case 2 : selectedImage = waterfallAnimation[2]; animatieCount = 0; break;
-            }
-        }).start();
-
+        image = ResourceHandler.getImage("res/images_game2/wood.png");
+        platfrom_images = new BufferedImage[4];
+        for (int i = 0; i < 4; i++)
+        {
+            platfrom_images[i] = image.getSubimage(i*(image.getWidth()/4), 0, image.getWidth()/4, image.getHeight());
+        }
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(selectedImage, 0, 0, null);
+
+        waterfallIndex = (waterfallIndex+1)%(waterfallAnimation.length*framesPerAnimationFrame);
+        g.drawImage(waterfallAnimation[waterfallIndex/framesPerAnimationFrame], 0, 0, null);
+
         g.setColor(Color.RED);
         g.setFont(new Font("Verdana", Font.BOLD, 68));
 
         for (Platform platform : platforms.values()) {
             final int PLATFORM_X_OFFSET = -20;
-            g.drawImage(platform.image, (int) platform.x+PLATFORM_X_OFFSET, 1080-(int)platform.y - model.BLOCK_HEIGHT, null);
+            g.drawImage(platform.getImage(), (int) platform.x+PLATFORM_X_OFFSET, 1080-(int)platform.y - model.BLOCK_HEIGHT, null);
         }
 
         for (Player player : players) {
@@ -118,6 +125,8 @@ public class Game_2_View implements View {
     public void close() {
     }
 
+    Random rand = new Random(System.currentTimeMillis());
+
     @Override
     public void onModelEvent(ModelEvent event) {
         if (event instanceof Game_2_Event == false)
@@ -134,7 +143,7 @@ public class Game_2_View implements View {
                 System.out.println("added a new player to view");
             }else
             {
-                platforms.put(newObject.id, new Platform(newObject.x, newObject.y));
+                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int)(rand.nextFloat()*3)));
             }
         }
         else if (event instanceof G2_ObjectMove)
