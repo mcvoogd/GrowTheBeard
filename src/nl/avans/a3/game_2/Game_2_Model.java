@@ -103,8 +103,8 @@ public class Game_2_Model implements Model
         {
             Rectangle self = getBounds();
             if (platform.y+platform.height-self.y > 10) return false; // we are to high
-            if (self.x + self.width/2 < platform.x) return false; // we are to far left
-            if (platform.x+platform.width < self.x + self.width/2) return false; // we are to far right
+            if (self.x + self.width < platform.x) return false; // we are to far left
+            if (platform.x+platform.width < self.x) return false; // we are to far right
             return true;
         }
 
@@ -137,7 +137,7 @@ public class Game_2_Model implements Model
                         {
                             Rectangle self = getBounds();
                             Rectangle platformBounds = platform.getBounds();
-                            if (self.x + self.width/2 < platformBounds.x + platformBounds.width/2)
+                            if (self.x + self.width < platformBounds.x + platformBounds.width/2)
                             {
                                 x = platformBounds.x - self.width - 1;
                             }
@@ -155,13 +155,14 @@ public class Game_2_Model implements Model
                     state = PlayerState.JUMPING;
                     update();
                 }
-                x += movX * 5;
-                y = platform.y + platform.height;
-                if (x + width/2 < platform.x || platform.x + platform.width < x+width/2)
-                {
-                    state = PlayerState.JUMPING;
-                    ModelHandler.instance.onModelEvent(new G2_PlayerStateChange(G2_PlayerStateChange.State.JUMP, id));
-                    jumpTicks = JUMP_DURATION/2;
+                else {
+                    x += movX * 5;
+                    y = platform.y + platform.height;
+                    if (x + width < platform.x || platform.x + platform.width < x) {
+                        state = PlayerState.JUMPING;
+                        ModelHandler.instance.onModelEvent(new G2_PlayerStateChange(G2_PlayerStateChange.State.JUMP, id));
+                        jumpTicks = JUMP_DURATION / 2;
+                    }
                 }
             }
 
@@ -226,7 +227,6 @@ public class Game_2_Model implements Model
         {
             super.update();
             ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, false, x, y));
-            System.out.println("Wodblock pos("+x+", "+y+")");
         }
     }
 
