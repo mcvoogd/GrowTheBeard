@@ -34,7 +34,7 @@ public class Game_3_View implements View{
 
     @Override
     public void start() {
-        preScreen = ResourceHandler.getImage("res/image_game3/background"); //FIXME change to instructions.
+        preScreen = ResourceHandler.getImage("res/image_game3/background.png"); //FIXME change to instructions.
         winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
