@@ -39,7 +39,7 @@ public class Game_3_View implements View{
         playerImage = new BufferedImage[2];
         winner = new BufferedImage[3];
         playerImages = ResourceHandler.getImage("res/images_scoreboard/person");
-        chosenImage = ResourceHandler.getImage("res/images_game1/instruction.png");
+        chosenImage = ResourceHandler.getImage("res/images_game3/instruction.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
