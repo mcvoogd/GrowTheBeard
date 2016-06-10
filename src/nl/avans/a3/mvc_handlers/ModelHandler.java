@@ -3,7 +3,6 @@ package nl.avans.a3.mvc_handlers;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.main_menu.MainMenuModel;
-import nl.avans.a3.start_screen.Start_Model;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.ModelListener;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 
 public class ModelHandler implements ModelListener{
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public ArrayList<ModelListener> listeners = new ArrayList<>();
     public void addListener(ModelListener listener) {

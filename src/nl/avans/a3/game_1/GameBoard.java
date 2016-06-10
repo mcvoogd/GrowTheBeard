@@ -68,21 +68,27 @@ public class GameBoard extends JPanel implements ActionListener {
 	private WiimoteHandler wiimoteHandler;
 	private Random rand = new Random();
 	private BufferedImage[] woodImages = new BufferedImage[3];
-    private BufferedImage instructions;
+    private BufferedImage[] instructions;
+    private BufferedImage chosenImage;
+    private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
 
-	private BufferedImage background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_ARGB);
-	private boolean player1Rumble, player2Rumble;
+    private Timer switchInstructionsTimer;
+    private int switchInstructionsCounter = 0;
+    private boolean player1Rumble, player2Rumble;
 	private int rumbleCounter1, rumbleCounter2, rumbleTime = 5;
 
 	private ArrayList<Particle> particles;
 	private boolean playerCollision = false;
 
 	private final int WOODBLOCK_START_COUNT = 3;
-    private boolean preScreen;
+    private boolean notTriggerd = true;
+
+	private boolean preScreen;
 
 	private int beardCounter;
 	private BufferedImage playerWin1, playerWin2;
 	private BufferedImage[] beards = new BufferedImage[6];
+	private int blinkCounter = 0;
     
     private ArrayList<String> hitSounds = new ArrayList<>();
     private SoundPlayer soundPlayer;
@@ -113,15 +119,26 @@ public class GameBoard extends JPanel implements ActionListener {
 		particles = new ArrayList<>();
 
         winner = new BufferedImage[3];
-        instructions = ResourceHandler.getImage("res/images_game1/instructions.png");
+        instructions = new BufferedImage[3];
+        chosenImage = ResourceHandler.getImage("res/images_game1/instructions.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
 
+        switchInstructionsTimer = new Timer(1000, e -> {
+            switch(switchInstructionsCounter)
+            {
+                case 0 : switchInstructionsCounter = 1; break;
+                case 1 : switchInstructionsCounter = 2; break;
+                case 2 : switchInstructionsCounter = 0; break;
+            }
+        });
 		for(int i = 0; i < 3; i++){
 			winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+            instructions[i] = chosenImage.getSubimage(0, (1080*i), 1920, 1080);
 		}
 
+        switchInstructionsTimer.start();
         initWoodBlocks();
 
 		endTimer = new Timer(time * 1000, e -> inGame = false);
@@ -149,7 +166,9 @@ public class GameBoard extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
         if(preScreen){
-            g2.drawImage(background, 0, 0, null); //make instructions
+            g2.drawImage(background, 0, 0, null);
+            g2.drawImage(Images.rescaleImage(1920, 160, Images.banner), 0, 930, null);
+            g2.drawImage(instructions[switchInstructionsCounter], 0, 0, null); //make instructions
             player1.checkWiiMote(wiimoteHandler, 0);
         }else{
             if(inGame){
@@ -318,7 +337,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				scorePlayer1-=2;
 				hit = true;
 				rumble(0);
-                soundPlayer.playRandomOnce(10);
 				if (scorePlayer1 < 0) {
 					scorePlayer1 = 0;
 				}
@@ -327,7 +345,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				scorePlayer2-=2;
 				hit = true;
 				rumble(1);
-                soundPlayer.playRandomOnce(10);
 				if (scorePlayer2 < 0) {
 					scorePlayer2 = 0;
 				}
@@ -337,7 +354,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				for(int i = 0; i < 10; i++){
 					particles.add(new Particle(woodBlock.getX(), woodBlock.getY(), i*36));
 				}
-				
 				it.remove();
 			}
 		}
@@ -383,8 +399,8 @@ public class GameBoard extends JPanel implements ActionListener {
                 gameLogicTimer.start();
 				timeLeft.start();
 				endTimer.start();
+                switchInstructionsTimer.stop();
             }
-
         }
 	}
 
@@ -483,27 +499,31 @@ public class GameBoard extends JPanel implements ActionListener {
 				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				break;
 			case PLAYER_1_WIN:
-				if(beardCounter < 25){
+				if(beardCounter < 10 && blinkCounter < 3){
 					g.drawImage(beards[0], (1920/2) - (1315/8) - 500, 300, null);
 					System.out.println("OLD");
-				}else if (beardCounter < 50){
-					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+				}else if (beardCounter < 20 && blinkCounter < 3){
+					g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
 				}else{
-					g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
+					g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
 					beardCounter = 0;
+					blinkCounter++;
 				}
+				g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) - 500, 300, null);
 				g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				break;
 			case PLAYER_2_WIN:
-				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) + 530, 300, null);
-				if(beardCounter < 25){
+				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8)  - 500, 300, null);
+				g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) + 530, 300, null);
+				if(beardCounter < 10  && blinkCounter < 3){
 					System.out.println("OLD");
 					g.drawImage(beards[0], (1920/2) - (1315/8) + 530, 300, null);
-				}else if (beardCounter < 50){
-					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+				}else if (beardCounter < 20 && blinkCounter < 3){
+					g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 				}else{
-					g.drawImage(beards[oldBeard2], (1920/2) - (1315/8) - 500, 300, null);
+					g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
 					beardCounter = 0;
+					blinkCounter++;
 				}
 				break;
 		}

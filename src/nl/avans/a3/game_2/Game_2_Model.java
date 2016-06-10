@@ -88,7 +88,7 @@ public class Game_2_Model implements Model
         }
 
         final int JUMP_DURATION = 60;
-        final double JUMP_HEIGHT = 200;
+        final double JUMP_HEIGHT = 250;
         int jumpTicks = JUMP_DURATION;
 
         private double heightAt(double x)
