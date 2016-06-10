@@ -1,7 +1,5 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.event.NewModel;
-import nl.avans.a3.game_1.DummyMVC.DummyModel;
-import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -34,7 +32,7 @@ import javax.swing.Timer;
 
 public class GameBoard extends JPanel implements ActionListener {
 
-	private Timer timer;
+	private Timer gameLogicTimer;
 	private Timer endTimer;
 	private Timer timeLeft;
 
@@ -45,7 +43,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private Player player1;
 	private Player player2;
 	private ArrayList<WoodBlock> woodBlocks;
-	
+
 	private boolean inGame;
 
 	private boolean blockIsFallen;
@@ -81,7 +79,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	private final int WOODBLOCK_START_COUNT = 3;
     private boolean notTriggerd = true;
-    private boolean preScreen;
+
+
+
+	private boolean preScreen;
 
     public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
@@ -97,17 +98,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		setFocusable(true);
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        inGame = true;
+        inGame = false;
         preScreen = true;
-        
-//        new Timer(5000, e1 -> { //FIXME REMCO FIX IT!q
-//            if(notTriggerd){
-//                inGame = true;
-//                preScreen = false;
-//                notTriggerd = false;
-//            }
-//        }).start();
-        
 		player1 = new Player(START_X_PLAYER1, PLAYER_Y, 1, this);
 		player2 = new Player(START_X_PLAYER2, PLAYER_Y, 2, this);
 		particles = new ArrayList<>();
@@ -133,8 +125,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			});
 			timeLeft.start();
 		}
-		timer = new Timer(1000/60, this);
-		timer.start();
+		gameLogicTimer = new Timer(1000/60, this);
 	}
 
 	private void initWoodBlocks() {
@@ -149,11 +140,10 @@ public class GameBoard extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(getWidth()/1920.0, getHeight()/1080.0);
-//        if(preScreen){
-//            g2.drawImage(background, 0, 0, null);
-//            g2.drawImage(background, 0, 0, null);  // replace with image with instructions
-//        }else
-				{
+        if(preScreen){
+            g2.drawImage(background, 0, 0, null); //make instructions
+            player1.checkWiiMote(wiimoteHandler, 0);
+        }else{
             if(inGame){
                 g2.drawImage(background, 0, 0, null);
                 AffineTransform oldFrom = g2.getTransform();
@@ -253,27 +243,34 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		inGame();
-		updatePlayer();
-		updateWoodBlocks();
-		checkCollision();
-		checkRumble();
-		Iterator<Particle> pI = particles.iterator();
-		while(pI.hasNext()){
-			Particle p = pI.next();
-			p.update();
-			if(p.getLife() > 10){
-				pI.remove();
+		if(inGame) {
+			inGame();
+			updatePlayer();
+			updateWoodBlocks();
+			checkCollision();
+			checkRumble();
+			Iterator<Particle> pI = particles.iterator();
+			while (pI.hasNext()) {
+				Particle p = pI.next();
+				p.update();
+				if (p.getLife() > 10) {
+					pI.remove();
+				}
 			}
+			repaint();
+			player1.checkWiiMote(wiimoteHandler, 0);
+			player2.checkWiiMote(wiimoteHandler, 1);
 		}
-		repaint();
-		player1.checkWiiMote(wiimoteHandler, 0);
-		player2.checkWiiMote(wiimoteHandler, 1);
+	}
+
+	public void startTimer()
+	{
+		gameLogicTimer.start();
 	}
 
 	private void inGame() {
 		if (!inGame) {
-			timer.stop();
+			gameLogicTimer.stop();
 		}
 	}
 
@@ -355,6 +352,27 @@ public class GameBoard extends JPanel implements ActionListener {
 		}else{
 			playerCollision = false;
 		}
+	}
+
+	public boolean isInGame() {
+		return inGame;
+	}
+
+	public boolean isPreScreen() {
+		return preScreen;
+	}
+
+	public void setPreScreen(boolean prescreen)
+	{
+		this.preScreen = prescreen;
+        if(!prescreen)
+        {
+            inGame = true;
+            if(!gameLogicTimer.isRunning()) {
+                gameLogicTimer.start();
+            }
+
+        }
 	}
 
 	private int getRandomInt(int min, int max) {

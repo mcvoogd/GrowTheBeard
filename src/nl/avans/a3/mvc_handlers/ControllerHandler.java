@@ -13,6 +13,7 @@ import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.single_menu.SingleMenuController;
 import nl.avans.a3.single_menu.SingleMenuModel;
+import nl.avans.a3.start_screen.Start_Controller;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;

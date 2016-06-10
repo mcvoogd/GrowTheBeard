@@ -20,6 +20,8 @@ import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.single_menu.SingleMenuView;
+import nl.avans.a3.start_screen.Start_Model;
+import nl.avans.a3.start_screen.Start_View;
 import nl.avans.a3.util.Logger;
 
 import javax.swing.*;
@@ -138,7 +140,6 @@ public class ViewHandler implements ModelListener{
         }
         if(model instanceof DummyModel)
         {
-            System.out.println("returned NULL < viewhandler");
             return null;
         }
         return null;

@@ -38,7 +38,7 @@ public class PartyModeHandler {
                 switch(gameCounter)
                 {
                     case 1 : ModelHandler.instance.changeModel(new NewModel(model, new DummyModel())); ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
-                    case 2 : ModelHandler.instance.changeModel(new NewModel(model, new Game_3_Model())); break;//TODO switch these games when game 2 is done.
+                    case 2 : ModelHandler.instance.changeModel(new NewModel(model, new Game_3_Model())); break;
                     case 3 : ModelHandler.instance.changeModel(new NewModel(model, new Game_2_Model())); break;
                 }
                 break;
@@ -49,7 +49,7 @@ public class PartyModeHandler {
 
     public static void notifyNextGame()
     {
-        if(gameCounter <= 2) {
+        if(gameCounter <= 5) {
             gameCounter++;
             update();
         }

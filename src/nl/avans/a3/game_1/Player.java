@@ -176,88 +176,73 @@ class Player extends Sprite {
 	}
 
 	public void checkWiiMote(WiimoteHandler wiimoteHandler, int id){
-		float pitch = wiimoteHandler.getPitch(id);
-		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_LEFT)){
-			dx = -10;
-		}else if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_RIGHT)){
-			dx = 10;
-		}else if(pitch > pitchDeadzone || pitch < -pitchDeadzone){
-			dx = Math.round(-pitch/2);
-		}
-		else
-		{
-			dx = 0;
-		}
+
+        if(gameBoard.isInGame()) {
+            float pitch = wiimoteHandler.getPitch(id);
+
+            if (pitch > pitchDeadzone || pitch < -pitchDeadzone) {
+                dx = Math.round(-pitch / 2);
+            } else {
+                dx = 0;
+            }
 
 
+            if (checkAllButtons(id, wiimoteHandler)) {
+                if (!falling)
+                    jump = true;
+                if (engine == null) {
+                    engine = new Timer(25, e1 -> {
+                        if (jump) {
+                            dy = ty;
+                            if (ty <= 0) {
+                                ty += 3;
+                            } else {
+                                jump = false;
+                                falling = true;
+                            }
+                        } else if (falling) {
+                            dy = -ty;
+                            if (ty > -30) {
+                                ty -= 6;
+                            }
+                            if (yPos > floor) {
+                                falling = false;
+                                dy = 0;
+                                ty = -50;
+                                yPos = floor;
+                            }
+                        }
+                    });
+                    engine.start();
+                }
+            }
+        }
+        else if(gameBoard.isPreScreen())
+        {
 
-		if(wiimoteHandler.getIsButtonDown(id, WiimoteHandler.Buttons.KEY_A)){
-			if(!falling)
-				jump = true;
-			if(engine == null){
+            if(wiimoteHandler.getIsButtonPressed(id, WiimoteHandler.Buttons.KEY_A)) {
+                {
+                    gameBoard.setPreScreen(false);
+                }
+            }
+        }
+	}
 
-				engine = new Timer(25, e1 -> {
-					if (jump) {
-						dy = ty;
-						if (ty <= 0) {
-							ty += 3;
-						}
-						else {
-							jump = false;
-							falling = true;
-						}
-					}
-					else if (falling) {
-						dy = -ty;
-						if (ty > -30) {
-							ty -= 6;
-						}
-						if (yPos > floor) {
-							falling = false;
-							dy = 0;
-							ty = -50;
-							yPos = floor;
-						}
-					}
-				});
-				engine.start();
-			}
-		}
-
-
-
-//		if(wiimoteHandler.getZDifference(id) > 0.25){
-//			if(!falling)
-//				jump = true;
-//			if(engine == null){
-//
-//				engine = new Timer(25, e1 -> {
-//					if (jump) {
-//						dy = ty;
-//						if (ty <= 0) {
-//							ty++;
-//							System.out.println(ty);
-//						}
-//						else {
-//							jump = false;
-//							falling = true;
-//						}
-//					}
-//					else if (falling) {
-//						dy = -ty;
-//						if (ty > -10) {
-//							ty--;
-//						}
-//						if (yPos > -210) {
-//							falling = false;
-//							dy = 0;
-//							ty = -15;
-//						}
-//					}
-//				});
-//				engine.start();
-//			}
-//		}
+	public boolean checkAllButtons(int wiimoteID, WiimoteHandler wiimoteHandler)
+	{if(wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_A)
+		|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_B)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_1)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_2)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_DOWN)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_LEFT)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_MINUS)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_PLUS)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_RIGHT)
+			|| wiimoteHandler.getIsButtonDown(wiimoteID, WiimoteHandler.Buttons.KEY_UP))
+	{
+		return true;
+	}
+		return false;
 	}
 
 	public int getDx(){
