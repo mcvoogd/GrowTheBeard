@@ -5,7 +5,6 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -114,7 +113,7 @@ public class Game_2_View implements View {
             g.drawRect((int)platform.x, 1080-(int)platform.y-model.BLOCK_HEIGHT, model.BLOCK_WIDTH, model.BLOCK_HEIGHT);
         g.setColor(Color.PINK);
         for (Player player : players)
-            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PlAYER_WIDTH, model.PLAYER_HEIGHT);
+            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PLAYER_WIDTH, model.PLAYER_HEIGHT);
         g.setColor(Color.CYAN);
         g.drawRect(model.GROUND_LEFT_X, 1080-model.GROUND_LEFT_Y-model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
         g.drawRect(model.GROUND_RIGHT_X, 1080-model.GROUND_RIGHT_Y-model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);

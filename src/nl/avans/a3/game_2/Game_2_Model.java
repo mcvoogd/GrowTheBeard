@@ -1,21 +1,12 @@
 package nl.avans.a3.game_2;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import nl.avans.a3.event.NewModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.MathExtended;
-import nl.avans.a3.util.ResourceHandler;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by Thijs on 2-6-2016.
- */
 public class Game_2_Model implements Model
 {
     final int PLAYER_COUNT = 2;
@@ -23,7 +14,7 @@ public class Game_2_Model implements Model
     final int WORLD_HEIGHT_BOUND = 1080;
 
     final int PLAYER_HEIGHT = 267;
-    final int PlAYER_WIDTH = 80;
+    final int PLAYER_WIDTH = 80;
 
     final int BLOCK_WIDTH = 160;
     final int BLOCK_HEIGHT = 50;
@@ -37,8 +28,8 @@ public class Game_2_Model implements Model
     final int GROUND_LEFT_HEIGHT = 470;
 
     final int PLAYER_SPAWN_Y = GROUND_LEFT_Y+GROUND_LEFT_HEIGHT+1;
-    final int PLAYER_SPAWN_X_1 = PlAYER_WIDTH;
-    final int PLAYER_SPAWN_X_2 = (int)(PlAYER_WIDTH*3);
+    final int PLAYER_SPAWN_X_1 = PLAYER_WIDTH;
+    final int PLAYER_SPAWN_X_2 = (int)(PLAYER_WIDTH *3);
 
     final int GROUND_RIGHT_X = 1400;
     final int GROUND_RIGHT_Y = -275;
@@ -55,7 +46,7 @@ public class Game_2_Model implements Model
     final int BLOCK_SPAWN_X_3 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*2+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
 
     public enum PlayerState{JUMPING, ON_PLATFORM}
-    public enum PlatformState{FALLING, REMOVE}
+    public enum PlatformState{TRANSLUSENT, FALLING, REMOVE}
 
     private class Collidiable
     {
@@ -80,7 +71,7 @@ public class Game_2_Model implements Model
 
         Player(int id, float x, float y)
         {
-            super(PlAYER_WIDTH, PLAYER_HEIGHT);
+            super(PLAYER_WIDTH, PLAYER_HEIGHT);
             this.id = id;
             spawnX = this.x = x;
             spawnY= this.y = y;
@@ -166,7 +157,7 @@ public class Game_2_Model implements Model
                 }
             }
 
-            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PlAYER_WIDTH);
+            x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND- PLAYER_WIDTH);
             y = MathExtended.clamp(y, WORLD_HEIGHT_LOW_BOUND*2, WORLD_HEIGHT_BOUND-PLAYER_HEIGHT/2);
             if (y <= WORLD_HEIGHT_LOW_BOUND)
             {
@@ -180,7 +171,7 @@ public class Game_2_Model implements Model
         }
 
         public Rectangle getBounds() {
-            return new Rectangle((int)x, (int)y, PlAYER_WIDTH, PLAYER_HEIGHT);
+            return new Rectangle((int)x, (int)y, PLAYER_WIDTH, PLAYER_HEIGHT);
         }
     }
 
@@ -206,6 +197,7 @@ public class Game_2_Model implements Model
                 state = PlatformState.FALLING;
                 y = BLOCK_SPAWN_Y;
             }
+            //ffif (y <= 0)
 
             y += fallingSpeed;
             if (y <= WORLD_HEIGHT_LOW_BOUND)
@@ -221,6 +213,8 @@ public class Game_2_Model implements Model
         Woodblock(float x, float y) {
             super(x, y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_FALL_SPEED , true);
             ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, x, y));
+            state = PlatformState.TRANSLUSENT;
+            ModelHandler.instance.onModelEvent(new G2_PlatformStateChange(G2_PlatformStateChange.State.TRANSLUSENT, id));
         }
 
         public void update()
