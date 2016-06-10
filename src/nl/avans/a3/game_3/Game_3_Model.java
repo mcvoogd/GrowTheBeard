@@ -23,7 +23,8 @@ public class Game_3_Model implements Model{
     private BufferedImage background;
     private ArrayList<Particle> particles;
     private Random rand = new Random();
-
+    private int switchInstructionsCounter = 0;
+    private Timer switchInstructionsTimer;
     private boolean preScreen = true;
 
     public int getScorePlayer1() {
@@ -38,6 +39,14 @@ public class Game_3_Model implements Model{
     private int scorePlayer1, scorePlayer2;
 
     public Game_3_Model(){
+        switchInstructionsTimer = new Timer(1000, e -> {
+            switch(switchInstructionsCounter)
+            {
+                case 0 : switchInstructionsCounter = 1; break;
+                case 1 : switchInstructionsCounter = 2; break;
+                case 2 : switchInstructionsCounter = 0; break;
+            }
+        });
         hitPlayer1 = true;
         hitPlayer2 = true;
         scorePlayer1 = 0;
@@ -91,6 +100,11 @@ public class Game_3_Model implements Model{
     @Override
     public void close() {
 
+    }
+
+    public int getSwitchInstructionsCounter()
+    {
+        return switchInstructionsCounter;
     }
 
     public boolean getisPreScreen()

@@ -25,7 +25,8 @@ public class Game_3_View implements View{
     private double change = CHANGE_SPEED;
     private static final double MAX_SCALE = 0.15;
     private static final double MIN_SCALE = 0.1;
-
+    private BufferedImage[] instructions;
+    private BufferedImage chosenImage;
     private boolean updateScore;
 
     public Game_3_View(Game_3_Model gameModel){
@@ -34,8 +35,9 @@ public class Game_3_View implements View{
 
     @Override
     public void start() {
-        preScreen = ResourceHandler.getImage("res/image_game3/background.png"); //FIXME change to instructions.
+
         winner = new BufferedImage[3];
+        chosenImage = ResourceHandler.getImage("res/images_game1/instruction.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
@@ -43,15 +45,15 @@ public class Game_3_View implements View{
 
         for(int i = 0; i < 3; i++){
             winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+            instructions[i] = chosenImage.getSubimage(0, 1080*i, 1920, 1080);
         }
-
    }
 
     @Override
     public void draw(Graphics2D g) {
         if(gameModel.getisPreScreen())
         {
-            g.drawImage(preScreen, 0 , 0, null);
+            g.drawImage(instructions[gameModel.getSwitchInstructionsCounter()], 0 , 0, null);
         }
         else if(gameModel.getInGame()) {
             g.drawImage(gameModel.getBackground(), 0, 0, null);
