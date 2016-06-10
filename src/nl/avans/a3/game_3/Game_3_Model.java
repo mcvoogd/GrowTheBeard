@@ -19,10 +19,12 @@ public class Game_3_Model implements Model{
     private boolean hitPlayer1, hitPlayer2;
     private Timer countDownTimer;
     private int time = 30;
-    private boolean inGame = true;
+    private boolean inGame = false;
     private BufferedImage background;
     private ArrayList<Particle> particles;
     private Random rand = new Random();
+
+    private boolean preScreen = true;
 
     public int getScorePlayer1() {
         return scorePlayer1;
@@ -41,8 +43,7 @@ public class Game_3_Model implements Model{
         scorePlayer1 = 0;
         scorePlayer2 = 0;
         background = ResourceHandler.getImage("res/images_game3/background.png");
-
-    }
+     }
 
     // TODO magic values everywhere
 
@@ -55,36 +56,34 @@ public class Game_3_Model implements Model{
         characters[0] = new Character(1, START_X, 480);
         characters[1] = new Character(2, 1920 - START_X - 328, 480); //screenwidth - startPlayer - widthPlayer
         countDownTimer = new Timer(1000, e -> {time--; if(time == -1) inGame = false;} );
-        countDownTimer.start();
+
     }
 
     @Override
     public void update() {
-        for (Tree tree : trees) {
-            tree.update();
-        }
 
-        Iterator it = particles.iterator();
-        while (it.hasNext()){
-            Particle p = (Particle) it.next();
-            p.update();
-            if(p.getLife() > 10){
-                it.remove();
+        if(inGame) {
+            for (Tree tree : trees) {
+                tree.update();
             }
-        }
-
-        if(!inGame)
-        {
+            Iterator it = particles.iterator();
+            while (it.hasNext()) {
+                Particle p = (Particle) it.next();
+                p.update();
+                if (p.getLife() > 10) {
+                    it.remove();
+                }
+            }
+        }else  if (!inGame) {
             countDownTimer.stop();
         }
         characters[0].update();
         characters[1].update();
-
-
         bird.update();
-        if(bird.getWait()){
+        if (bird.getWait()) {
             bird.setWait(rand.nextInt(300));
         }
+
 
 
     }
@@ -92,6 +91,21 @@ public class Game_3_Model implements Model{
     @Override
     public void close() {
 
+    }
+
+    public boolean getisPreScreen()
+    {
+        return preScreen;
+    }
+
+    public void setPreScreen(boolean preScreen)
+    {
+        this.preScreen = preScreen;
+        if(!preScreen)
+        {
+            inGame = true;
+            countDownTimer.start();
+        }
     }
 
     public boolean getHitPlayer(int player)

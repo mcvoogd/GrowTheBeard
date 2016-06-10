@@ -17,7 +17,7 @@ public class Game_3_View implements View{
     private BufferedImage[] winner;
     private BufferedImage winnerImage;
     private BufferedImage text;
-
+    private BufferedImage preScreen;
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
     private double textScale = 0.1;
@@ -34,6 +34,7 @@ public class Game_3_View implements View{
 
     @Override
     public void start() {
+        preScreen = ResourceHandler.getImage("res/image_game3/background"); //FIXME change to instructions.
         winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
@@ -48,7 +49,11 @@ public class Game_3_View implements View{
 
     @Override
     public void draw(Graphics2D g) {
-        if(gameModel.getInGame()) {
+        if(gameModel.getisPreScreen())
+        {
+            g.drawImage(preScreen, 0 , 0, null);
+        }
+        else if(gameModel.getInGame()) {
             g.drawImage(gameModel.getBackground(), 0, 0, null);
             gameModel.getBird().draw(g);
             Font tf = new Font("Verdana", Font.BOLD, 68);
