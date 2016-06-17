@@ -3,6 +3,8 @@ package nl.avans.a3.game_2;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.util.Beard;
+import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
@@ -182,11 +184,12 @@ public class Game_2_View implements View {
                 final int PLAYER_X_OFFSET = -53;
 
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-            }
-            g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
-            g.drawImage(player.beard, (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
-            g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
-        }
+                g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+                g.drawImage(player.beard, (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+                g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+
+              }
+
 
             g.drawImage(banner, 0, -25, 1920, 180, null);
             g.drawString("" + model.getTime(), 960 - (ft.stringWidth("" + model.getTime()) / 2) + 90, 80);
@@ -211,9 +214,7 @@ public class Game_2_View implements View {
             g.drawRect(model.GROUND_LEFT_X, 1080 - model.GROUND_LEFT_Y - model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
             g.drawRect(model.GROUND_RIGHT_X, 1080 - model.GROUND_RIGHT_Y - model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
         }
-        else {
 
-        }
     }
 
     @Override
