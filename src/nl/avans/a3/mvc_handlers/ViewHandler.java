@@ -65,6 +65,7 @@ public class ViewHandler implements ModelListener{
                 if (displayMode == DisplayMode2.BORDERLES_WINDOW)
                     frame.setUndecorated(true);
                 panel.setPreferredSize(new Dimension(1920, 1080));
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setResizable(false);
             }
