@@ -4,23 +4,20 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class SoundPlayer
-{
+public class SoundPlayer{
+    // TODO missing javadoc
     private Clip clip;
     private Timer t = null;
-    private int time = 100;
-    private boolean isplaying = false;
+    private boolean isPlaying = false;
     private Clip selectedClip;
-    private ArrayList<Clip> clips = new ArrayList<>();
+    private Clip[] clips;
 
-    public SoundPlayer(String path)
-    {
-        try
-        {
+    public SoundPlayer(String path){
+        try{
+            int time = 100;
             t = new Timer(time, e -> {
-                if (isplaying) {
+                if (isPlaying) {
                     stop();
                     resetClip();
                     t.restart();
@@ -30,85 +27,91 @@ public class SoundPlayer
             clip = AudioSystem.getClip();
             clip.open(sound);
             selectedClip = clip;
-        }
-        catch(Exception e)
-        {
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
     /**
-     * constructor for different clips.
+     * Constructor for multiple clips.
      */
-    public SoundPlayer(ArrayList<String> clips)
-    {
-        for(String s : clips)
-        {
-            try {
-                AudioInputStream sound = AudioSystem.getAudioInputStream(new File(s));
+    public SoundPlayer(String[] path){
+        clips = new Clip[path.length];
+        for(int i = 0; i < path.length; i++){
+            try{
+                AudioInputStream sound = AudioSystem.getAudioInputStream(new File(path[i]));
                 clip = AudioSystem.getClip();
                 clip.open(sound);
-
-                this.clips.add(clip);
-            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+                clips[i] = clip;
+            }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e){
                 e.printStackTrace();
             }
-
         }
     }
 
-    public void start()
-    {
+    /**
+     * 
+     */
+    public void start(){
         selectedClip.setFramePosition(0);
         selectedClip.start();
-        isplaying = true;
+        isPlaying = true;
     }
 
-    public void stop()
-    {
+    /**
+     * 
+     */
+    public void stop(){
         selectedClip.stop();
-        isplaying = false;
+        isPlaying = false;
     }
 
-    public void resetClip()
-    {
+    /**
+     * 
+     */
+    public void resetClip(){
         selectedClip.setFramePosition(0);
     }
 
-    public void getRandomClip()
-    {
-        int clipID = (int) (Math.random()*clips.size());
-        if(clips.get(clipID) != null) {
-            selectedClip = clips.get(clipID);
+    /**
+     * 
+     */
+    public void getRandomClip(){
+        int clipID = (int) (Math.random()*clips.length);
+        if(clips[clipID] != null) {
+            selectedClip = clips[clipID];
         }
     }
 
-    public void loop(float volumeReduction)
-    {
-        FloatControl gainControl =
-                (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
+    /**
+     * @param volumeReduction
+     */
+    public void loop(float volumeReduction){
+        FloatControl gainControl = (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-volumeReduction); // Reduce volume by 10 decibels.
         selectedClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public boolean isPlaying()
-    {
-        return isplaying;
+    /**
+     * @return
+     */
+    public boolean isPlaying(){
+        return isPlaying;
     }
 
     /**
-     * Method to play a song for a certain ammount of time.
-     * @param time : time to play the song for in milliseconds.
+     * Play a random sound 
      */
-    public void playRandomOnce(int time)
-    {
+    public void playRandomOnce(){
         getRandomClip();
         start();
         resetClip();
     }
 
-    public void playOnce()
-    {
+    /**
+     * 
+     */
+    public void playOnce(){
         start();
     }
 }

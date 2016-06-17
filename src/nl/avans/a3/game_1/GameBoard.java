@@ -1,7 +1,5 @@
 package nl.avans.a3.game_1;
 import nl.avans.a3.event.NewModel;
-import nl.avans.a3.game_1.DummyMVC.DummyModel;
-import nl.avans.a3.game_1.DummyMVC.DummyView;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
@@ -97,11 +95,12 @@ public class GameBoard extends JPanel implements ActionListener {
 
 	public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
-        hitSounds.add("res/music/game1/wood_hit_1.wav");
-        hitSounds.add("res/music/game1/wood_hit_2.wav");
-        hitSounds.add("res/music/game1/wood_hit_3.wav");
-        hitSounds.add("res/music/game1/wood_hit_4.wav");
-        soundPlayer = new SoundPlayer(hitSounds);
+        soundPlayer = new SoundPlayer(new String[]{
+		        "res/music/game1/wood_hit_1.wav",
+                "res/music/game1/wood_hit_2.wav",
+                "res/music/game1/wood_hit_3.wav",
+                "res/music/game1/wood_hit_4.wav"
+        });
 		backgroundSound = new SoundPlayer("res/music/game1/nature.wav");
 		initGameBoard();
 	}
@@ -341,7 +340,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (rect3.intersects(rect1)) {
 				scorePlayer1-=2;
 				hit = true;
-				soundPlayer.playRandomOnce(100);
+				soundPlayer.playRandomOnce();
 				rumble(0);
 				if (scorePlayer1 < 0) {
 					scorePlayer1 = 0;
@@ -350,7 +349,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (rect2.intersects(rect1)) {
 				scorePlayer2-=2;
 				hit = true;
-				soundPlayer.playRandomOnce(100);
+				soundPlayer.playRandomOnce();
 				rumble(1);
 				if (scorePlayer2 < 0) {
 					scorePlayer2 = 0;
