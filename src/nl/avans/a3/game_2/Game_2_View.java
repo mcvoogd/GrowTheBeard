@@ -5,7 +5,6 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.ResourceHandler;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -65,6 +64,36 @@ public class Game_2_View implements View {
 
     private HashMap<Integer, Platform> platforms = new HashMap<>();
 
+    private class Basket {
+        float x, y;
+        BufferedImage image;
+
+        Basket(float x, float y) {
+            this.x = x;
+            this.y = y;
+            image = ResourceHandler.getImage("res/images_game1/wood1.png"); // TODO mandje ipv oversized blokje
+        }
+
+        BufferedImage getImage() {
+            return image;
+        }
+    }
+
+    private ArrayList<Basket> baskets = new ArrayList<>();
+
+    private class WoodStack {
+        float x, y;
+        BufferedImage image;
+
+        WoodStack(float x, float y) {
+            this.x = x;
+            this.y = y;
+            image = ResourceHandler.getImage("res/images_game1/wood2.png"); // TODO houtstapel ipv oversized blokje
+        }
+    }
+
+    private ArrayList<WoodStack> woodStacks = new ArrayList<>();
+
     @Override
     public void start() {
         waterfallAnimation = new BufferedImage[3];
@@ -107,6 +136,14 @@ public class Game_2_View implements View {
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
         }
 
+        for (Basket basket : baskets) {
+            g.drawImage(basket.image, (int) basket.x, (int) basket.y, null);
+        }
+
+        for (WoodStack woodStack : woodStacks) {
+            g.drawImage(woodStack.image, (int) woodStack.x, (int) woodStack.y, null);
+        }
+
         if (ModelHandler.DEBUG_MODE == false) return;
 
         g.setColor(Color.YELLOW);
@@ -114,7 +151,7 @@ public class Game_2_View implements View {
             g.drawRect((int)platform.x, 1080-(int)platform.y-model.BLOCK_HEIGHT, model.BLOCK_WIDTH, model.BLOCK_HEIGHT);
         g.setColor(Color.PINK);
         for (Player player : players)
-            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PlAYER_WIDTH, model.PLAYER_HEIGHT);
+            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PLAYER_WIDTH, model.PLAYER_HEIGHT);
         g.setColor(Color.CYAN);
         g.drawRect(model.GROUND_LEFT_X, 1080-model.GROUND_LEFT_Y-model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
         g.drawRect(model.GROUND_RIGHT_X, 1080-model.GROUND_RIGHT_Y-model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
@@ -141,9 +178,17 @@ public class Game_2_View implements View {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
                 players.add(new Player(newObject.x, newObject.y, image, newObject.id));
                 System.out.println("added a new player to view");
-            }else
-            {
-                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int)(rand.nextFloat()*3*framesPerAnimationFrame)));
+            }
+            if (newObject.basket) {
+                baskets.add(new Basket(newObject.x, newObject.y));
+                System.out.println("added a basket to view");
+            }
+            if (newObject.woodStack) {
+                woodStacks.add(new WoodStack(newObject.x, newObject.y));
+                System.out.println("added a woodstack to view");
+            }
+            else {
+                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int) (rand.nextFloat() * 3 * framesPerAnimationFrame)));
             }
         }
         else if (event instanceof G2_ObjectMove)

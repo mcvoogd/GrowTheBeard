@@ -15,7 +15,7 @@ public class SoundPlayer
     private Clip selectedClip;
     private ArrayList<Clip> clips = new ArrayList<>();
 
-    public SoundPlayer(String URL)
+    public SoundPlayer(String path)
     {
         try
         {
@@ -26,7 +26,7 @@ public class SoundPlayer
                     t.restart();
                 }
             });
-            AudioInputStream sound = AudioSystem.getAudioInputStream(new File(URL));
+            AudioInputStream sound = AudioSystem.getAudioInputStream(new File(path));
             clip = AudioSystem.getClip();
             clip.open(sound);
             selectedClip = clip;
@@ -50,11 +50,7 @@ public class SoundPlayer
                 clip.open(sound);
 
                 this.clips.add(clip);
-            } catch (LineUnavailableException e) {
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
                 e.printStackTrace();
             }
 
