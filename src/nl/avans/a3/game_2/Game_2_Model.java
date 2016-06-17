@@ -22,11 +22,13 @@ public class Game_2_Model implements Model
     final int PLAYER_HEIGHT = 267;
     final int PLAYER_WIDTH = 80;
 
+    final int PLAYER_RESPAWN_TICKS = 3*60;
+
     final int BLOCK_WIDTH = 160;
     final int BLOCK_HEIGHT = 50;
     final float BLOCK_FALL_SPEED = -3;
 
-    final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*2;
+    final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*1;
 
     final int GROUND_LEFT_X = -500;
     final int GROUND_LEFT_Y = -245;
@@ -64,7 +66,7 @@ public class Game_2_Model implements Model
 
     boolean inGame = true;
 
-    public enum PlayerState{JUMPING, ON_PLATFORM}
+    public enum PlayerState{JUMPING, ON_PLATFORM, RESPAWN_WAIT}
     public enum PlatformState{FALLING, REMOVE}
 
     private BufferedImage[] beards = new BufferedImage[6];
@@ -92,6 +94,7 @@ public class Game_2_Model implements Model
         Platform platform = null;
         final float spawnX,  spawnY;
         boolean hasBlock = false;
+        int repawnTicksLeft = 0;
 
         Player(int id, float x, float y)
         {
@@ -125,6 +128,14 @@ public class Game_2_Model implements Model
 
         public void update()
         {
+            if (state == PlayerState.RESPAWN_WAIT) {
+                if (repawnTicksLeft-- <= 0) {
+                    state = PlayerState.JUMPING;
+                    x = spawnX;
+                    y = spawnY;
+                }
+                else return;
+            }
             if (jump && state != PlayerState.JUMPING)
             {
                 state = PlayerState.JUMPING;
@@ -196,10 +207,9 @@ public class Game_2_Model implements Model
             y = MathExtended.clamp(y, WORLD_HEIGHT_LOW_BOUND*2, WORLD_HEIGHT_BOUND-PLAYER_HEIGHT/2);
             if (y <= WORLD_HEIGHT_LOW_BOUND)
             {
+                state = PlayerState.RESPAWN_WAIT;
+                repawnTicksLeft = PLAYER_RESPAWN_TICKS;
                 hasBlock = false;
-                state = PlayerState.JUMPING;
-                x = spawnX;
-                y = spawnY;
             }
 
             ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
