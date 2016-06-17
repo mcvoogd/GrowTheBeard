@@ -28,8 +28,6 @@ public class Game_3_Controller implements Controller{
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
-        //chopSoundPlayer = new SoundPlayer("res/music/game3/chop1.wav");
-
         chopSoundPlayer = new SoundPlayer(getArrayListWithClips());
         backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
         backgroundMusic.loop(30);
@@ -83,10 +81,12 @@ public class Game_3_Controller implements Controller{
             {
                 if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        backgroundMusic.stop();
                         PartyModeHandler.notifyNextGame();
                     }
                 } else {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        backgroundMusic.stop();
                         ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
                     }
                 }
