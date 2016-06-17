@@ -3,6 +3,7 @@ package nl.avans.a3.game_2;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.ResourceHandler;
 
 import java.awt.*;
@@ -30,6 +31,8 @@ public class Game_2_View implements View {
 
         float x, y;
         BufferedImage[] animation;
+        BufferedImage[] animationArm;
+        BufferedImage beard;
         int selectedAnimation = 0;
         int animationTicksLeft = -1;
         Player(float x, float y, BufferedImage playerImage, int id)
@@ -37,8 +40,18 @@ public class Game_2_View implements View {
             this.x = x;
             this.y = y;
             animation = new BufferedImage[4];
-            for (int i = 0 ; i < 4; i++)
-                animation[i] = playerImage.getSubimage(playerImage.getWidth()/4*i, 0, playerImage.getWidth()/4, playerImage.getHeight());
+            animationArm = new BufferedImage[4];
+            int beardNumber = 0;
+            if(id == 0){
+                beardNumber = Beard.beardPlayer1;
+            }else{
+                beardNumber = Beard.beardPlayer2;
+            }
+            beard = ResourceHandler.getImage("res/images_game2/beard.png").getSubimage(playerImage.getWidth() / 8 * beardNumber, 0, playerImage.getWidth() / 8, playerImage.getHeight());
+            for (int i = 0 ; i < 4; i++) {
+                animation[i] = playerImage.getSubimage(playerImage.getWidth() / 8 * (i * 2), 0, playerImage.getWidth() / 8, playerImage.getHeight());
+                animationArm[i] = playerImage.getSubimage(playerImage.getWidth() / 8 * ((i * 2) + 1), 0, playerImage.getWidth() / 8, playerImage.getHeight());
+            }
         }
     }
 
@@ -134,6 +147,8 @@ public class Game_2_View implements View {
             final int PLAYER_X_OFFSET = -53;
 
             g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+            g.drawImage(player.beard, (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+            g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
         }
 
         for (Basket basket : baskets) {
