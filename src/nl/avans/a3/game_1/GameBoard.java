@@ -91,15 +91,18 @@ public class GameBoard extends JPanel implements ActionListener {
 	private int blinkCounter = 0;
     
     private ArrayList<String> hitSounds = new ArrayList<>();
-    private SoundPlayer soundPlayer;
+	private SoundPlayer soundPlayer;
+	private SoundPlayer backgroundSound;
 
-    public GameBoard(WiimoteHandler wiimoteHandler) {
+
+	public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
         hitSounds.add("res/music/wood_hit_1.wav");
         hitSounds.add("res/music/wood_hit_2.wav");
         hitSounds.add("res/music/wood_hit_3.wav");
         hitSounds.add("res/music/wood_hit_4.wav");
         soundPlayer = new SoundPlayer(hitSounds);
+		backgroundSound = new SoundPlayer("res/music/game1/nature.wav");
 		initGameBoard();
 	}
 	
@@ -107,6 +110,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		new Images();
 		scaleBackground();
 		addWoodImages();
+		backgroundSound.loop(30);
 		wiimoteHandler.activateMotionSensing();
 		addKeyListener(new KAdapter());
 		setFocusable(true);
@@ -300,6 +304,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private void inGame() {
 		if (!inGame) {
 			gameLogicTimer.stop();
+			backgroundSound.stop();
 		}
 	}
 
@@ -336,6 +341,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (rect3.intersects(rect1)) {
 				scorePlayer1-=2;
 				hit = true;
+				soundPlayer.playRandomOnce(100);
 				rumble(0);
 				if (scorePlayer1 < 0) {
 					scorePlayer1 = 0;
@@ -344,6 +350,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			if (rect2.intersects(rect1)) {
 				scorePlayer2-=2;
 				hit = true;
+				soundPlayer.playRandomOnce(100);
 				rumble(1);
 				if (scorePlayer2 < 0) {
 					scorePlayer2 = 0;
