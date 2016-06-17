@@ -19,7 +19,7 @@ public class MainMenuModel implements Model{
     private Rectangle2D partymode;
     private Rectangle2D singlemode;
     private boolean hasMenuSelected = false;
-
+    private boolean isRumbling = false;
     private final int PARTY_BOARD_X = 270;
     private final int PARTY_BOARD_Y = 290;
 
@@ -50,8 +50,6 @@ public class MainMenuModel implements Model{
     @Override
     public void update() {
         checkIRinMenu(pointer);
-       // Point2D dummy = new Point2D.Double(pointX, pointY);
-      //  checkDummyCursor(dummy);
     }
 
     @Override
@@ -59,34 +57,29 @@ public class MainMenuModel implements Model{
 
     }
 
-    public void checkDummyCursor(Point2D dummy)
-    {
-        if (partymode.contains(dummy)) {
-            hasMenuSelected = true;
-            changeMode(MainMenuModel.Mode.CHOOSE_PARTY);
-        } else if (singlemode.contains(dummy)) {
-            hasMenuSelected = true;
-            changeMode(MainMenuModel.Mode.CHOOSE_SINGLE);
-        } else {
-            hasMenuSelected = false;
-            setMode(MainMenuModel.Mode.DEFAULT);
-        }
-    }
 
     public void checkIRinMenu(Point2D cursor)
     {
         if(cursor != null) {
             if (partymode.contains(cursor)) {
                 hasMenuSelected = true;
+                isRumbling = true;
                 changeMode(MainMenuModel.Mode.CHOOSE_PARTY);
             } else if (singlemode.contains(cursor)) {
                 hasMenuSelected = true;
+                isRumbling = true;
                 changeMode(MainMenuModel.Mode.CHOOSE_SINGLE);
             } else {
                 hasMenuSelected = false;
+                isRumbling = false;
                 setMode(MainMenuModel.Mode.DEFAULT);
             }
         }
+    }
+
+    public boolean doRumble()
+    {
+        return isRumbling;
     }
 
     public int getPointY() {

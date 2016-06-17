@@ -38,16 +38,6 @@ public class SingleMenuController implements Controller {
                 if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_HOME)) {
                     ModelHandler.instance.changeModel(new NewModel(model, new MainMenuModel()));
                 }
-//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_LEFT)) {
-//                    model.switchMenu(-1);
-//                }
-//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_RIGHT)) {
-//                    model.switchMenu(1);
-//                }
-//                if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {
-//                    model.onMenuChoose(wiimoteHandler);
-//                }
-
                 if(wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)){
                     switch (model.getMode()) {
                         case WOOD_CHOPPING:
@@ -60,6 +50,14 @@ public class SingleMenuController implements Controller {
                             model.onMenuChoose(wiimoteHandler);
                     }
                 }
+            }
+            if(model.doRumble())
+            {
+                wiimoteHandler.activateRumble(0);
+            }
+            else
+            {
+                wiimoteHandler.deactivateRumble(0);
             }
         }
         model.update();

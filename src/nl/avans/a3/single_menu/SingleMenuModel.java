@@ -22,6 +22,7 @@ public class SingleMenuModel implements Model {
     private Rectangle2D game2 = new Rectangle2D.Double(1010, 100, 830, 450);
     private Rectangle2D game3 = new Rectangle2D.Double(160, 585, 830, 450);
     private Rectangle2D back = new Rectangle2D.Double(0, 0, 100, 100);
+    private boolean isRumbling = false;
 
     public enum Mode{
         WOOD_DODGING, WOOD_JUMPING, WOOD_CHOPPING, MAINMENU, DEFAULT
@@ -49,18 +50,23 @@ public class SingleMenuModel implements Model {
         if(game1.contains(cursor))
         {
             setMode(SingleMenuModel.Mode.WOOD_DODGING);
+            isRumbling = true;
         }else if(game2.contains(cursor))
         {
             setMode(SingleMenuModel.Mode.WOOD_CHOPPING);
+            isRumbling = true;
         }else if(game3.contains(cursor))
         {
             setMode(SingleMenuModel.Mode.WOOD_JUMPING);
+            isRumbling = true;
         }else if(back.contains(cursor))
         {
             setMode(SingleMenuModel.Mode.MAINMENU);
+            isRumbling = true;
         }else
         {
             setMode(SingleMenuModel.Mode.DEFAULT);
+            isRumbling = false;
         }
     }
 
@@ -82,6 +88,11 @@ public class SingleMenuModel implements Model {
             }
         }
 
+    }
+
+    public boolean doRumble()
+    {
+        return isRumbling;
     }
 
     public void setPointer(Point2D pointer){
