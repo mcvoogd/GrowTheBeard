@@ -216,7 +216,7 @@ public class Game_2_View implements View {
         }
         else
         {
-            drawGameEnd(g, wonplayer); //FIXME wonplayer = the player with most score.
+            drawGameEnd(g, 1); //FIXME wonplayer = the player with most score.
         }
     }
 

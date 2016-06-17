@@ -9,6 +9,7 @@ import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.WiimoteHandler;
+import nl.avans.a3.winScreen.WinScreen_Model;
 
 public class PartyModeHandler {
 
@@ -40,6 +41,7 @@ public class PartyModeHandler {
                     case 1 : ModelHandler.instance.changeModel(new NewModel(model, new DummyModel())); ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler)); break;
                     case 2 : ModelHandler.instance.changeModel(new NewModel(model, new Game_3_Model())); break;
                     case 3 : ModelHandler.instance.changeModel(new NewModel(model, new Game_2_Model())); break;
+                    case 4 : ModelHandler.instance.changeModel(new NewModel(model, new WinScreen_Model())); break;
                 }
                 break;
             case CHOOSE_SINGLE: break;

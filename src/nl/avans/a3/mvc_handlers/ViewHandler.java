@@ -21,6 +21,8 @@ import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.single_menu.SingleMenuView;
 import nl.avans.a3.util.Logger;
+import nl.avans.a3.winScreen.WinScreen_Model;
+import nl.avans.a3.winScreen.WinScreen_View;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,6 +124,9 @@ public class ViewHandler implements ModelListener{
         }
         if(model instanceof Game_3_Model) {
             return new Game_3_View((Game_3_Model) model);
+        }
+        if(model instanceof WinScreen_Model){
+            return new WinScreen_View((WinScreen_Model) model);
         }
         if(model instanceof DummyModel){
             return null;

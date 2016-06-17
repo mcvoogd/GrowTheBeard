@@ -22,6 +22,8 @@ import nl.avans.a3.single_menu.SingleMenuModel;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
+import nl.avans.a3.winScreen.WinScreen_Controller;
+import nl.avans.a3.winScreen.WinScreen_Model;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -110,6 +112,9 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         if(model instanceof Game_3_Model){
             return new Game_3_Controller((Game_3_Model) model, wiimoteHandler);
+        }
+        if(model instanceof WinScreen_Model){
+            return new WinScreen_Controller((WinScreen_Model) model, wiimoteHandler);
         }
         if(model instanceof DummyModel)
         {
