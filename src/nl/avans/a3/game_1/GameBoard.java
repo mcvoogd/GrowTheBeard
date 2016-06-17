@@ -95,10 +95,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
     public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
-        hitSounds.add("res/music/wood_hit_1");
-        hitSounds.add("res/music/wood_hit_2");
-        hitSounds.add("res/music/wood_hit_3");
-        hitSounds.add("res/music/wood_hit_4");
+        hitSounds.add("res/music/wood_hit_1.wav");
+        hitSounds.add("res/music/wood_hit_2.wav");
+        hitSounds.add("res/music/wood_hit_3.wav");
+        hitSounds.add("res/music/wood_hit_4.wav");
         soundPlayer = new SoundPlayer(hitSounds);
 		initGameBoard();
 	}

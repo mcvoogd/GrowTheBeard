@@ -51,6 +51,7 @@ public class Game_3_Model implements Model{
                 case 2 : switchInstructionsCounter = 0; break;
             }
         });
+        switchInstructionsTimer.start();
         hitPlayer1 = true;
         hitPlayer2 = true;
         scorePlayer1 = 0;
@@ -129,6 +130,7 @@ public class Game_3_Model implements Model{
         {
             inGame = true;
             countDownTimer.start();
+            switchInstructionsTimer.stop();
         }
     }
 

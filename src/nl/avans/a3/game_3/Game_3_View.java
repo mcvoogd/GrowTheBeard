@@ -37,9 +37,10 @@ public class Game_3_View implements View{
     @Override
     public void start() {
         playerImage = new BufferedImage[2];
+        instructions = new BufferedImage[3];
         winner = new BufferedImage[3];
-        playerImages = ResourceHandler.getImage("res/images_scoreboard/person");
-        chosenImage = ResourceHandler.getImage("res/images_game3/instruction.png");
+        playerImages = ResourceHandler.getImage("res/images_scoreboard/person.png");
+        chosenImage = ResourceHandler.getImage("res/images_game3/instructions.png");
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
@@ -47,7 +48,7 @@ public class Game_3_View implements View{
 
         for(int i = 0; i < 3; i++){
             winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
-            instructions[i] = chosenImage.getSubimage(0, 1080*i, 1920, 1080);
+            instructions[i] = chosenImage.getSubimage(0, (1080*i), 1920, 1080);
         }
         for(int i = 0; i < 2; i++)
         {
@@ -59,6 +60,8 @@ public class Game_3_View implements View{
     public void draw(Graphics2D g) {
         if(gameModel.getisPreScreen())
         {
+            g.drawImage(gameModel.getBackground(), 0, 0, null);
+            g.drawImage(banner, 0, -25, WIDTH, 180, null);
             g.drawImage(instructions[gameModel.getSwitchInstructionsCounter()], 0 , 0, null);
         }
         else if(gameModel.getInGame()) {
@@ -128,39 +131,40 @@ public class Game_3_View implements View{
             case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
         }
 
-        g.drawImage(playerImage[0],(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4,  null);
-        g.drawImage(playerImage[1], (WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+
+        g.drawImage(playerImage[0],(WIDTH/2) - (1315/8) - 500, 300, 311, 577,  null);
+        g.drawImage(playerImage[1], (WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
 
         int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
         int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
         switch (player){
             case 0:
-                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
-                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
                 break;
             case 1:
-                if(gameModel.getBeardCounter() < 10 && gameModel.getSwitchBeardCounter() < 3){
-                    g.drawImage(gameModel.getBeards(oldBeard1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
-                }else if(gameModel.getBeardCounter() < 20 && gameModel.getSwitchBeardCounter() < 3){
-                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                if(gameModel.getBeardCounter() < 15 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(oldBeard1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                }else if(gameModel.getBeardCounter() < 30 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
                 }else{
-                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
                     gameModel.setBeardCounter(0);
                     gameModel.setSwitchBeardCounter(gameModel.getSwitchBeardCounter() + 1);
                 }
-                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
                 break;
             case 2:
-                if(gameModel.getBeardCounter() < 10 && gameModel.getSwitchBeardCounter() < 3){
-                    g.drawImage(gameModel.getBeards(oldBeard2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
-                }else if(gameModel.getBeardCounter() < 20 && gameModel.getSwitchBeardCounter() < 3){
-                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                if(gameModel.getBeardCounter() < 15 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(oldBeard2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
+                }else if(gameModel.getBeardCounter() < 30 && gameModel.getSwitchBeardCounter() < 3){
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
                 }else{
-                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 450, 1315/4, 1922/4, null);
+                    g.drawImage(gameModel.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
                     gameModel.setBeardCounter(0);
                     gameModel.setSwitchBeardCounter(gameModel.getSwitchBeardCounter() + 1);
                 }
-                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 450, 1315/4, 1922/4, null);
+                g.drawImage(gameModel.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300, 311, 577, null);
                 break;
         }
     }
