@@ -160,7 +160,7 @@ public class Game_2_View implements View {
 
     @Override
     public void draw(Graphics2D g) {
-        if (model.inGame) {
+        if (model.getInGame()) {
             waterfallIndex = (waterfallIndex + 1) % (waterfallAnimation.length * framesPerAnimationFrame);
             g.drawImage(waterfallAnimation[waterfallIndex / framesPerAnimationFrame], 0, 0, null);
 
@@ -184,11 +184,11 @@ public class Game_2_View implements View {
                 final int PLAYER_X_OFFSET = -53;
 
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-                g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
-                g.drawImage(player.beard, (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
-                g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+                g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
+                g.drawImage(player.beard, (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
+                g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
 
-              }
+            }
 
 
             g.drawImage(banner, 0, -25, 1920, 180, null);
@@ -214,8 +214,12 @@ public class Game_2_View implements View {
             g.drawRect(model.GROUND_LEFT_X, 1080 - model.GROUND_LEFT_Y - model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
             g.drawRect(model.GROUND_RIGHT_X, 1080 - model.GROUND_RIGHT_Y - model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
         }
-
+        else
+        {
+            drawGameEnd(g, wonplayer); //FIXME wonplayer = the player with most score.
+        }
     }
+
 
     @Override
     public void close() {
