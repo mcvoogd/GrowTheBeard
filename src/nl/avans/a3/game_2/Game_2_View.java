@@ -6,6 +6,7 @@ import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
+import nl.avans.a3.util.SoundPlayer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,9 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * Created by Thijs on 2-6-2016.
- */
 public class Game_2_View implements View {
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
@@ -35,17 +33,24 @@ public class Game_2_View implements View {
     private BufferedImage text;
     private BufferedImage[] playerImage;
     private BufferedImage playerImages;
+    private SoundPlayer scoredPointSound;
+    private SoundPlayer playerFallenSounds;
 
     private boolean preScreen = true; //TODO PRE SCREEN
 
-
-    public Game_2_View(Game_2_Model model)
-    {
+    public Game_2_View(Game_2_Model model){
         this.model = model;
+        SoundPlayer backgroundMusic = new SoundPlayer("res/music/game2/waterfall.wav");
+        backgroundMusic.loop(0);
+        scoredPointSound = new SoundPlayer("res/music/game2/wood_drop.wav");
+        playerFallenSounds = new SoundPlayer(new String[]{
+                "res/music/game2/fall_1.wav",
+                "res/music/game2/fall_2.wav",
+                "res/music/game2/fall_3.wav"
+        });
     }
 
-    private class Player
-    {
+    private class Player{
         final int ANIMATION_LENGTH = 1;
 
         float x, y;
@@ -54,13 +59,12 @@ public class Game_2_View implements View {
         BufferedImage beard;
         int selectedAnimation = 0;
         int animationTicksLeft = -1;
-        Player(float x, float y, BufferedImage playerImage, int id)
-        {
+        Player(float x, float y, BufferedImage playerImage, int id){
             this.x = x;
             this.y = y;
             animation = new BufferedImage[4];
             animationArm = new BufferedImage[4];
-            int beardNumber = 0;
+            int beardNumber;
             if(id == 0){
                 beardNumber = Beard.beardPlayer1;
             }else{
@@ -136,7 +140,7 @@ public class Game_2_View implements View {
         playerImages = ResourceHandler.getImage("res/images_scoreboard/person.png");
         for(int i = 0; i < 2; i++)
         {
-            playerImage[i] = playerImages.getSubimage(311*i, 0, 311, 577);
+            playerImage[i] = playerImages != null ? playerImages.getSubimage(311 * i, 0, 311, 577) : null;
         }
         for(int i = 0; i < 3; i++){
             winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
@@ -146,13 +150,15 @@ public class Game_2_View implements View {
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         for(int i = 0; i < 3; i++)
         {
-            waterfallAnimation[i] = image.getSubimage(0, 1080*i, 1920, 1080);
+            waterfallAnimation[i] = image != null ? image.getSubimage(0, 1080 * i, 1920, 1080) : null;
         }
         image = ResourceHandler.getImage("res/images_game2/wood.png");
         platfrom_images = new BufferedImage[4];
         for (int i = 0; i < 4; i++)
         {
-            platfrom_images[i] = image.getSubimage(i*(image.getWidth()/4), 0, image.getWidth()/4, image.getHeight());
+            if(image != null){
+                platfrom_images[i] = image.getSubimage(i*(image.getWidth()/4), 0, image.getWidth()/4, image.getHeight());
+            }
         }
 
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
@@ -216,7 +222,7 @@ public class Game_2_View implements View {
         }
         else
         {
-            drawGameEnd(g, 1); //FIXME wonplayer = the player with most score.
+            drawGameEnd(g, /*wonplayer*/1); //FIXME wonplayer = the player with most score.
         }
     }
 
@@ -226,7 +232,6 @@ public class Game_2_View implements View {
     }
 
     private void drawGameEnd(Graphics2D g, int player) {
-
         g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
 
         textScale += change;
@@ -283,18 +288,13 @@ public class Game_2_View implements View {
         }
     }
 
-
-    Random rand = new Random(System.currentTimeMillis());
-
     @Override
     public void onModelEvent(ModelEvent event) {
-        if (event instanceof Game_2_Event == false)
-        {
-            nl.avans.a3.util.Logger.instance.log("2V001", "unexcpected message", nl.avans.a3.util.Logger.LogType.WARNING);
+        if(!(event instanceof Game_2_Event)){
+            nl.avans.a3.util.Logger.instance.log("2V001", "unexpected message", nl.avans.a3.util.Logger.LogType.WARNING);
             return;
         }
-        if (event instanceof G2_NewObject)
-        {
+        if(event instanceof G2_NewObject){
             G2_NewObject newObject = (G2_NewObject)event;
             if (newObject.player) {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
@@ -310,36 +310,33 @@ public class Game_2_View implements View {
                 System.out.println("added a woodstack to view");
             }
             else {
-                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int) (rand.nextFloat() * 3 * framesPerAnimationFrame)));
+                // put new random here, FloBo worries that it will not be equally random anymore, I just don't care about such minimal errors.
+                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int) (new Random(System.currentTimeMillis()).nextFloat() * 3 * framesPerAnimationFrame)));
             }
         }
-        else if (event instanceof G2_ObjectMove)
-        {
+        else if(event instanceof G2_ObjectMove){
             G2_ObjectMove objectMove = (G2_ObjectMove)event;
             if (objectMove.player) {
                 players.get(objectMove.id).x = objectMove.newX;
                 players.get(objectMove.id).y = objectMove.newY;
-            }
-            else
-            {
+            }else{
                 platforms.get(objectMove.id).x = objectMove.newX;
                 platforms.get(objectMove.id).y = objectMove.newY;
             }
-        }
-        else if (event instanceof G2_PlayerStateChange)
-        {
+        }else if(event instanceof G2_PlayerStateChange){
             G2_PlayerStateChange playerStateChange = (G2_PlayerStateChange)event;
             Player player = players.get(playerStateChange.id);
-            if (playerStateChange.state == G2_PlayerStateChange.State.JUMP)
-            {
+            if (playerStateChange.state == G2_PlayerStateChange.State.JUMP){
                 player.selectedAnimation = 1;
                 player.animationTicksLeft = player.ANIMATION_LENGTH;
-            }
-            else
-            {
+            }else{
                 player.selectedAnimation = 0;
                 player.animationTicksLeft = -1;
             }
+        }else if(event instanceof G2_PointScored){
+            scoredPointSound.playOnce();
+        }else if(event instanceof G2_PlayerFallen){
+            playerFallenSounds.playRandomOnce();
         }
     }
 }

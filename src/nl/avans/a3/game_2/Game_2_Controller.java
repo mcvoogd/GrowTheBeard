@@ -6,22 +6,17 @@ import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
 
-/**
- * Created by Thijs on 2-6-2016.
- */
 public class Game_2_Controller implements Controller {
     private Game_2_Model gameModel;
     private WiimoteHandler wiimoteHandler;
 
-    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler)
-    {
+    public Game_2_Controller(Game_2_Model model, WiimoteHandler wiimoteHandler){
         this.gameModel = model;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
     }
 
-    private float clamp(float val, float min, float max)
-    {
+    private float clamp(float val, float min, float max){
         if (val < min) return min;
         if (val > max) return max;
         return val;

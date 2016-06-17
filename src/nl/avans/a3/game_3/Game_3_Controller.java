@@ -9,9 +9,7 @@ import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class Game_3_Controller implements Controller{
 
@@ -19,16 +17,21 @@ public class Game_3_Controller implements Controller{
     private WiimoteHandler wiimoteHandler;
     private SoundPlayer chopSoundPlayer;
     private SoundPlayer backgroundMusic;
-    private SoundPlayer birdPlayer;
-    private float pitch1;
-    private float pitch2;
-
 
     public Game_3_Controller(Game_3_Model gameModel, WiimoteHandler wiimoteHandler){
         this.gameModel = gameModel;
         this.wiimoteHandler = wiimoteHandler;
         this.wiimoteHandler.activateMotionSensing();
-        chopSoundPlayer = new SoundPlayer(getArrayListWithClips());
+        chopSoundPlayer = new SoundPlayer(new String[]{
+                "res/music/game3/chop2.wav",
+                "res/music/game3/chop3.wav",
+                "res/music/game3/chop5.wav",
+                "res/music/game3/chop6.wav",
+                "res/music/game3/chop7.wav",
+                "res/music/game3/chop8.wav",
+                "res/music/game3/chop9.wav",
+                "res/music/game3/chop10.wav"
+        });
         backgroundMusic = new SoundPlayer("res/music/game3/nature.wav");
         backgroundMusic.loop(30);
     }
@@ -53,7 +56,7 @@ public class Game_3_Controller implements Controller{
                         gameModel.damageTree(0, (int) (max1 * 10), 1);
                         gameModel.setHitPlayer(1, false);
                         gameModel.startHit(1);
-                        chopSoundPlayer.playRandomOnce(10);
+                        chopSoundPlayer.playRandomOnce();
                     }
                 }
 
@@ -62,16 +65,16 @@ public class Game_3_Controller implements Controller{
                         gameModel.damageTree(1, (int) (max2 * 10), 2);
                         gameModel.setHitPlayer(2, false);
                         gameModel.startHit(2);
-                        chopSoundPlayer.playRandomOnce(10);
+                        chopSoundPlayer.playRandomOnce();
 
                     }
                 }
-                pitch1 = wiimoteHandler.getPitch(0);
+                float pitch1 = wiimoteHandler.getPitch(0);
                 if (pitch1 < -80 && pitch1 > -100) {
                     gameModel.setHitPlayer(1, true);
                 }
 
-                pitch2 = wiimoteHandler.getPitch(1);
+                float pitch2 = wiimoteHandler.getPitch(1);
                 if (pitch2 < -80 && pitch2 > -100) {
                     gameModel.setHitPlayer(2, true);
                 }
@@ -107,12 +110,12 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_P){
             gameModel.startHit(1);
             gameModel.damageTree(0, 25, 1);
-            chopSoundPlayer.playRandomOnce(10);
+            chopSoundPlayer.playRandomOnce();
         }
         if(e.getKeyCode() == KeyEvent.VK_C){
             gameModel.startHit(2);
             gameModel.damageTree(1, 25, 2);
-            chopSoundPlayer.playRandomOnce(10);
+            chopSoundPlayer.playRandomOnce();
         }
         if(e.getKeyCode() == KeyEvent.VK_S)
         {
@@ -130,18 +133,4 @@ public class Game_3_Controller implements Controller{
     public void onModelEvent(ModelEvent event) {
 
     }
-
-    private ArrayList<String> getArrayListWithClips() {
-        ArrayList<String> clips = new ArrayList<>();
-        clips.add("res/music/game3/chop2.wav");
-        clips.add("res/music/game3/chop3.wav");
-        clips.add("res/music/game3/chop5.wav");
-        clips.add("res/music/game3/chop6.wav");
-        clips.add("res/music/game3/chop7.wav");
-        clips.add("res/music/game3/chop8.wav");
-        clips.add("res/music/game3/chop9.wav");
-        clips.add("res/music/game3/chop10.wav");
-        return clips;
-    }
-
 }
