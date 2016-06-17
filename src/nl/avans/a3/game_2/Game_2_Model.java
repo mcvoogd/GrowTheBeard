@@ -2,9 +2,11 @@ package nl.avans.a3.game_2;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.MathExtended;
+import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -64,6 +66,9 @@ public class Game_2_Model implements Model
 
     public enum PlayerState{JUMPING, ON_PLATFORM}
     public enum PlatformState{FALLING, REMOVE}
+
+    private BufferedImage[] beards = new BufferedImage[6];
+    private int beardCounter, switchBeardCounter;
 
     private class Collidiable
     {
@@ -300,6 +305,11 @@ public class Game_2_Model implements Model
         });
         viewTimer.start();
 
+        BufferedImage imageBeard = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
+        for (int i = 0; i < 6; i++) {
+            beards[i] = imageBeard.getSubimage(311 * i, 0, 311, 577);
+        }
+
         players[0] = new Player(0, PLAYER_SPAWN_X_1, PLAYER_SPAWN_Y);
         players[1] = new Player(1, PLAYER_SPAWN_X_2, PLAYER_SPAWN_Y);
 
@@ -364,4 +374,14 @@ public class Game_2_Model implements Model
         this.inGame = inGame;
     }
 
+
+    public BufferedImage getBeards(int beardNumber){ return beards[beardNumber]; }
+
+    public int getBeardCounter() {return beardCounter;}
+
+    public void setBeardCounter(int beardCounter) {this.beardCounter = beardCounter;}
+
+    public int getSwitchBeardCounter() {return switchBeardCounter;}
+
+    public void setSwitchBeardCounter(int switchBeardCounter) {this.switchBeardCounter = switchBeardCounter;}
 }

@@ -20,6 +20,23 @@ public class Game_2_View implements View {
     private BufferedImage banner;
     final int framesPerAnimationFrame = 40;
     private int waterfallIndex = 0;
+    private final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
+    private double textScale = 0.1;
+    private static final double CHANGE_SPEED = 0.0005;
+    private double change = CHANGE_SPEED;
+    private static final double MAX_SCALE = 0.15;
+    private static final double MIN_SCALE = 0.1;
+    private BufferedImage winScreen;
+    private BufferedImage[] winner;
+    private BufferedImage winnerImage;
+    private BufferedImage text;
+    private BufferedImage[] playerImage;
+    private BufferedImage playerImages;
+
+    private boolean preScreen = true; //TODO PRE SCREEN
+
+
     public Game_2_View(Game_2_Model model)
     {
         this.model = model;
@@ -31,6 +48,8 @@ public class Game_2_View implements View {
 
         float x, y;
         BufferedImage[] animation;
+        BufferedImage[] animationArm;
+        BufferedImage beard;
         int selectedAnimation = 0;
         int animationTicksLeft = -1;
         Player(float x, float y, BufferedImage playerImage, int id)
@@ -38,8 +57,18 @@ public class Game_2_View implements View {
             this.x = x;
             this.y = y;
             animation = new BufferedImage[4];
-            for (int i = 0 ; i < 4; i++)
-                animation[i] = playerImage.getSubimage(playerImage.getWidth()/4*i, 0, playerImage.getWidth()/4, playerImage.getHeight());
+            animationArm = new BufferedImage[4];
+            int beardNumber = 0;
+            if(id == 0){
+                beardNumber = Beard.beardPlayer1;
+            }else{
+                beardNumber = Beard.beardPlayer2;
+            }
+            beard = ResourceHandler.getImage("res/images_game2/beard.png").getSubimage(playerImage.getWidth() / 8 * beardNumber, 0, playerImage.getWidth() / 8, playerImage.getHeight());
+            for (int i = 0 ; i < 4; i++) {
+                animation[i] = playerImage.getSubimage(playerImage.getWidth() / 8 * (i * 2), 0, playerImage.getWidth() / 8, playerImage.getHeight());
+                animationArm[i] = playerImage.getSubimage(playerImage.getWidth() / 8 * ((i * 2) + 1), 0, playerImage.getWidth() / 8, playerImage.getHeight());
+            }
         }
     }
 
@@ -97,6 +126,20 @@ public class Game_2_View implements View {
 
     @Override
     public void start() {
+        winner = new BufferedImage[3];
+        text = ResourceHandler.getImage("res/images_scoreboard/text.png");
+        winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
+        winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
+        playerImage = new BufferedImage[2];
+        playerImages = ResourceHandler.getImage("res/images_scoreboard/person.png");
+        for(int i = 0; i < 2; i++)
+        {
+            playerImage[i] = playerImages.getSubimage(311*i, 0, 311, 577);
+        }
+        for(int i = 0; i < 3; i++){
+            winner[i] = winnerImage.getSubimage(0, (242 * i), winnerImage.getWidth(), 726/3);
+        }
+
         waterfallAnimation = new BufferedImage[3];
         BufferedImage image = ResourceHandler.getImage("res/images_game2/background.png");
         for(int i = 0; i < 3; i++)
@@ -140,6 +183,10 @@ public class Game_2_View implements View {
 
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
             }
+            g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+            g.drawImage(player.beard, (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+            g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+        }
 
             g.drawImage(banner, 0, -25, 1920, 180, null);
             g.drawString("" + model.getTime(), 960 - (ft.stringWidth("" + model.getTime()) / 2) + 90, 80);
@@ -172,6 +219,65 @@ public class Game_2_View implements View {
     @Override
     public void close() {
     }
+
+    private void drawGameEnd(Graphics2D g, int player) {
+
+        g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
+
+        textScale += change;
+        if(textScale > MAX_SCALE){
+            change = -CHANGE_SPEED;
+        }else if(textScale < MIN_SCALE){
+            change = CHANGE_SPEED;
+        }
+
+        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (WIDTH/2) - text.getWidth(null)/2, 200), null);
+
+        switch(player)
+        {
+            case 0 :g.drawImage(winner[2], 500, 100, null); break; //TEKST
+            case 1 :g.drawImage(winner[0], 500, 100, null); break; //TEKST
+            case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
+        }
+
+
+        g.drawImage(playerImage[0],(WIDTH/2) - (1315/8) - 500, 300, 311, 577,  null);
+        g.drawImage(playerImage[1], (WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
+
+        int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
+        int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
+        switch (player){
+            case 0:
+                g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
+                break;
+            case 1:
+                if(model.getBeardCounter() < 15 && model.getSwitchBeardCounter() < 3){
+                    g.drawImage(model.getBeards(oldBeard1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                }else if(model.getBeardCounter() < 30 && model.getSwitchBeardCounter() < 3){
+                    g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                }else{
+                    g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
+                    model.setBeardCounter(0);
+                    model.setSwitchBeardCounter(model.getSwitchBeardCounter() + 1);
+                }
+                g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
+                break;
+            case 2:
+                if(model.getBeardCounter() < 15 && model.getSwitchBeardCounter() < 3){
+                    g.drawImage(model.getBeards(oldBeard2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
+                }else if(model.getBeardCounter() < 30 && model.getSwitchBeardCounter() < 3){
+                    g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
+                }else{
+                    g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
+                    model.setBeardCounter(0);
+                    model.setSwitchBeardCounter(model.getSwitchBeardCounter() + 1);
+                }
+                g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300, 311, 577, null);
+                break;
+        }
+    }
+
 
     Random rand = new Random(System.currentTimeMillis());
 

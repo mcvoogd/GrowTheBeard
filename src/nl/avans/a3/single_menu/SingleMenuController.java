@@ -8,6 +8,7 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.util.WiimoteHandler;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 
@@ -19,6 +20,7 @@ public class SingleMenuController implements Controller {
     private SingleMenuModel model;
     private WiimoteHandler wiimoteHandler;
     private Point2D pointerLocation;
+    private boolean tried = false;
 
     public SingleMenuController(SingleMenuModel model, WiimoteHandler wiimoteHandler){
         this.model = model;
@@ -41,22 +43,19 @@ public class SingleMenuController implements Controller {
                 if(wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)){
                     switch (model.getMode()) {
                         case WOOD_CHOPPING:
-                            model.onMenuChoose(wiimoteHandler);
+                            wiimoteHandler.activateRumble(0);
+                            model.onMenuChoose(wiimoteHandler); break;
                         case WOOD_DODGING:
-                            model.onMenuChoose(wiimoteHandler);
+                            wiimoteHandler.activateRumble(0);
+                            model.onMenuChoose(wiimoteHandler); break;
                         case WOOD_JUMPING:
-                            model.onMenuChoose(wiimoteHandler);
+                            wiimoteHandler.activateRumble(0);
+                            model.onMenuChoose(wiimoteHandler); break;
                         case MAINMENU:
-                            model.onMenuChoose(wiimoteHandler);
+                            wiimoteHandler.activateRumble(0);
+                            model.onMenuChoose(wiimoteHandler); break;
                     }
                 }
-            }
-            if(model.doRumble())
-            {
-                wiimoteHandler.activateRumble(0);
-            }
-            else
-            {
                 wiimoteHandler.deactivateRumble(0);
             }
         }

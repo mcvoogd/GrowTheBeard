@@ -1,31 +1,30 @@
 package nl.avans.a3.mvc_handlers;
 
-import nl.avans.a3.game_2.Game_2_Model;
-import nl.avans.a3.game_3.Game_3_Model;
-import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.ModelListener;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.boot_menu.BootModel;
 import nl.avans.a3.mvc_interfaces.Model;
-
-
 import java.util.ArrayList;
-
 
 public class ModelHandler implements ModelListener{
     public static final boolean DEBUG_MODE = false;
 
     public ArrayList<ModelListener> listeners = new ArrayList<>();
     public void addListener(ModelListener listener) {
-        if (listener != null && listeners.contains(listener) == false) {
+        if (listener != null && !listeners.contains(listener)) {
             listeners.add(listener);
             Logger.instance.log("MH002", Thread.currentThread().getStackTrace()[2].getClassName() + " is attached to ModelHandler", Logger.LogType.DEBUG);
         }
     }
-    public void removeListener(ModelListener listener) {if (listener != null && listeners.contains(listener)) listeners.remove(listener);}
-    private void dispatchEvent(ModelEvent event) {listeners.forEach(modelListener -> modelListener.onModelEvent(event));}
+    public void removeListener(ModelListener listener){
+        if(listener != null && listeners.contains(listener)) listeners.remove(listener);
+    }
+    
+    private void dispatchEvent(ModelEvent event){
+        listeners.forEach(modelListener -> modelListener.onModelEvent(event));
+    }
 
     public static ModelHandler instance = new ModelHandler();
 
