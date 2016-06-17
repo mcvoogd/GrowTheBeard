@@ -1,7 +1,6 @@
 package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
-import nl.avans.a3.game_example.Game_Example_Model;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.util.WiimoteHandler;
 
