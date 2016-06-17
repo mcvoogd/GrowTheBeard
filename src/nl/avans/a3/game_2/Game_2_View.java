@@ -17,6 +17,7 @@ import java.util.Random;
 public class Game_2_View implements View {
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
+    private BufferedImage banner;
     final int framesPerAnimationFrame = 40;
     private int waterfallIndex = 0;
     public Game_2_View(Game_2_Model model)
@@ -108,54 +109,64 @@ public class Game_2_View implements View {
         {
             platfrom_images[i] = image.getSubimage(i*(image.getWidth()/4), 0, image.getWidth()/4, image.getHeight());
         }
+
+        banner = ResourceHandler.getImage("res/images_game1/banner.png");
     }
 
     @Override
     public void draw(Graphics2D g) {
+        if (model.inGame) {
+            waterfallIndex = (waterfallIndex + 1) % (waterfallAnimation.length * framesPerAnimationFrame);
+            g.drawImage(waterfallAnimation[waterfallIndex / framesPerAnimationFrame], 0, 0, null);
 
-        waterfallIndex = (waterfallIndex+1)%(waterfallAnimation.length*framesPerAnimationFrame);
-        g.drawImage(waterfallAnimation[waterfallIndex/framesPerAnimationFrame], 0, 0, null);
+            Font tf = new Font("Verdana", Font.BOLD, 68);
+            FontMetrics ft = g.getFontMetrics(tf);
 
-        g.setColor(Color.RED);
-        g.setFont(new Font("Verdana", Font.BOLD, 68));
+            g.setColor(new Color(159, 44, 22));
+            g.setFont(tf);
 
-        for (Platform platform : platforms.values()) {
-            final int PLATFORM_X_OFFSET = -20;
-            g.drawImage(platform.getImage(), (int) platform.x+PLATFORM_X_OFFSET, 1080-(int)platform.y - model.BLOCK_HEIGHT, null);
-        }
-
-        for (Player player : players) {
-            if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3)
-            {
-                player.animationTicksLeft = player.ANIMATION_LENGTH;
-                player.selectedAnimation++;
+            for (Platform platform : platforms.values()) {
+                final int PLATFORM_X_OFFSET = -20;
+                g.drawImage(platform.getImage(), (int) platform.x + PLATFORM_X_OFFSET, 1080 - (int) platform.y - model.BLOCK_HEIGHT, null);
             }
 
-            final int PLAYER_X_OFFSET = -53;
+            for (Player player : players) {
+                if (player.animationTicksLeft-- == 0 && player.selectedAnimation < 3) {
+                    player.animationTicksLeft = player.ANIMATION_LENGTH;
+                    player.selectedAnimation++;
+                }
 
-            g.drawImage(player.animation[player.selectedAnimation], (int) player.x+PLAYER_X_OFFSET, 1080 - (int) player.y-model.PLAYER_HEIGHT, null);
+                final int PLAYER_X_OFFSET = -53;
+
+                g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
+            }
+
+            g.drawImage(banner, 0, -25, 1920, 180, null);
+            g.drawString("" + model.getTime(), 960 - (ft.stringWidth("" + model.getTime()) / 2) + 90, 80);
+
+            for (Basket basket : baskets) {
+                g.drawImage(basket.image, (int) basket.x, (int) basket.y, null);
+            }
+
+            for (WoodStack woodStack : woodStacks) {
+                g.drawImage(woodStack.image, (int) woodStack.x, (int) woodStack.y, null);
+            }
+
+            if (ModelHandler.DEBUG_MODE == false) return;
+
+            g.setColor(Color.YELLOW);
+            for (Platform platform : platforms.values())
+                g.drawRect((int) platform.x, 1080 - (int) platform.y - model.BLOCK_HEIGHT, model.BLOCK_WIDTH, model.BLOCK_HEIGHT);
+            g.setColor(Color.PINK);
+            for (Player player : players)
+                g.drawRect((int) player.x, 1080 - (int) player.y - model.PLAYER_HEIGHT, model.PLAYER_WIDTH, model.PLAYER_HEIGHT);
+            g.setColor(Color.CYAN);
+            g.drawRect(model.GROUND_LEFT_X, 1080 - model.GROUND_LEFT_Y - model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
+            g.drawRect(model.GROUND_RIGHT_X, 1080 - model.GROUND_RIGHT_Y - model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
         }
+        else {
 
-        for (Basket basket : baskets) {
-            g.drawImage(basket.image, (int) basket.x, (int) basket.y, null);
         }
-
-        for (WoodStack woodStack : woodStacks) {
-            g.drawImage(woodStack.image, (int) woodStack.x, (int) woodStack.y, null);
-        }
-
-        if (ModelHandler.DEBUG_MODE == false) return;
-
-        g.setColor(Color.YELLOW);
-        for (Platform platform : platforms.values())
-            g.drawRect((int)platform.x, 1080-(int)platform.y-model.BLOCK_HEIGHT, model.BLOCK_WIDTH, model.BLOCK_HEIGHT);
-        g.setColor(Color.PINK);
-        for (Player player : players)
-            g.drawRect((int)player.x, 1080-(int)player.y-model.PLAYER_HEIGHT, model.PLAYER_WIDTH, model.PLAYER_HEIGHT);
-        g.setColor(Color.CYAN);
-        g.drawRect(model.GROUND_LEFT_X, 1080-model.GROUND_LEFT_Y-model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
-        g.drawRect(model.GROUND_RIGHT_X, 1080-model.GROUND_RIGHT_Y-model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
-
     }
 
     @Override

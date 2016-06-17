@@ -3,6 +3,7 @@ import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.MathExtended;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -53,6 +54,13 @@ public class Game_2_Model implements Model
 
     final int WOODSTACK_X = 0;
     final int WOODSTACK_Y = 300;
+
+    private Timer gameTimer;
+    private Timer viewTimer;
+
+    int time = 30;
+
+    boolean inGame = true;
 
     public enum PlayerState{JUMPING, ON_PLATFORM}
     public enum PlatformState{FALLING, REMOVE}
@@ -183,6 +191,7 @@ public class Game_2_Model implements Model
             y = MathExtended.clamp(y, WORLD_HEIGHT_LOW_BOUND*2, WORLD_HEIGHT_BOUND-PLAYER_HEIGHT/2);
             if (y <= WORLD_HEIGHT_LOW_BOUND)
             {
+                hasBlock = false;
                 state = PlayerState.JUMPING;
                 x = spawnX;
                 y = spawnY;
@@ -282,6 +291,15 @@ public class Game_2_Model implements Model
 
     @Override
     public void start() {
+        gameTimer = new Timer(time * 1000, e -> {
+            inGame = false;
+        });
+        gameTimer.start();
+        viewTimer = new Timer(1000, e -> {
+            time--;
+        });
+        viewTimer.start();
+
         players[0] = new Player(0, PLAYER_SPAWN_X_1, PLAYER_SPAWN_Y);
         players[1] = new Player(1, PLAYER_SPAWN_X_2, PLAYER_SPAWN_Y);
 
@@ -333,4 +351,17 @@ public class Game_2_Model implements Model
         if (player > 1) return;
         players[player].jump = pressed;
     }
+
+    public int getTime() {
+        return time;
+    }
+
+    public boolean getInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
 }
