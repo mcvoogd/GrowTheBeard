@@ -15,6 +15,7 @@ public class MainMenuController implements Controller {
     private static final double SCREEN_OFFSET = 400.0;
     private MainMenuModel model;
     private WiimoteHandler wiimoteHandler;
+    private boolean tried = false;
 
     public MainMenuController(MainMenuModel model, WiimoteHandler wiimoteHandler)
     {
@@ -30,16 +31,10 @@ public class MainMenuController implements Controller {
             for(int i = 0 ; i < wiimoteHandler.numberOfWiimotesConnected(); i++) {
                 if (wiimoteHandler.getIsButtonPressed(i, WiimoteHandler.Buttons.KEY_A)) {;
                     model.onMenuChoose(wiimoteHandler);
+                    wiimoteHandler.activateRumble(0);
                 }
             }
-            if(model.doRumble())
-            {
-                wiimoteHandler.activateRumble(0);
-            }
-            else
-            {
-                wiimoteHandler.deactivateRumble(0);
-            }
+            wiimoteHandler.deactivateRumble(0);
             double xPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getX())) ? -100 : wiimoteHandler.getSinglePointer(0).getX() * ((1920.0 + SCREEN_OFFSET) / 1024.0) - SCREEN_OFFSET / 2;
             double yPos = (Double.isNaN(wiimoteHandler.getSinglePointer(0).getY())) ? -100 : wiimoteHandler.getSinglePointer(0).getY() * ((1080.0 + SCREEN_OFFSET) / 900.0) - SCREEN_OFFSET / 2;
             Point2D pointerLocation = new Point2D.Double(xPos, yPos);
