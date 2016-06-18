@@ -62,7 +62,7 @@ public class ControllerHandler implements ModelListener, KeyListener {
         }
         else if(!musicOn)
            {
-               mainMenuSound.loop(30);
+               mainMenuSound.loop(20);
                musicOn = true;
            }
     }

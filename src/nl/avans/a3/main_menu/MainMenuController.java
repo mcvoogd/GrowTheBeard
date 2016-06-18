@@ -57,7 +57,7 @@ public class MainMenuController implements Controller {
             case KeyEvent.VK_S : model.pointToBottem(); break;
             case KeyEvent.VK_A : model.pointToLeft(); break;
             case KeyEvent.VK_D : model.pointToRight(); break;
-            case KeyEvent.VK_P : model.changeMode(MainMenuModel.Mode.CHOOSE_PARTY); model.onMenuChoose(wiimoteHandler); break;
+            case KeyEvent.VK_B : model.changeMode(MainMenuModel.Mode.CHOOSE_PARTY); model.onMenuChoose(wiimoteHandler); break;
          }
     }
 
