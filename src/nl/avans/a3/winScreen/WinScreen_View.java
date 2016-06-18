@@ -16,7 +16,7 @@ public class WinScreen_View implements View{
     private BufferedImage text;
     private BufferedImage[] players = new BufferedImage[2];
     private BufferedImage[] beard = new BufferedImage[2];
-    private BufferedImage backGround;
+    private BufferedImage backGround, treeBackground;
     private BufferedImage congratz;
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
@@ -32,17 +32,19 @@ public class WinScreen_View implements View{
         for (int i = 0; i < 2; i++) {
             players[i] = image.getSubimage((image.getWidth()/2) * i, 0, image.getWidth()/2, image.getHeight());
         }
-        backGround = ResourceHandler.getImage("res/images_scoreboard/background.png");
+        BufferedImage backgroundEnd = ResourceHandler.getImage("res/images_scoreboard/background_end.png");
+        backGround = backgroundEnd.getSubimage(0, 0, 1920, 1080);
+        treeBackground = backgroundEnd.getSubimage(0, 1080, 1920, 1080);
         BufferedImage image2 = ResourceHandler.getImage("res/images_scoreboard/congraz.png");
         if(Beard.beardPlayer1 > Beard.beardPlayer2){
-            congratz = image2.getSubimage(0, (image2.getHeight()/2) * 0, image2.getWidth(), image2.getHeight()/2);
+            congratz = image2.getSubimage(0, 0, image2.getWidth(), image2.getHeight()/2);
         }else{
-            congratz = image2.getSubimage(0, (image2.getHeight()/2) * 0, image2.getWidth(), image2.getHeight()/2);
+            congratz = image2.getSubimage(0, (image2.getHeight()/2), image2.getWidth(), image2.getHeight()/2);
         }
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         BufferedImage beardImage = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
-        beard[0] = beardImage.getSubimage(beardImage.getWidth() * Beard.beardPlayer1, 0, beardImage.getWidth()/6, beardImage.getHeight());
-        beard[1] = beardImage.getSubimage(beardImage.getWidth() * Beard.beardPlayer2, 0, beardImage.getWidth()/6, beardImage.getHeight());
+        beard[0] = beardImage.getSubimage((beardImage.getWidth()/6) * Beard.beardPlayer1, 0, beardImage.getWidth()/6, beardImage.getHeight());
+        beard[1] = beardImage.getSubimage((beardImage.getWidth()/6) * Beard.beardPlayer2, 0, beardImage.getWidth()/6, beardImage.getHeight());
     }
 
     @Override
@@ -59,14 +61,17 @@ public class WinScreen_View implements View{
         }else if(textScale < MIN_SCALE){
             change = CHANGE_SPEED;
         }
+        model.getConfettiCanon().draw(g);
+        g.drawImage(treeBackground, 0, 0, null);
         g.drawImage(congratz, 20, 100, null);
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (WIDTH/2) - text.getWidth(null)/2, 200), null);
 
-        g.drawImage(players[0],(WIDTH/2) - (1315/8) - 500, 300, null);
-        g.drawImage(beard[0],(WIDTH/2) - (1315/8) - 500, 300, null);
+        g.drawImage(players[0],(WIDTH/2) - (1315/8) - 500, 310, null);
+        g.drawImage(beard[0],(WIDTH/2) - (1315/8) - 500, 310, null);
 
-        g.drawImage(players[1], (WIDTH/2) - (1315/8) + 530, 300, null);
-        g.drawImage(beard[1], (WIDTH/2) - (1315/8) + 530, 300, null);
+        g.drawImage(players[1], (WIDTH/2) - (1315/8) + 530, 320, null);
+        g.drawImage(beard[1], (WIDTH/2) - (1315/8) + 530, 320, null);
+
     }
 
     @Override
