@@ -41,7 +41,7 @@ public class Game_2_Controller implements Controller {
             {
                 if (wiimoteHandler.isAnyButtonPressed(0) || wiimoteHandler.isAnyButtonPressed(1))
                     if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update();
-                    else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+                    else  ModelHandler.instance.changeModel(new NewModel(gameModel, new MainMenuModel()));
             }
         }
     }

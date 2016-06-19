@@ -54,6 +54,8 @@ public class Game_2_View implements View {
         BufferedImage beard;
         int selectedAnimation = 0;
         int animationTicksLeft = -1;
+        boolean hasBlock = false;
+
         Player(float x, float y, BufferedImage playerImage, int id){
             this.x = x;
             this.y = y;
@@ -158,7 +160,8 @@ public class Game_2_View implements View {
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.beard, (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-
+                if (player.hasBlock)
+                    g.drawImage(woodStack, (int)player.x, (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
             }
 
 
@@ -239,6 +242,10 @@ public class Game_2_View implements View {
             scoredPointSound.playOnce();
         }else if(event instanceof G2_PlayerFallen){
             playerFallenSounds.playRandomOnce();
+        }
+        else if (event instanceof G2_Player_Block)
+        {
+            players.get(((G2_Player_Block) event).id).hasBlock = ((G2_Player_Block) event).hasBlock;
         }
     }
 }

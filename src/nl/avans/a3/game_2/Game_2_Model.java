@@ -172,9 +172,14 @@ public class Game_2_Model implements Model {
             }
 
 
-            if (basket.getBounds().intersects(getBounds())) hasBlock = true;
+            if (basket.getBounds().intersects(getBounds()))
+            {
+                hasBlock = true;
+                ModelHandler.instance.onModelEvent(new G2_Player_Block(id, true));
+            }
             if (woodStack.getBounds().intersects(getBounds()) && hasBlock) {
                 ModelHandler.instance.onModelEvent(new G2_PointScored());
+                ModelHandler.instance.onModelEvent(new G2_Player_Block(id, false));
                 score++;
                 hasBlock = false;
                 Logger.instance.log("G2001", getScores().toString());
