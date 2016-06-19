@@ -45,9 +45,7 @@ public class MainMenuModel implements Model{
         singlemode = new Rectangle2D.Double(SINGLE_BOARD_X, SINGLE_BOARD_Y+120, singleGame.getWidth(null), singleGame.getHeight(null)-120);
         Beard.beardPlayer1 = 0;
         Beard.beardPlayer2 = 0;
-        if(partyModeHandler != null) {
-            PartyModeHandler.setCurrentMode(PartyModeHandler.Mode.DEFAULT);
-        }
+        PartyModeHandler.setCurrentMode(PartyModeHandler.Mode.DEFAULT);
     }
 
     @Override
