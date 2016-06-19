@@ -6,6 +6,7 @@ import nl.avans.a3.event.NewModel;
 import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 
@@ -34,6 +35,8 @@ public class WinScreen_Controller implements Controller{
         if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
             backgroundMusic.stop();
             applauseMusic.stop();
+            Beard.beardPlayer1 = 0;
+            Beard.beardPlayer2 = 0;
             ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
         }
     }
