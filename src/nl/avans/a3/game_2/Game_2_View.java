@@ -188,8 +188,8 @@ public class Game_2_View implements View {
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.beard, (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-                if (player.hasBlock) // TODO proper placement and possibly scaling
-                    g.drawImage(woodStack, (int)player.x, (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
+                if (player.hasBlock)
+                    g.drawImage(woodStack, (int)(player.x - (model.WOODSTACK_WIDTH/6)), (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
             }
 
 
@@ -270,7 +270,7 @@ public class Game_2_View implements View {
         }else if(event instanceof G2_PointScored){
             scoredPointSound.playOnce();
         }else if(event instanceof G2_PlayerFallen){
-            //playerFallenSounds.playRandomOnce(); // Removed to keep little children in mind
+            playerFallenSounds.playRandomOnceWithSoundReduction(20); // Removed to keep little children in mind
         }
         else if (event instanceof G2_Player_Block)
         {

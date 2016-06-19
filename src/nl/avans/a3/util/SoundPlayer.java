@@ -89,6 +89,15 @@ public class SoundPlayer{
         resetClip();
     }
 
+    public void playRandomOnceWithSoundReduction(float volumeReduction)
+    {
+        getRandomClip();
+        resetClip();
+        FloatControl gainControl = (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-volumeReduction);
+        start();
+    }
+
     public void playOnce(){
         start();
     }
