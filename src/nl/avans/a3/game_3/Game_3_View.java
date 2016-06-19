@@ -99,15 +99,14 @@ public class Game_3_View implements View{
             }
         }
         else {
+            if(!updateScore){updateScore();}
             if (gameModel.getScorePlayer1() > gameModel.getScorePlayer2()) {
                 drawGameEnd(g, 1);
             }else if (gameModel.getScorePlayer2() > gameModel.getScorePlayer1()) {
                 drawGameEnd(g, 2);
-            }else
-            {
+            }else {
                 drawGameEnd(g, 0);
             }
-            if(!updateScore){updateScore();}
         }
     }
 
@@ -184,11 +183,14 @@ public class Game_3_View implements View{
         if (gameModel.getScorePlayer1() > gameModel.getScorePlayer2()) {
             Beard.beardPlayer1 += 2;
             Beard.beardPlayer2 -= 1;
-            if(Beard.beardPlayer2 < 0) Beard.beardPlayer2 = 0;
+            if(Beard.beardPlayer2 <= 0) Beard.beardPlayer2 = 1;
         }else if (gameModel.getScorePlayer2() > gameModel.getScorePlayer1()) {
             Beard.beardPlayer2 += 2;
             Beard.beardPlayer1 -= 1;
-            if(Beard.beardPlayer1 < 0) Beard.beardPlayer1 = 0;
+            if(Beard.beardPlayer1 <= 0) Beard.beardPlayer1 = 1;
+        } else if (gameModel.getScorePlayer1() == gameModel.getScorePlayer2()) {
+            if(Beard.beardPlayer1 <= 0) {Beard.beardPlayer1 = 1;}
+            if(Beard.beardPlayer2 <= 0) {Beard.beardPlayer2 = 1;}
         }
         updateScore = true;
     }
