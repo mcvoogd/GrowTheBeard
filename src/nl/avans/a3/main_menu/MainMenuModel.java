@@ -123,6 +123,7 @@ public class MainMenuModel implements Model{
                 if (partyModeHandler == null)
                 {
                     partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this);
+                    PartyModeHandler.resetGameCounter();
                     PartyModeHandler.update();
                 }
                 else
