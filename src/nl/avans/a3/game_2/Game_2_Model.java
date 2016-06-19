@@ -48,11 +48,15 @@ public class Game_2_Model implements Model {
     final int BLOCK_SPAWN_X_2 = BLOCK_SPAWN_X_BASE+ BLOCK_SPAWN_X_SECTION +((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
     final int BLOCK_SPAWN_X_3 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*2+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
 
-    final int BASKET_X = 1400;
-    final int BASKET_Y = 300;
+    final int BASKET_X = 1700;
+    final int BASKET_Y = 225;
+    final int BASKET_WIDTH = 125;
+    final int BASKET_HEIGHT = 70;
 
     final int WOODSTACK_X = 0;
-    final int WOODSTACK_Y = 300;
+    final int WOODSTACK_Y = BASKET_Y;
+    final int WOODSTACK_WIDTH = BASKET_WIDTH;
+    final int WOODSTACk_HEIGHT = BASKET_HEIGHT;
 
     int time = 30;
 
@@ -90,7 +94,7 @@ public class Game_2_Model implements Model {
             this.id = id;
             spawnX = this.x = x;
             spawnY= this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, false, false, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, true, x, y));
         }
 
         final int JUMP_DURATION = 60;
@@ -153,12 +157,12 @@ public class Game_2_Model implements Model {
                     }
                 }
             }else{
-                woodStacks.stream().filter(woodStack -> getBounds().intersects(woodStack.getBounds())).forEach(woodStack -> hasBlock = true);
-                baskets.stream().filter(basket -> getBounds().intersects(basket.getBounds()) && hasBlock).forEach(basket -> {
+                if (woodStack.getBounds().intersects(getBounds())) hasBlock = true;
+                if (basket.getBounds().intersects(getBounds())) {
                     ModelHandler.instance.onModelEvent(new G2_PointScored());
                     score++;
                     hasBlock = false;
-                });
+                }
                 if (platform.state == PlatformState.REMOVE){
                     state = PlayerState.JUMPING;
                     update();
@@ -227,7 +231,7 @@ public class Game_2_Model implements Model {
         int id = idCounter++;
         Woodblock(float x, float y) {
             super(x, y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_FALL_SPEED , true);
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, false, x, y));
+            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, x, y));
         }
 
         public void update()
@@ -240,34 +244,28 @@ public class Game_2_Model implements Model {
     Player[] players = new Player[PLAYER_COUNT];
 
     protected class Basket extends Collidable{
-        int id = 3;
 
-        Basket(float x, float y, float width, float height) {
-            super(width, height);
-            this.x = x;
-            this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, true, false, x, y));
+        Basket() {
+            super(BASKET_WIDTH, BASKET_HEIGHT);
+            this.x = BASKET_X;
+            this.y = BASKET_Y;
         }
     }
-    ArrayList<Basket> baskets;
+    Basket basket;
 
     protected class WoodStack extends Collidable{
-        int id = 4;
 
-        WoodStack(float x, float y, float width, float height) {
-            super(width, height);
-            this.x = x;
-            this.y = y;
-            ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, false, true, x, y));
+        WoodStack() {
+            super(WOODSTACK_WIDTH, WOODSTACk_HEIGHT);
+            this.x = WOODSTACK_X;
+            this.y = WOODSTACK_Y;
         }
     }
-    ArrayList<WoodStack> woodStacks;
+    WoodStack woodStack;
     
     public Game_2_Model()
     {
         platforms = new ArrayList<>();
-        baskets = new ArrayList<>();
-        woodStacks = new ArrayList<>();
     }
 
     @Override
@@ -303,9 +301,9 @@ public class Game_2_Model implements Model {
         platforms.add(new Woodblock(BLOCK_SPAWN_X_1, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
         platforms.add(new Woodblock(BLOCK_SPAWN_X_3, WORLD_HEIGHT_LOW_BOUND+BLOCK_SPAWN_Y_SECTION));
 
-        baskets.add(new Basket(BASKET_X, BASKET_Y, 100, 100));
 
-        woodStacks.add(new WoodStack(WOODSTACK_X, WOODSTACK_Y, 100, 100));
+        basket = new Basket();
+        woodStack = new WoodStack();
     }
 
     @Override

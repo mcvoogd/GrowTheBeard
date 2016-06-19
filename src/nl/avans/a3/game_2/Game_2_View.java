@@ -35,6 +35,7 @@ public class Game_2_View implements View {
     private BufferedImage playerImages;
     private SoundPlayer scoredPointSound;
     private SoundPlayer playerFallenSounds;
+    private BufferedImage woodStack;
 
     private boolean preScreen = true; //TODO PRE SCREEN
 
@@ -100,36 +101,6 @@ public class Game_2_View implements View {
 
     private HashMap<Integer, Platform> platforms = new HashMap<>();
 
-    private class Basket {
-        float x, y;
-        BufferedImage image;
-
-        Basket(float x, float y) {
-            this.x = x;
-            this.y = y;
-            image = ResourceHandler.getImage("res/images_game1/wood1.png"); // TODO mandje ipv oversized blokje
-        }
-
-        BufferedImage getImage() {
-            return image;
-        }
-    }
-
-    private ArrayList<Basket> baskets = new ArrayList<>();
-
-    private class WoodStack {
-        float x, y;
-        BufferedImage image;
-
-        WoodStack(float x, float y) {
-            this.x = x;
-            this.y = y;
-            image = ResourceHandler.getImage("res/images_game1/wood2.png"); // TODO houtstapel ipv oversized blokje
-        }
-    }
-
-    private ArrayList<WoodStack> woodStacks = new ArrayList<>();
-
     @Override
     public void start() {
         winner = new BufferedImage[3];
@@ -162,6 +133,7 @@ public class Game_2_View implements View {
         }
 
         banner = ResourceHandler.getImage("res/images_game1/banner.png");
+        woodStack = ResourceHandler.getImage("res/images_game2/item.png");
     }
 
     @Override
@@ -200,13 +172,8 @@ public class Game_2_View implements View {
             g.drawImage(banner, 0, -25, 1920, 180, null);
             g.drawString("" + model.getTime(), 960 - (ft.stringWidth("" + model.getTime()) / 2) + 90, 80);
 
-            for (Basket basket : baskets) {
-                g.drawImage(basket.image, (int) basket.x, (int) basket.y, null);
-            }
-
-            for (WoodStack woodStack : woodStacks) {
-                g.drawImage(woodStack.image, (int) woodStack.x, (int) woodStack.y, null);
-            }
+            g.drawImage(woodStack, model.BASKET_X, 1080-model.BASKET_Y-model.BASKET_HEIGHT, null);
+            g.drawImage(woodStack, model.WOODSTACK_X, 1080-model.WOODSTACK_Y-model.WOODSTACk_HEIGHT, null);
 
             if (ModelHandler.DEBUG_MODE == false) return;
 
@@ -219,6 +186,9 @@ public class Game_2_View implements View {
             g.setColor(Color.CYAN);
             g.drawRect(model.GROUND_LEFT_X, 1080 - model.GROUND_LEFT_Y - model.GROUND_LEFT_HEIGHT, model.GROUND_LEFT_WIDTH, model.GROUND_LEFT_HEIGHT);
             g.drawRect(model.GROUND_RIGHT_X, 1080 - model.GROUND_RIGHT_Y - model.GROUND_RIGHT_HEIGHT, model.GROUND_RIGHT_WIDTH, model.GROUND_RIGHT_HEIGHT);
+            g.setColor(Color.GREEN);
+            g.drawRect(model.BASKET_X,1080- model.BASKET_Y-model.BASKET_HEIGHT, model.BASKET_WIDTH, model.BASKET_HEIGHT);
+            g.drawRect(model.WOODSTACK_X, 1080-model.WOODSTACK_Y-model.WOODSTACk_HEIGHT, model.WOODSTACK_WIDTH, model.WOODSTACk_HEIGHT);
         }
         else
         {
@@ -302,14 +272,6 @@ public class Game_2_View implements View {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
                 players.add(new Player(newObject.x, newObject.y, image, newObject.id));
                 System.out.println("added a new player to view");
-            }
-            if (newObject.basket) {
-                baskets.add(new Basket(newObject.x, newObject.y));
-                System.out.println("added a basket to view");
-            }
-            if (newObject.woodStack) {
-                woodStacks.add(new WoodStack(newObject.x, newObject.y));
-                System.out.println("added a woodstack to view");
             }
             else {
                 // put new random here, FloBo worries that it will not be equally random anymore, I just don't care about such minimal errors.
