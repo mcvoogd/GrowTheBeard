@@ -43,6 +43,8 @@ public class WinScreen_View implements View{
         }
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         BufferedImage beardImage = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
+        if((Beard.beardPlayer1 - 1) < 0 ) { Beard.beardPlayer1 = 1; }
+        if((Beard.beardPlayer2 - 1) < 0 ) { Beard.beardPlayer2 = 1; }
         beard[0] = beardImage.getSubimage((beardImage.getWidth()/6) * (Beard.beardPlayer1 - 1), 0, beardImage.getWidth()/6, beardImage.getHeight());
         beard[1] = beardImage.getSubimage((beardImage.getWidth()/6) * (Beard.beardPlayer2 - 1), 0, beardImage.getWidth()/6, beardImage.getHeight());
     }
