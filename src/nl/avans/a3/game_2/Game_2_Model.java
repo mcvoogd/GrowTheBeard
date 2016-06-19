@@ -27,7 +27,7 @@ public class Game_2_Model implements Model {
 
     final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*1;
 
-    final int GAME_DURATION = 45;
+    final int GAME_DURATION = 4;
 
     final int GROUND_LEFT_X = -500;
     final int GROUND_LEFT_Y = -245;
