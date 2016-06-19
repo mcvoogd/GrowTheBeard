@@ -160,7 +160,7 @@ public class Game_2_View implements View {
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.beard, (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-                if (player.hasBlock)
+                if (player.hasBlock) // TODO proper placement and possibly scaling
                     g.drawImage(woodStack, (int)player.x, (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
             }
 
