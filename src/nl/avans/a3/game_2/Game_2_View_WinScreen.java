@@ -60,9 +60,9 @@ public class Game_2_View_WinScreen implements View {
 
     private int scoreToPlayer(Pair<Integer, Integer> score)
     {
-        if (score.getKey() > score.getValue()) return 1;
-        if (score.getKey() < score.getValue()) return 2;
-        return 0;
+        if (score.getKey() > score.getValue()) return 0;
+        if (score.getKey() < score.getValue()) return 1;
+        return 2;
     }
 
     @Override
@@ -85,11 +85,11 @@ public class Game_2_View_WinScreen implements View {
         int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
         int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
         switch (scoreToPlayer(model.getScores())){
-            case 0:
+            case 2:
                 g.drawImage(beards[Beard.beardPlayer1],(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
                 g.drawImage(beards[Beard.beardPlayer2],(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
                 break;
-            case 1:
+            case 0:
                 if(beardCounter< 15 && switchBeardCounter < 3){
                     g.drawImage(beards[oldBeard1],(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
                 }else if(beardCounter < 30 &&switchBeardCounter < 3){
@@ -101,7 +101,7 @@ public class Game_2_View_WinScreen implements View {
                 }
                 g.drawImage(beards[Beard.beardPlayer2],(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
                 break;
-            case 2:
+            case 1:
                 if(beardCounter < 15 && switchBeardCounter < 3){
                     g.drawImage(beards[oldBeard2],(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
                 }else if(beardCounter < 30 && switchBeardCounter < 3){
