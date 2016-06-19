@@ -1,6 +1,9 @@
 package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.event.NewModel;
+import nl.avans.a3.main_menu.MainMenuModel;
+import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.WiimoteHandler;
@@ -37,7 +40,8 @@ public class Game_2_Controller implements Controller {
             else
             {
                 if (wiimoteHandler.isAnyButtonPressed(0) || wiimoteHandler.isAnyButtonPressed(1))
-                    PartyModeHandler.update();
+                    if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update();
+                    else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
             }
         }
     }
@@ -60,7 +64,7 @@ public class Game_2_Controller implements Controller {
             case KeyEvent.VK_NUMPAD4 : gameModel.setMoveHorizontal(-1, 1); break;
             case KeyEvent.VK_NUMPAD6 : gameModel.setMoveHorizontal(1, 1); break;
             case KeyEvent.VK_NUMPAD8 : gameModel.setJump(true, 1); break;
-            case KeyEvent.VK_N : if (gameModel.getInGame()) PartyModeHandler.update();
+            case KeyEvent.VK_N : if (gameModel.getInGame() == false && PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update(); else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
         }
 
     }
