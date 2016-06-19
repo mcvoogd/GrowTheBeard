@@ -1,6 +1,5 @@
 package nl.avans.a3.mvc_handlers;
 
-
 import nl.avans.a3.boot_menu.BootModel;
 import nl.avans.a3.boot_menu.BootView;
 import nl.avans.a3.event.ModelEvent;
@@ -89,7 +88,7 @@ public class ViewHandler implements ModelListener{
             panel = mvcPanel;
             if (view != null) view.close();
             if(view != selectedView(((NewModel) event).newModel)) {
-                System.out.println(view + " view < + " + selectedView(((NewModel) event).newModel) + " new view <");
+                Logger.instance.log(view + " view < + " + selectedView(((NewModel) event).newModel) + " new view <");
                 view = selectedView(((NewModel) event).newModel);
                 if (view != null){
                     Logger.instance.log("VH001", "new view (" + view.getClass().getName() + ") has been loaded", Logger.LogType.DEBUG);

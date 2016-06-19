@@ -5,6 +5,7 @@ import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -38,7 +39,7 @@ public class BootController implements Controller{
             case KeyEvent.VK_B : bPressed = true; break;
             case KeyEvent.VK_SPACE : aPressed = bPressed = true; break;
             case KeyEvent.VK_C : wiimoteHandler.searchWiimotes();
-                System.out.println("searching wiimotes");break;
+                Logger.instance.log("searching wiimotes"); break;
         }
     }
 
