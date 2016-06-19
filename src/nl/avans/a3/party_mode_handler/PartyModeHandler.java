@@ -49,6 +49,10 @@ public class PartyModeHandler {
 
     }
 
+    /**
+     * use this method to invoke a next game.
+     * the method updates all views etc.
+     */
     public static void notifyNextGame()
     {
         if(gameCounter <= 4) {
