@@ -222,7 +222,8 @@ public class Game_2_View implements View {
         }
         else
         {
-            drawGameEnd(g, /*wonplayer*/1); //FIXME wonplayer = the player with most score.
+            // FIXME switch view
+            //drawGameEnd(g, /*wonplayer*/1); //FIXME wonplayer = the player with most score.
         }
     }
 
@@ -231,6 +232,7 @@ public class Game_2_View implements View {
     public void close() {
     }
 
+    /*
     private void drawGameEnd(Graphics2D g, int player) {
         g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
 
@@ -286,7 +288,7 @@ public class Game_2_View implements View {
                 g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300, 311, 577, null);
                 break;
         }
-    }
+    }*/
 
     @Override
     public void onModelEvent(ModelEvent event) {
