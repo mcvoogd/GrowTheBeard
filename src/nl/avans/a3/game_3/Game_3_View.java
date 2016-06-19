@@ -183,14 +183,14 @@ public class Game_3_View implements View{
         if (gameModel.getScorePlayer1() > gameModel.getScorePlayer2()) {
             Beard.beardPlayer1 += 2;
             Beard.beardPlayer2 -= 1;
-            if(Beard.beardPlayer2 <= 0) Beard.beardPlayer2 = 1;
+            if(Beard.beardPlayer2 > 5) Beard.beardPlayer2 = 5;
         }else if (gameModel.getScorePlayer2() > gameModel.getScorePlayer1()) {
             Beard.beardPlayer2 += 2;
             Beard.beardPlayer1 -= 1;
-            if(Beard.beardPlayer1 <= 0) Beard.beardPlayer1 = 1;
+            if(Beard.beardPlayer1  > 5) Beard.beardPlayer1 = 5;
         } else if (gameModel.getScorePlayer1() == gameModel.getScorePlayer2()) {
-            if(Beard.beardPlayer1 <= 0) {Beard.beardPlayer1 = 1;}
-            if(Beard.beardPlayer2 <= 0) {Beard.beardPlayer2 = 1;}
+            if(Beard.beardPlayer1 > 5) {Beard.beardPlayer1 = 5;}
+            if(Beard.beardPlayer2 > 5) {Beard.beardPlayer2 = 5;}
         }
         updateScore = true;
     }
