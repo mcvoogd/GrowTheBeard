@@ -6,6 +6,7 @@ import nl.avans.a3.main_menu.MainMenuModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Controller;
 import nl.avans.a3.party_mode_handler.PartyModeHandler;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.SoundPlayer;
 import nl.avans.a3.util.WiimoteHandler;
 

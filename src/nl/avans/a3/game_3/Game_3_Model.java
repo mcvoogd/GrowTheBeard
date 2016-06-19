@@ -230,7 +230,8 @@ public class Game_3_Model implements Model{
         return bird;
     }
 
-    public BufferedImage getBeards(int beardNumber){ return beards[beardNumber]; }
+    public BufferedImage getBeards(int beardNumber){
+        System.out.println("Baard: " + beardNumber);return beards[beardNumber - 1]; }
 
     public int getBeardCounter() {return beardCounter;}
 

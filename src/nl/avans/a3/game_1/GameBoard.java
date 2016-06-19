@@ -145,7 +145,7 @@ public class GameBoard extends JPanel implements ActionListener {
         switchInstructionsTimer.start();
         initWoodBlocks();
 
-		endTimer = new Timer(time * 1000, e -> inGame = false);
+		endTimer = new Timer(time * 1000, e ->{ inGame = false; scoreSound.loop(20); endTimer.stop();});
 		timeLeft = new Timer(1000, e -> {
 			time--;
 			scorePlayer1++;
@@ -221,11 +221,15 @@ public class GameBoard extends JPanel implements ActionListener {
 
                 if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
                     if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
-                        PartyModeHandler.notifyNextGame();
+						scoreSound.stop();
+						System.out.println("Stop");
+						PartyModeHandler.notifyNextGame();
                     }
                 }else{
                     if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
-                        ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+						scoreSound.stop();
+						System.out.println("Stop2");
+						ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
                     }
                 }
             }
@@ -292,7 +296,9 @@ public class GameBoard extends JPanel implements ActionListener {
 			repaint();
 			player1.checkWiiMote(wiimoteHandler, 0);
 			player2.checkWiiMote(wiimoteHandler, 1);
-
+		}
+		else{
+			backgroundSound.stop();
 		}
 	}
 
