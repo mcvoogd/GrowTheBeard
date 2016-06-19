@@ -78,7 +78,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	private ArrayList<Particle> particles;
 	private boolean playerCollision = false;
 
-	private final int WOODBLOCK_START_COUNT = 3;
+	private static final int WOODBLOCK_START_COUNT = 3;
     private boolean notTriggerd = true;
 
 	private boolean preScreen;
