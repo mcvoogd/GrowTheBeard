@@ -60,22 +60,21 @@ public class Game_2_View_WinScreen implements View {
 
     private int scoreToPlayer(Pair<Integer, Integer> score)
     {
-        if (score.getKey() > score.getValue()) return 0;
-        if (score.getKey() < score.getValue()) return 1;
-        return 2;
+        if (score.getKey() > score.getValue()) return 1;
+        if (score.getKey() < score.getValue()) return 2;
+        return 0;
     }
 
     @Override
     public void draw(Graphics2D g) {
         g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
-
         textScale += change;
         if(textScale > MAX_SCALE){
             change = -CHANGE_SPEED;
         }else if(textScale < MIN_SCALE){
             change = CHANGE_SPEED;
         }
-
+        beardCounter++;
         g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (WIDTH/2) - text.getWidth(null)/2, 200), null);
 
         g.drawImage(winner[scoreToPlayer(model.getScores())], 500, 100 ,null);
