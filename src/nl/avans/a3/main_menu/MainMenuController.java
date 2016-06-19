@@ -51,13 +51,14 @@ public class MainMenuController implements Controller {
         switch (a.getKeyCode())
         {
             case KeyEvent.VK_ESCAPE : System.exit(0); break;
-            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new NewModel(null, new Game_3_Model())); break;
-            case KeyEvent.VK_G: model.onMenuChoose(wiimoteHandler); break;
-            case KeyEvent.VK_W : model.pointToTop(); break;
-            case KeyEvent.VK_S : model.pointToBottem(); break;
-            case KeyEvent.VK_A : model.pointToLeft(); break;
-            case KeyEvent.VK_D : model.pointToRight(); break;
-            case KeyEvent.VK_B : model.changeMode(MainMenuModel.Mode.CHOOSE_PARTY); model.onMenuChoose(wiimoteHandler); break;
+            // comments are for debug.
+//            case KeyEvent.VK_H: ModelHandler.instance.onModelEvent(new NewModel(null, new Game_3_Model())); break;
+//            case KeyEvent.VK_G: model.onMenuChoose(wiimoteHandler); break;
+//            case KeyEvent.VK_W : model.pointToTop(); break;
+//            case KeyEvent.VK_S : model.pointToBottem(); break;
+//            case KeyEvent.VK_A : model.pointToLeft(); break;
+//            case KeyEvent.VK_D : model.pointToRight(); break;
+//            case KeyEvent.VK_B : model.changeMode(MainMenuModel.Mode.CHOOSE_PARTY); model.onMenuChoose(wiimoteHandler); break;
          }
     }
 
