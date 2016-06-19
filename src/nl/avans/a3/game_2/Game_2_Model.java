@@ -2,12 +2,15 @@ package nl.avans.a3.game_2;
 import javafx.util.Pair;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.Beard;
 import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.MathExtended;
 import nl.avans.a3.util.ResourceHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -286,8 +289,11 @@ public class Game_2_Model implements Model {
         if (hasStarted) return;
         hasStarted = true;
 
-        Timer gameTimer = new Timer(time * 1000, e -> inGame = false);
-        gameTimer.start();
+        new Timer(time * 1000, e -> {
+            inGame = false;
+            if (getScores().getKey() > getScores().getValue()) Beard.beardPlayer1++;
+            else if (getScores().getKey() < getScores().getValue()) Beard.beardPlayer2 ++;
+        }).start();
         Timer viewTimer = new Timer(1000, e -> time--);
         viewTimer.start();
 
