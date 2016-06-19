@@ -131,7 +131,7 @@ public class MainMenuModel implements Model{
                 {
                     PartyModeHandler.setCurrentMode(PartyModeHandler.Mode.CHOOSE_PARTY);
                     PartyModeHandler.resetGameCounter();
-                    partyModeHandler.update();
+                    PartyModeHandler.update();
                 }
                 break;
             case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new SingleMenuModel())); break;
