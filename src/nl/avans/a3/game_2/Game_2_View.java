@@ -189,7 +189,8 @@ public class Game_2_View implements View {
         else
         {
             backgroundMusic.stop();
-            playerFallenSounds.stop();
+            if(playerFallenSounds.isPlaying())
+                playerFallenSounds.stop();
             scoredPointSound.stop();
             ModelHandler.instance.onModelEvent(new NewModel(model, model));
             System.out.println("game 2 ended score is = " +  model.getScores());
