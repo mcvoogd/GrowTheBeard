@@ -29,7 +29,7 @@ public class Game_2_View implements View {
     private SoundPlayer scoredPointSound;
     private SoundPlayer playerFallenSounds;
     private BufferedImage woodStack;
-    SoundPlayer backgroundMusic;
+    private SoundPlayer backgroundMusic;
 
     private boolean preScreen = true; //TODO PRE SCREEN
 

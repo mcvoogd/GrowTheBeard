@@ -546,6 +546,7 @@ public class WiimoteHandler {
 
     }
 
+    // TODO Martijn could you please check if this works with a wiiMote
     public boolean isAnyButtonPressed(int wiimoteID)
     {
         if (pressedButtons.get(wiimoteID) != null)

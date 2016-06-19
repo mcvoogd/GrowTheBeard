@@ -192,6 +192,7 @@ public class Game_2_Model implements Model {
                 state = PlayerState.RESPAWN_WAIT;
                 repawnTicksLeft = PLAYER_RESPAWN_TICKS;
                 hasBlock = false;
+                ModelHandler.instance.onModelEvent(new G2_Player_Block(id, false));
             }
 
             ModelHandler.instance.onModelEvent(new G2_ObjectMove(id, true, x, y));
