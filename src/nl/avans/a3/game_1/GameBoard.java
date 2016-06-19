@@ -91,7 +91,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private ArrayList<String> hitSounds = new ArrayList<>();
 	private SoundPlayer soundPlayer;
 	private SoundPlayer backgroundSound;
-
+	private SoundPlayer scoreSound;
 
 	public GameBoard(WiimoteHandler wiimoteHandler) {
 		this.wiimoteHandler = wiimoteHandler;
@@ -102,6 +102,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 "res/music/game1/wood_hit_4.wav"
         });
 		backgroundSound = new SoundPlayer("res/music/game1/nature.wav");
+		scoreSound = new SoundPlayer("res/music/theme_song.wav");
 		initGameBoard();
 	}
 	
