@@ -51,7 +51,7 @@ public class PartyModeHandler {
 
     public static void notifyNextGame()
     {
-        if(gameCounter <= 4) {
+        if(gameCounter <= 3) {
             gameCounter++;
             update();
         }
