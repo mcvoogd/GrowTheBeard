@@ -14,7 +14,7 @@ public class Game_2_View_PreScreen implements View {
     Game_2_Model model;
     BufferedImage[] images;
     int counter = 0;
-    final int UPDATES_PER_INDEX = 20;
+    final int UPDATES_PER_INDEX = 30;
     private BufferedImage[] background;
     public Game_2_View_PreScreen(Game_2_Model model) {this.model = model;}
 
