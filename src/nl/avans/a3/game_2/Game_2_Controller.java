@@ -31,17 +31,22 @@ public class Game_2_Controller implements Controller {
         //check wiimote stuff.
         gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
-            if (gameModel.getInGame()) {
+            if (gameModel.getState() == Game_2_Model.ModelState.GAME) {
                 gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(0), -10, 10) / 10, 0);
                 gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(1), -10, 10) / 10, 1);
                 gameModel.setJump(wiimoteHandler.isAnyButtonPressed(0), 0);
                 gameModel.setJump(wiimoteHandler.isAnyButtonPressed(1), 1);
             }
-            else
+            else if (gameModel.getState() == Game_2_Model.ModelState.WINSCREEN)
             {
                 if (wiimoteHandler.isAnyButtonPressed(0) || wiimoteHandler.isAnyButtonPressed(1))
                     if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update();
                     else  ModelHandler.instance.changeModel(new NewModel(gameModel, new MainMenuModel()));
+            }
+            else
+            {
+                if (wiimoteHandler.getIsButtonPressed(0 , WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonDown(1, WiimoteHandler.Buttons.KEY_A))
+                    gameModel.setGameStart();
             }
         }
     }
@@ -64,7 +69,8 @@ public class Game_2_Controller implements Controller {
             case KeyEvent.VK_NUMPAD4 : gameModel.setMoveHorizontal(-1, 1); break;
             case KeyEvent.VK_NUMPAD6 : gameModel.setMoveHorizontal(1, 1); break;
             case KeyEvent.VK_NUMPAD8 : gameModel.setJump(true, 1); break;
-            case KeyEvent.VK_N : if (gameModel.getInGame() == false && PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update(); else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+            case KeyEvent.VK_N : if (gameModel.getState() == Game_2_Model.ModelState.WINSCREEN && PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update(); else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel())); break;
+            case KeyEvent.VK_M : if (gameModel.getState() == Game_2_Model.ModelState.PRE_SCREEN) gameModel.setGameStart();
         }
 
     }

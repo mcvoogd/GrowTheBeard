@@ -9,6 +9,7 @@ import nl.avans.a3.event.NewModel;
 import nl.avans.a3.game_1.DummyMVC.DummyModel;
 import nl.avans.a3.game_2.Game_2_Model;
 import nl.avans.a3.game_2.Game_2_View;
+import nl.avans.a3.game_2.Game_2_View_PreScreen;
 import nl.avans.a3.game_2.Game_2_View_WinScreen;
 import nl.avans.a3.game_3.Game_3_Model;
 import nl.avans.a3.game_3.Game_3_View;
@@ -122,9 +123,9 @@ public class ViewHandler implements ModelListener{
             return new Game_Example_View((Game_Example_Model) model);
         }
         if (model instanceof Game_2_Model){
-            if (((Game_2_Model) model).getInGame())
-                return new Game_2_View((Game_2_Model)model);
-            return new Game_2_View_WinScreen((Game_2_Model) model);
+            if (((Game_2_Model) model).getState() == Game_2_Model.ModelState.PRE_SCREEN) return new Game_2_View_PreScreen((Game_2_Model)model);
+            if (((Game_2_Model) model).getState() == Game_2_Model.ModelState.GAME) return new Game_2_View((Game_2_Model) model);
+            return new Game_2_View_WinScreen((Game_2_Model)model);
         }
         if(model instanceof Game_3_Model) {
             return new Game_3_View((Game_3_Model) model);

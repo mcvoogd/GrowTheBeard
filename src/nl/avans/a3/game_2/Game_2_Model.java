@@ -1,5 +1,6 @@
 package nl.avans.a3.game_2;
 import javafx.util.Pair;
+import nl.avans.a3.event.NewModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
 import nl.avans.a3.util.Beard;
@@ -73,6 +74,10 @@ public class Game_2_Model implements Model {
 
     public enum PlayerState{JUMPING, ON_PLATFORM, RESPAWN_WAIT}
     public enum PlatformState{FALLING, REMOVE}
+
+    public enum ModelState{PRE_SCREEN, GAME, WINSCREEN}
+    private ModelState state = ModelState.PRE_SCREEN;
+    public ModelState getState() {return state;}
 
     private class Collidable{
         float x, y;
@@ -286,11 +291,12 @@ public class Game_2_Model implements Model {
 
     @Override
     public void start() {
-        if (hasStarted) return;
+        if (state != ModelState.GAME) return;
         hasStarted = true;
 
         new Timer(time * 1000, e -> {
             inGame = false;
+            state = ModelState.WINSCREEN;
             if (getScores().getKey() > getScores().getValue()) Beard.beardPlayer1++;
             else if (getScores().getKey() < getScores().getValue()) Beard.beardPlayer2 ++;
         }).start();
@@ -325,7 +331,7 @@ public class Game_2_Model implements Model {
 
     @Override
     public void update() {
-        if (inGame) {
+        if (state == ModelState.GAME) {
             platforms.forEach(Platform::update);
             players[0].update();
             players[1].update();
@@ -335,6 +341,13 @@ public class Game_2_Model implements Model {
     @Override
     public void close() {
 
+    }
+
+    public void setGameStart()
+    {
+        if (state == ModelState.PRE_SCREEN)
+            state = ModelState.GAME;
+        ModelHandler.instance.onModelEvent(new NewModel(this, this));
     }
 
     public void setMoveHorizontal(float move, int player)
