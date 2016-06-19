@@ -107,21 +107,21 @@ public class Game_3_Controller implements Controller{
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
             System.exit(0);
         }
-        if(e.getKeyCode() == KeyEvent.VK_P){
-            gameModel.startHit(1);
-            gameModel.damageTree(0, 25, 1);
-            chopSoundPlayer.playRandomOnce();
-        }
-        if(e.getKeyCode() == KeyEvent.VK_C){
-            gameModel.startHit(2);
-            gameModel.damageTree(1, 25, 2);
-            chopSoundPlayer.playRandomOnce();
-        }
-        if(e.getKeyCode() == KeyEvent.VK_S)
-        {
-            gameModel.damageTree(0, 25, 1);
-            gameModel.damageTree(1, 25, 2);
-        }
+//        if(e.getKeyCode() == KeyEvent.VK_P){
+//            gameModel.startHit(1);
+//            gameModel.damageTree(0, 25, 1);
+//            chopSoundPlayer.playRandomOnce();
+//        }
+//        if(e.getKeyCode() == KeyEvent.VK_C){
+//            gameModel.startHit(2);
+//            gameModel.damageTree(1, 25, 2);
+//            chopSoundPlayer.playRandomOnce();
+//        }
+//        if(e.getKeyCode() == KeyEvent.VK_S)
+//        {
+//            gameModel.damageTree(0, 25, 1);
+//            gameModel.damageTree(1, 25, 2);
+//        }
     }
 
     @Override

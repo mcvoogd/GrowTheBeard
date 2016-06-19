@@ -41,7 +41,7 @@ public class Game_2_View implements View {
     public Game_2_View(Game_2_Model model){
         this.model = model;
         SoundPlayer backgroundMusic = new SoundPlayer("res/music/game2/waterfall.wav");
-        backgroundMusic.loop(0);
+        backgroundMusic.loop(20);
         scoredPointSound = new SoundPlayer("res/music/game2/wood_drop.wav");
         playerFallenSounds = new SoundPlayer(new String[]{
                 "res/music/game2/fall_1.wav",

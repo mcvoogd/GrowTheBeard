@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SoundPlayer{
-    // TODO missing javadoc
+
     private Clip clip;
     private Timer t = null;
     private boolean isPlaying = false;
@@ -88,7 +88,7 @@ public class SoundPlayer{
      */
     public void loop(float volumeReduction){
         FloatControl gainControl = (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-volumeReduction); // Reduce volume by 10 decibels.
+        gainControl.setValue(-volumeReduction); // Reduce volume by parameter decibels.
         selectedClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
