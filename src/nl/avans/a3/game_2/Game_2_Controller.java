@@ -29,8 +29,8 @@ public class Game_2_Controller implements Controller {
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
             gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(0), -10, 10)/10, 0);
             gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(1), -10, 10)/10, 1);
-            gameModel.setJump(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A), 0);
-            gameModel.setJump(wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A), 1);
+            gameModel.setJump(wiimoteHandler.isAnyButtonPressed(0), 0);
+            gameModel.setJump(wiimoteHandler.isAnyButtonPressed(1), 1);
         }
     }
 
