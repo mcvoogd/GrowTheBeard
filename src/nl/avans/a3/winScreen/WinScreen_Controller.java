@@ -24,7 +24,7 @@ public class WinScreen_Controller implements Controller{
 
         backgroundMusic = new SoundPlayer("res/music/theme_song.wav");
         backgroundMusic.loop(20);
-        applauseMusic = new SoundPlayer("res/music.applause.wav");
+        applauseMusic = new SoundPlayer("res/music/applause.wav");
         applauseMusic.loop(20);
     }
 
