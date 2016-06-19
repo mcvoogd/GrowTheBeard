@@ -231,6 +231,7 @@ public class Game_3_Model implements Model{
     }
 
     public BufferedImage getBeards(int beardNumber){
+        if(beardNumber >= 6) beardNumber = 5;
         return beards[beardNumber]; }
 
     public int getBeardCounter() {return beardCounter;}
