@@ -84,6 +84,8 @@ public class Game_2_View_WinScreen implements View {
 
         int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
         int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
+        if(Beard.beardPlayer1 > 5) Beard.beardPlayer1 = 5;
+        if(Beard.beardPlayer2 > 5) Beard.beardPlayer2 = 5;
         switch (scoreToPlayer(model.getScores())){
             case 2:
                 g.drawImage(beards[Beard.beardPlayer1],(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
