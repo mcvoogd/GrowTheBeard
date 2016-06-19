@@ -49,33 +49,20 @@ public class SoundPlayer{
         }
     }
 
-    /**
-     * 
-     */
     public void start(){
         selectedClip.setFramePosition(0);
         selectedClip.start();
         isPlaying = true;
     }
 
-    /**
-     * 
-     */
     public void stop(){
         if (selectedClip != null) selectedClip.stop();
         isPlaying = false;
     }
-
-    /**
-     * 
-     */
     public void resetClip(){
         selectedClip.setFramePosition(0);
     }
 
-    /**
-     * 
-     */
     public void getRandomClip(){
         int clipID = (int) (Math.random()*clips.length);
         if(clips[clipID] != null) {
@@ -92,25 +79,25 @@ public class SoundPlayer{
         selectedClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    /**
-     * @return
-     */
     public boolean isPlaying(){
         return isPlaying;
     }
 
-    /**
-     * Play a random sound 
-     */
     public void playRandomOnce(){
         getRandomClip();
         start();
         resetClip();
     }
 
-    /**
-     * 
-     */
+    public void playRandomOnceWithSoundReduction(float volumeReduction)
+    {
+        getRandomClip();
+        resetClip();
+        FloatControl gainControl = (FloatControl) selectedClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-volumeReduction);
+        start();
+    }
+
     public void playOnce(){
         start();
     }

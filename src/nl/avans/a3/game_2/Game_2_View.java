@@ -173,8 +173,8 @@ public class Game_2_View implements View {
                 g.drawImage(player.animation[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.beard, (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
                 g.drawImage(player.animationArm[player.selectedAnimation], (int) player.x + PLAYER_X_OFFSET, 1080 - (int) player.y - model.PLAYER_HEIGHT, null);
-                if (player.hasBlock) // TODO proper placement and possibly scaling
-                    g.drawImage(woodStack, (int)player.x, (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
+                if (player.hasBlock)
+                    g.drawImage(woodStack, (int)(player.x - (model.WOODSTACK_WIDTH/6)), (int)(1080-player.y-model.PLAYER_HEIGHT-model.WOODSTACk_HEIGHT), null);
             }
 
 
@@ -206,7 +206,6 @@ public class Game_2_View implements View {
                 playerFallenSounds.stop();
             scoredPointSound.stop();
             ModelHandler.instance.onModelEvent(new NewModel(model, model));
-            System.out.println("game 2 ended score is = " +  model.getScores());
         }
     }
 
@@ -226,7 +225,6 @@ public class Game_2_View implements View {
             if (newObject.player) {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
                 players.add(new Player(newObject.x, newObject.y, image, newObject.id));
-                System.out.println("added a new player to view");
             }
             else {
                 // put new random here, FloBo worries that it will not be equally random anymore, I just don't care about such minimal errors.
@@ -255,7 +253,7 @@ public class Game_2_View implements View {
         }else if(event instanceof G2_PointScored){
             scoredPointSound.playOnce();
         }else if(event instanceof G2_PlayerFallen){
-            //playerFallenSounds.playRandomOnce(); // Removed to keep little children in mind
+            playerFallenSounds.playRandomOnceWithSoundReduction(20); // Removed to keep little children in mind
         }
         else if (event instanceof G2_Player_Block)
         {

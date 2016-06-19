@@ -40,7 +40,7 @@ public class Game_2_Controller implements Controller {
             else if (gameModel.getState() == Game_2_Model.ModelState.WINSCREEN)
             {
                 if (wiimoteHandler.isAnyButtonPressed(0) || wiimoteHandler.isAnyButtonPressed(1))
-                    if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update();
+                    if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.notifyNextGame();
                     else  ModelHandler.instance.changeModel(new NewModel(gameModel, new MainMenuModel()));
             }
             else
