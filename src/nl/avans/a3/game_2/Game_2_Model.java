@@ -1,6 +1,8 @@
 package nl.avans.a3.game_2;
+import javafx.util.Pair;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
+import nl.avans.a3.util.Logger;
 import nl.avans.a3.util.MathExtended;
 import nl.avans.a3.util.ResourceHandler;
 
@@ -25,7 +27,7 @@ public class Game_2_Model implements Model {
 
     final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*1;
 
-    final int GAME_DURATION = 10;
+    final int GAME_DURATION = 1000;
 
     final int GROUND_LEFT_X = -500;
     final int GROUND_LEFT_Y = -245;
@@ -158,11 +160,12 @@ public class Game_2_Model implements Model {
                     }
                 }
             }else{
-                if (woodStack.getBounds().intersects(getBounds())) hasBlock = true;
-                if (basket.getBounds().intersects(getBounds())) {
+                if (basket.getBounds().intersects(getBounds())) hasBlock = true;
+                if (woodStack.getBounds().intersects(getBounds()) && hasBlock) {
                     ModelHandler.instance.onModelEvent(new G2_PointScored());
                     score++;
                     hasBlock = false;
+                    Logger.instance.log("G2001", getScores().toString());
                 }
                 if (platform.state == PlatformState.REMOVE){
                     state = PlayerState.JUMPING;
@@ -306,9 +309,11 @@ public class Game_2_Model implements Model {
 
     @Override
     public void update() {
-        platforms.forEach(Platform::update);
-        players[0].update();
-        players[1].update();
+        if (inGame) {
+            platforms.forEach(Platform::update);
+            players[0].update();
+            players[1].update();
+        }
     }
 
     @Override
@@ -334,6 +339,11 @@ public class Game_2_Model implements Model {
 
     public boolean getInGame() {
         return inGame;
+    }
+
+    public Pair<Integer, Integer> getScores()
+    {
+        return new Pair<>(players[0].getScore(), players[1].getScore());
     }
 
     public void setInGame(boolean inGame) {
