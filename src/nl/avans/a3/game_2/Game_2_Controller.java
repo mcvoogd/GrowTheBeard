@@ -2,6 +2,7 @@ package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
 import nl.avans.a3.mvc_interfaces.Controller;
+import nl.avans.a3.party_mode_handler.PartyModeHandler;
 import nl.avans.a3.util.WiimoteHandler;
 
 import java.awt.event.KeyEvent;
@@ -27,10 +28,17 @@ public class Game_2_Controller implements Controller {
         //check wiimote stuff.
         gameModel.update();
         if (wiimoteHandler != null && wiimoteHandler.isWiiMotesConnected()) {
-            gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(0), -10, 10)/10, 0);
-            gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(1), -10, 10)/10, 1);
-            gameModel.setJump(wiimoteHandler.isAnyButtonPressed(0), 0);
-            gameModel.setJump(wiimoteHandler.isAnyButtonPressed(1), 1);
+            if (gameModel.getInGame()) {
+                gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(0), -10, 10) / 10, 0);
+                gameModel.setMoveHorizontal(-clamp(wiimoteHandler.getPitch(1), -10, 10) / 10, 1);
+                gameModel.setJump(wiimoteHandler.isAnyButtonPressed(0), 0);
+                gameModel.setJump(wiimoteHandler.isAnyButtonPressed(1), 1);
+            }
+            else
+            {
+                if (wiimoteHandler.isAnyButtonPressed(0) || wiimoteHandler.isAnyButtonPressed(1))
+                    PartyModeHandler.update();
+            }
         }
     }
 
@@ -52,6 +60,7 @@ public class Game_2_Controller implements Controller {
             case KeyEvent.VK_NUMPAD4 : gameModel.setMoveHorizontal(-1, 1); break;
             case KeyEvent.VK_NUMPAD6 : gameModel.setMoveHorizontal(1, 1); break;
             case KeyEvent.VK_NUMPAD8 : gameModel.setJump(true, 1); break;
+            case KeyEvent.VK_N : if (gameModel.getInGame()) PartyModeHandler.update();
         }
 
     }
