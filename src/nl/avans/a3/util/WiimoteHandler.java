@@ -546,13 +546,17 @@ public class WiimoteHandler {
 
     }
 
-    public boolean isAntButtonPressed(int wiimoteID)
+    public boolean isAnyButtonPressed(int wiimoteID)
     {
         if (pressedButtons.get(wiimoteID) != null)
         {
             for (Buttons button : Buttons.values())
             {
-                //if ()
+                if (pressedButtons.get(wiimoteID).get(button) != null)
+                {
+                    if (pressedButtons.get(wiimoteID).get(button))
+                        return true;
+                }
             }
         }
         return false;
