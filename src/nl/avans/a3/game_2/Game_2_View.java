@@ -11,9 +11,13 @@ import nl.avans.a3.util.SoundPlayer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import javax.sound.sampled.*;
 
 public class Game_2_View implements View {
     private Game_2_Model model;
@@ -29,14 +33,12 @@ public class Game_2_View implements View {
     private SoundPlayer scoredPointSound;
     private SoundPlayer playerFallenSounds;
     private BufferedImage woodStack;
-    private SoundPlayer backgroundMusic;
+    private Clip backgroundMusicAsClip;
 
     private boolean preScreen = true; //TODO PRE SCREEN
 
     public Game_2_View(Game_2_Model model){
         this.model = model;
-        backgroundMusic = new SoundPlayer("res/music/game2/waterfall.wav");
-        backgroundMusic.loop(20);
         scoredPointSound = new SoundPlayer("res/music/game2/wood_drop.wav");
         playerFallenSounds = new SoundPlayer(new String[]{
                 "res/music/game2/fall_1.wav",
@@ -104,6 +106,17 @@ public class Game_2_View implements View {
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
         playerImage = new BufferedImage[2];
         playerImages = ResourceHandler.getImage("res/images_scoreboard/person.png");
+
+        try {
+            backgroundMusicAsClip = AudioSystem.getClip();
+            backgroundMusicAsClip.open(AudioSystem.getAudioInputStream(new File("res/music/game2/waterfall.wav")));
+            backgroundMusicAsClip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         for(int i = 0; i < 2; i++)
         {
             playerImage[i] = playerImages != null ? playerImages.getSubimage(311 * i, 0, 311, 577) : null;
@@ -188,7 +201,7 @@ public class Game_2_View implements View {
         }
         else
         {
-            backgroundMusic.stop();
+            backgroundMusicAsClip.stop();
             if(playerFallenSounds.isPlaying())
                 playerFallenSounds.stop();
             scoredPointSound.stop();
