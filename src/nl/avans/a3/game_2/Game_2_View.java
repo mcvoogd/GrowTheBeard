@@ -221,7 +221,6 @@ public class Game_2_View implements View {
                 playerFallenSounds.stop();
             scoredPointSound.stop();
             ModelHandler.instance.onModelEvent(new NewModel(model, model));
-            System.out.println("game 2 ended score is = " +  model.getScores());
         }
     }
 
@@ -241,7 +240,6 @@ public class Game_2_View implements View {
             if (newObject.player) {
                 BufferedImage image = ResourceHandler.getImage("res/images_game2/person" + (newObject.id + 1) + ".png");
                 players.add(new Player(newObject.x, newObject.y, image, newObject.id));
-                System.out.println("added a new player to view");
             }
             else {
                 // put new random here, FloBo worries that it will not be equally random anymore, I just don't care about such minimal errors.

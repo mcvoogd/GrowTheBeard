@@ -231,7 +231,7 @@ public class Game_3_Model implements Model{
     }
 
     public BufferedImage getBeards(int beardNumber){
-        System.out.println("Baard: " + beardNumber);return beards[beardNumber]; }
+        return beards[beardNumber]; }
 
     public int getBeardCounter() {return beardCounter;}
 
