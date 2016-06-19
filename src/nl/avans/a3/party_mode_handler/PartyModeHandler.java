@@ -15,7 +15,7 @@ public class PartyModeHandler {
 
 
     public enum Mode{
-        CHOOSE_PARTY, CHOOSE_SINGLE
+        CHOOSE_PARTY, CHOOSE_SINGLE, DEFAULT
     }
 
     private static Mode mode;
@@ -45,6 +45,7 @@ public class PartyModeHandler {
                 }
                 break;
             case CHOOSE_SINGLE: break;
+            case DEFAULT: break;
         }
 
     }
@@ -63,5 +64,10 @@ public class PartyModeHandler {
 
     public static Mode getCurrentMode(){
         return mode;
+    }
+
+    public static void setCurrentMode(Mode mode)
+    {
+        PartyModeHandler.mode = mode;
     }
 }

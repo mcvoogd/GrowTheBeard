@@ -81,7 +81,6 @@ public class Game_3_Controller implements Controller{
                 if (pitch2 < -80 && pitch2 > -100) {
                     gameModel.setHitPlayer(2, true);
                 }
-                //NEEDS TO BE DUPLICATE.
             }
             else
             {

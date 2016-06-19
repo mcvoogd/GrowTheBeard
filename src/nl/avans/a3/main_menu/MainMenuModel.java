@@ -45,6 +45,7 @@ public class MainMenuModel implements Model{
         singlemode = new Rectangle2D.Double(SINGLE_BOARD_X, SINGLE_BOARD_Y+120, singleGame.getWidth(null), singleGame.getHeight(null)-120);
         Beard.beardPlayer1 = 0;
         Beard.beardPlayer2 = 0;
+        PartyModeHandler.setCurrentMode(PartyModeHandler.Mode.DEFAULT);
     }
 
     @Override
@@ -119,8 +120,7 @@ public class MainMenuModel implements Model{
     {
         switch (mode)
         {
-            case CHOOSE_PARTY: /**ModelHandler.instance.onModelEvent(new NewGameEvent(wiimoteHandler));*/
-                partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
+            case CHOOSE_PARTY: if(partyModeHandler != null)partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
             case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new SingleMenuModel())); break;
         }
     }
