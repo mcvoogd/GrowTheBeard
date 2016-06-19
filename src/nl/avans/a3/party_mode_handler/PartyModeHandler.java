@@ -62,6 +62,10 @@ public class PartyModeHandler {
         }
     }
 
+    public static void resetGameCounter()
+    {
+        gameCounter = 1;
+    }
     public static Mode getCurrentMode(){
         return mode;
     }
