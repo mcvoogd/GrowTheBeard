@@ -241,7 +241,7 @@ public class Game_2_View implements View {
         }else if(event instanceof G2_PointScored){
             scoredPointSound.playOnce();
         }else if(event instanceof G2_PlayerFallen){
-            playerFallenSounds.playRandomOnce();
+            //playerFallenSounds.playRandomOnce(); // Removed to keep little children in mind
         }
         else if (event instanceof G2_Player_Block)
         {
