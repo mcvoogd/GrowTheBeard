@@ -65,9 +65,6 @@ public class Game_2_Model implements Model {
     public enum PlayerState{JUMPING, ON_PLATFORM, RESPAWN_WAIT}
     public enum PlatformState{FALLING, REMOVE}
 
-    private BufferedImage[] beards = new BufferedImage[6];
-    private int beardCounter, switchBeardCounter;
-
     private class Collidable{
         float x, y;
         final float width, height;
@@ -275,11 +272,6 @@ public class Game_2_Model implements Model {
         Timer viewTimer = new Timer(1000, e -> time--);
         viewTimer.start();
 
-        BufferedImage imageBeard = ResourceHandler.getImage("res/images_scoreboard/beard_sprite.png");
-        for (int i = 0; i < 6; i++) {
-            beards[i] = imageBeard != null ? imageBeard.getSubimage(311 * i, 0, 311, 577) : null;
-        }
-
         players[0] = new Player(0, PLAYER_SPAWN_X_1, PLAYER_SPAWN_Y);
         players[1] = new Player(1, PLAYER_SPAWN_X_2, PLAYER_SPAWN_Y);
 
@@ -341,14 +333,4 @@ public class Game_2_Model implements Model {
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
-
-    public BufferedImage getBeards(int beardNumber){ return beards[beardNumber]; }
-
-    public int getBeardCounter() {return beardCounter;}
-
-    public void setBeardCounter(int beardCounter) {this.beardCounter = beardCounter;}
-
-    public int getSwitchBeardCounter() {return switchBeardCounter;}
-
-    public void setSwitchBeardCounter(int switchBeardCounter) {this.switchBeardCounter = switchBeardCounter;}
 }
