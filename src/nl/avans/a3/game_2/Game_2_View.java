@@ -20,14 +20,6 @@ public class Game_2_View implements View {
     private BufferedImage banner;
     final int framesPerAnimationFrame = 40;
     private int waterfallIndex = 0;
-    private final int WIDTH = 1920;
-    private final int HEIGHT = 1080;
-    private double textScale = 0.1;
-    private static final double CHANGE_SPEED = 0.0005;
-    private double change = CHANGE_SPEED;
-    private static final double MAX_SCALE = 0.15;
-    private static final double MIN_SCALE = 0.1;
-    private BufferedImage winScreen;
     private BufferedImage[] winner;
     private BufferedImage winnerImage;
     private BufferedImage text;
@@ -106,7 +98,6 @@ public class Game_2_View implements View {
         winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
-        winScreen = ResourceHandler.getImage("res/images_scoreboard/background.png");
         playerImage = new BufferedImage[2];
         playerImages = ResourceHandler.getImage("res/images_scoreboard/person.png");
         for(int i = 0; i < 2; i++)
