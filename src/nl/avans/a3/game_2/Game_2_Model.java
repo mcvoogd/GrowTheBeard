@@ -25,6 +25,8 @@ public class Game_2_Model implements Model {
 
     final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*1;
 
+    final int GAME_DURATION = 10;
+
     final int GROUND_LEFT_X = -500;
     final int GROUND_LEFT_Y = -245;
     final int GROUND_LEFT_WIDTH = 1000;
@@ -48,17 +50,19 @@ public class Game_2_Model implements Model {
     final int BLOCK_SPAWN_X_2 = BLOCK_SPAWN_X_BASE+ BLOCK_SPAWN_X_SECTION +((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
     final int BLOCK_SPAWN_X_3 = BLOCK_SPAWN_X_BASE+BLOCK_SPAWN_X_SECTION*2+((BLOCK_SPAWN_X_SECTION-BLOCK_WIDTH)/2);
 
-    final int BASKET_X = 1700;
-    final int BASKET_Y = 225;
+
     final int BASKET_WIDTH = 125;
     final int BASKET_HEIGHT = 70;
+    final int BASKET_X = GROUND_RIGHT_X+GROUND_RIGHT_WIDTH/4-BASKET_WIDTH/2;
+    final int BASKET_Y = 225;
 
-    final int WOODSTACK_X = 0;
-    final int WOODSTACK_Y = BASKET_Y;
+
     final int WOODSTACK_WIDTH = BASKET_WIDTH;
     final int WOODSTACk_HEIGHT = BASKET_HEIGHT;
+    final int WOODSTACK_X = GROUND_LEFT_X+(GROUND_LEFT_WIDTH/4)*3-WOODSTACK_WIDTH/2;
+    final int WOODSTACK_Y = BASKET_Y;
 
-    int time = 30;
+    int time = GAME_DURATION;
 
     boolean inGame = true;
 
@@ -228,6 +232,8 @@ public class Game_2_Model implements Model {
         int id = idCounter++;
         Woodblock(float x, float y) {
             super(x, y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_FALL_SPEED , true);
+            this.x = x;
+            this.y = y;
             ModelHandler.instance.onModelEvent(new G2_NewObject(id, false, x, y));
         }
 

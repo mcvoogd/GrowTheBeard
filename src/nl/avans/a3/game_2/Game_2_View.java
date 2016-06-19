@@ -28,12 +28,13 @@ public class Game_2_View implements View {
     private SoundPlayer scoredPointSound;
     private SoundPlayer playerFallenSounds;
     private BufferedImage woodStack;
+    SoundPlayer backgroundMusic;
 
     private boolean preScreen = true; //TODO PRE SCREEN
 
     public Game_2_View(Game_2_Model model){
         this.model = model;
-        SoundPlayer backgroundMusic = new SoundPlayer("res/music/game2/waterfall.wav");
+        backgroundMusic = new SoundPlayer("res/music/game2/waterfall.wav");
         backgroundMusic.loop(20);
         scoredPointSound = new SoundPlayer("res/music/game2/wood_drop.wav");
         playerFallenSounds = new SoundPlayer(new String[]{
@@ -183,6 +184,9 @@ public class Game_2_View implements View {
         }
         else
         {
+            backgroundMusic.stop();
+            playerFallenSounds.stop();
+            scoredPointSound.stop();
             // FIXME switch view
             //drawGameEnd(g, /*wonplayer*/1); //FIXME wonplayer = the player with most score.
         }
