@@ -20,6 +20,8 @@ import java.util.Random;
 import javax.sound.sampled.*;
 
 public class Game_2_View implements View {
+    private final int PRE_SCREEN_DURATION = 4;
+
     private Game_2_Model model;
     private BufferedImage[] waterfallAnimation;
     private BufferedImage banner;
@@ -35,7 +37,7 @@ public class Game_2_View implements View {
     private BufferedImage woodStack;
     private Clip backgroundMusicAsClip;
 
-    private boolean preScreen = true; //TODO PRE SCREEN
+    private int preScreen = 2; //TODO PRE SCREEN
 
     public Game_2_View(Game_2_Model model){
         this.model = model;
@@ -146,7 +148,20 @@ public class Game_2_View implements View {
 
     @Override
     public void draw(Graphics2D g) {
-        if (model.getInGame()) {
+        if (preScreen == 2)
+        {
+            preScreen = 1;
+            g.drawImage(ResourceHandler.getImage("res/images_game2/instructions.png"), 0, 0, null);
+        }
+        else if (preScreen == 1){
+            preScreen = 0;
+            try {
+                Thread.sleep(PRE_SCREEN_DURATION*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (model.getInGame()) {
             waterfallIndex = (waterfallIndex + 1) % (waterfallAnimation.length * framesPerAnimationFrame);
             g.drawImage(waterfallAnimation[waterfallIndex / framesPerAnimationFrame], 0, 0, null);
 
