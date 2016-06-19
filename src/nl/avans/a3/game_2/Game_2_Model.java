@@ -27,7 +27,7 @@ public class Game_2_Model implements Model {
 
     final int WORLD_HEIGHT_LOW_BOUND = (-PLAYER_HEIGHT-BLOCK_HEIGHT)*1;
 
-    final int GAME_DURATION = 1000;
+    final int GAME_DURATION = 45;
 
     final int GROUND_LEFT_X = -500;
     final int GROUND_LEFT_Y = -245;
@@ -106,9 +106,6 @@ public class Game_2_Model implements Model {
 
         private double heightAt(double x){
             return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
-            // TODO fix the fancy curve
-            //if (x < JUMP_DURATION/2.0) return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
-            //else return (Math.sin((x-(JUMP_DURATION/4.0))/(JUMP_DURATION/Math.PI))*(JUMP_HEIGHT/2))+JUMP_HEIGHT/2;
         }
 
         private boolean isGoodIntersect(Rectangle platform){ // assumes the rectangle already intercepts
@@ -160,13 +157,6 @@ public class Game_2_Model implements Model {
                     }
                 }
             }else{
-                if (basket.getBounds().intersects(getBounds())) hasBlock = true;
-                if (woodStack.getBounds().intersects(getBounds()) && hasBlock) {
-                    ModelHandler.instance.onModelEvent(new G2_PointScored());
-                    score++;
-                    hasBlock = false;
-                    Logger.instance.log("G2001", getScores().toString());
-                }
                 if (platform.state == PlatformState.REMOVE){
                     state = PlayerState.JUMPING;
                     update();
@@ -179,6 +169,15 @@ public class Game_2_Model implements Model {
                         jumpTicks = JUMP_DURATION / 2;
                     }
                 }
+            }
+
+
+            if (basket.getBounds().intersects(getBounds())) hasBlock = true;
+            if (woodStack.getBounds().intersects(getBounds()) && hasBlock) {
+                ModelHandler.instance.onModelEvent(new G2_PointScored());
+                score++;
+                hasBlock = false;
+                Logger.instance.log("G2001", getScores().toString());
             }
 
             x = MathExtended.clamp(x, 0, WORLD_WIDTH_BOUND-PLAYER_WIDTH);
@@ -274,8 +273,13 @@ public class Game_2_Model implements Model {
         platforms = new ArrayList<>();
     }
 
+    private boolean hasStarted = false;
+
     @Override
     public void start() {
+        if (hasStarted) return;
+        hasStarted = true;
+
         Timer gameTimer = new Timer(time * 1000, e -> inGame = false);
         gameTimer.start();
         Timer viewTimer = new Timer(1000, e -> time--);

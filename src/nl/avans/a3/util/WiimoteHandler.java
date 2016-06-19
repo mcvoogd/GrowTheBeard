@@ -546,6 +546,18 @@ public class WiimoteHandler {
 
     }
 
+    public boolean isAntButtonPressed(int wiimoteID)
+    {
+        if (pressedButtons.get(wiimoteID) != null)
+        {
+            for (Buttons button : Buttons.values())
+            {
+                //if ()
+            }
+        }
+        return false;
+    }
+
     /**
      * Returns if the button of wiimote is being held down.
      * 

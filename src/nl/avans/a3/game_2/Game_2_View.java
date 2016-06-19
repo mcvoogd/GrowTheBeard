@@ -1,6 +1,7 @@
 package nl.avans.a3.game_2;
 
 import nl.avans.a3.event.ModelEvent;
+import nl.avans.a3.event.NewModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.View;
 import nl.avans.a3.util.Beard;
@@ -187,8 +188,8 @@ public class Game_2_View implements View {
             backgroundMusic.stop();
             playerFallenSounds.stop();
             scoredPointSound.stop();
-            // FIXME switch view
-            //drawGameEnd(g, /*wonplayer*/1); //FIXME wonplayer = the player with most score.
+            ModelHandler.instance.onModelEvent(new NewModel(model, model));
+            System.out.println("game 2 ended score is = " +  model.getScores());
         }
     }
 
@@ -196,64 +197,6 @@ public class Game_2_View implements View {
     @Override
     public void close() {
     }
-
-    /*
-    private void drawGameEnd(Graphics2D g, int player) {
-        g.drawImage(winScreen, 0, 0, WIDTH, HEIGHT, null);
-
-        textScale += change;
-        if(textScale > MAX_SCALE){
-            change = -CHANGE_SPEED;
-        }else if(textScale < MIN_SCALE){
-            change = CHANGE_SPEED;
-        }
-
-        g.drawImage(text, EasyTransformer.scaleImageFromCenter(text, textScale, (WIDTH/2) - text.getWidth(null)/2, 200), null);
-
-        switch(player)
-        {
-            case 0 :g.drawImage(winner[2], 500, 100, null); break; //TEKST
-            case 1 :g.drawImage(winner[0], 500, 100, null); break; //TEKST
-            case 2 :g.drawImage(winner[1], 500, 100, null); break; //TEKST
-        }
-
-
-        g.drawImage(playerImage[0],(WIDTH/2) - (1315/8) - 500, 300, 311, 577,  null);
-        g.drawImage(playerImage[1], (WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
-
-        int oldBeard1 = ((Beard.beardPlayer1 - 2) < 0) ? 0 : Beard.beardPlayer1 - 2;
-        int oldBeard2 = ((Beard.beardPlayer2 - 2) < 0) ? 0 : Beard.beardPlayer2 - 2;
-        switch (player){
-            case 0:
-                g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
-                g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
-                break;
-            case 1:
-                if(model.getBeardCounter() < 15 && model.getSwitchBeardCounter() < 3){
-                    g.drawImage(model.getBeards(oldBeard1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
-                }else if(model.getBeardCounter() < 30 && model.getSwitchBeardCounter() < 3){
-                    g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
-                }else{
-                    g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300,  311, 577, null);
-                    model.setBeardCounter(0);
-                    model.setSwitchBeardCounter(model.getSwitchBeardCounter() + 1);
-                }
-                g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
-                break;
-            case 2:
-                if(model.getBeardCounter() < 15 && model.getSwitchBeardCounter() < 3){
-                    g.drawImage(model.getBeards(oldBeard2),(WIDTH/2) - (1315/8) + 530, 300,  311, 577, null);
-                }else if(model.getBeardCounter() < 30 && model.getSwitchBeardCounter() < 3){
-                    g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
-                }else{
-                    g.drawImage(model.getBeards(Beard.beardPlayer2),(WIDTH/2) - (1315/8) + 530, 300, 311, 577, null);
-                    model.setBeardCounter(0);
-                    model.setSwitchBeardCounter(model.getSwitchBeardCounter() + 1);
-                }
-                g.drawImage(model.getBeards(Beard.beardPlayer1),(WIDTH/2) - (1315/8) - 500, 300, 311, 577, null);
-                break;
-        }
-    }*/
 
     @Override
     public void onModelEvent(ModelEvent event) {

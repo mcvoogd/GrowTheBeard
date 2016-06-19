@@ -62,7 +62,7 @@ public class SoundPlayer{
      * 
      */
     public void stop(){
-        if (isPlaying) selectedClip.stop();
+        selectedClip.stop();
         isPlaying = false;
     }
 
