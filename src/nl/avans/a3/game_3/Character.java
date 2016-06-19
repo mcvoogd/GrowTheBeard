@@ -71,7 +71,6 @@ public class Character {
             playerImage = image != null ? image.getSubimage(614 * imageNumber, 0, 614, 469) : null;
             armImage = image != null ? image.getSubimage(614 * (imageNumber + 1), 0, 614, 469) : null;
         }
-        System.out.println("Beard: " + beardNumber);
         BufferedImage beardImage = ResourceHandler.getImage("res/images_game3/beard.png").getSubimage(614 * beardNumber, 0, 614, 469 * 3);
         switch (imageNumber){
             case 0:

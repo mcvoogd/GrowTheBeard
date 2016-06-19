@@ -222,13 +222,11 @@ public class GameBoard extends JPanel implements ActionListener {
                 if(PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY){
                     if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 						scoreSound.stop();
-						System.out.println("Stop");
 						PartyModeHandler.notifyNextGame();
                     }
                 }else{
                     if(wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)){
 						scoreSound.stop();
-						System.out.println("Stop2");
 						ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
                     }
                 }
@@ -514,7 +512,6 @@ public class GameBoard extends JPanel implements ActionListener {
 			case PLAYER_1_WIN:
 				if(beardCounter < 10 && blinkCounter < 3){
 					g.drawImage(beards[0], (1920/2) - (1315/8) - 500, 300, null);
-					System.out.println("OLD");
 				}else if (beardCounter < 20 && blinkCounter < 3){
 					g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8) - 500, 300, null);
 				}else{
@@ -529,7 +526,6 @@ public class GameBoard extends JPanel implements ActionListener {
 				g.drawImage(beards[Beard.beardPlayer1], (1920/2) - (1315/8)  - 500, 300, null);
 				g.drawImage(beards[oldBeard1], (1920/2) - (1315/8) + 530, 300, null);
 				if(beardCounter < 10  && blinkCounter < 3){
-					System.out.println("OLD");
 					g.drawImage(beards[0], (1920/2) - (1315/8) + 530, 300, null);
 				}else if (beardCounter < 20 && blinkCounter < 3){
 					g.drawImage(beards[Beard.beardPlayer2], (1920/2) - (1315/8) + 530, 300, null);
