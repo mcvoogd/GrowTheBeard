@@ -58,25 +58,38 @@ public class Game_2_Controller implements Controller {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode())
-        {
-            case KeyEvent.VK_ESCAPE :
-                System.exit(0);
-                break;
-            case KeyEvent.VK_A : gameModel.setMoveHorizontal(-1, 0); break;
-            case KeyEvent.VK_D : gameModel.setMoveHorizontal(1, 0); break;
-            case KeyEvent.VK_W : gameModel.setJump(true, 0); break;
-            case KeyEvent.VK_NUMPAD4 : gameModel.setMoveHorizontal(-1, 1); break;
-            case KeyEvent.VK_NUMPAD6 : gameModel.setMoveHorizontal(1, 1); break;
-            case KeyEvent.VK_NUMPAD8 : gameModel.setJump(true, 1); break;
-            case KeyEvent.VK_N : if (gameModel.getState() == Game_2_Model.ModelState.WINSCREEN && PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) PartyModeHandler.update(); else  ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel())); break;
-            case KeyEvent.VK_M : if (gameModel.getState() == Game_2_Model.ModelState.PRE_SCREEN) gameModel.setGameStart();
-        }
+        if (gameModel.getState() == Game_2_Model.ModelState.GAME) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ESCAPE:
+                    System.exit(0);
+                    break;
 
+                case KeyEvent.VK_A : gameModel.setMoveHorizontal(-1, 0); break;
+                case KeyEvent.VK_D : gameModel.setMoveHorizontal(1, 0); break;
+                case KeyEvent.VK_W : gameModel.setJump(true, 0); break;
+                case KeyEvent.VK_NUMPAD4 : gameModel.setMoveHorizontal(-1, 1); break;
+                case KeyEvent.VK_NUMPAD6 : gameModel.setMoveHorizontal(1, 1); break;
+                case KeyEvent.VK_NUMPAD8 : gameModel.setJump(true, 1); break;
+            }
+        }
+        else if (gameModel.getState() == Game_2_Model.ModelState.WINSCREEN)
+        {
+            if (e.getKeyCode() == KeyEvent.VK_N) {
+                if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY)
+                    PartyModeHandler.notifyNextGame();
+                else ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
+            }
+        }
+        else
+        {
+            if (e.getKeyCode() == KeyEvent.VK_N) gameModel.setGameStart();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if (gameModel.getState() != Game_2_Model.ModelState.GAME) return;
+
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_ESCAPE :
