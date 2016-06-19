@@ -84,15 +84,18 @@ public class Game_3_Controller implements Controller{
             }
             else
             {
+                System.out.println("NOT INGAME!");
                 scoreMusic.loop(20);
                 if (PartyModeHandler.getCurrentMode() == PartyModeHandler.Mode.CHOOSE_PARTY) {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
                         backgroundMusic.stop();
                         scoreMusic.stop();
                         PartyModeHandler.notifyNextGame();
+                        System.out.println("NOTIFIED NEXT GAME");
                     }
                 } else {
                     if (wiimoteHandler.getIsButtonPressed(0, WiimoteHandler.Buttons.KEY_A) || wiimoteHandler.getIsButtonPressed(1, WiimoteHandler.Buttons.KEY_A)) {
+                        System.out.println("NOT IN PARTY MODE, LAUNCHER MAIN MENU.");
                         backgroundMusic.stop();
                         scoreMusic.stop();
                         ModelHandler.instance.changeModel(new NewModel(null, new MainMenuModel()));
