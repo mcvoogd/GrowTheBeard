@@ -122,7 +122,7 @@ public class MainMenuModel implements Model{
     {
         switch (mode)
         {
-            case CHOOSE_PARTY: if(partyModeHandler != null)partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
+            case CHOOSE_PARTY: if(partyModeHandler == null)partyModeHandler = new PartyModeHandler(PartyModeHandler.Mode.CHOOSE_PARTY, wiimoteHandler, this); PartyModeHandler.update();break;
             case CHOOSE_SINGLE:  ModelHandler.instance.onModelEvent(new NewModel(this, new SingleMenuModel())); break;
         }
     }
