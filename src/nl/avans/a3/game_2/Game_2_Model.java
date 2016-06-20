@@ -3,10 +3,7 @@ import javafx.util.Pair;
 import nl.avans.a3.event.NewModel;
 import nl.avans.a3.mvc_handlers.ModelHandler;
 import nl.avans.a3.mvc_interfaces.Model;
-import nl.avans.a3.util.Beard;
-import nl.avans.a3.util.Logger;
-import nl.avans.a3.util.MathExtended;
-import nl.avans.a3.util.ResourceHandler;
+import nl.avans.a3.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,6 +75,7 @@ public class Game_2_Model implements Model {
     public enum ModelState{PRE_SCREEN, GAME, WINSCREEN}
     private ModelState state = ModelState.PRE_SCREEN;
     public ModelState getState() {return state;}
+    private SoundPlayer scoreMusic;
 
     private class Collidable{
         float x, y;
@@ -285,6 +283,7 @@ public class Game_2_Model implements Model {
     public Game_2_Model()
     {
         platforms = new ArrayList<>();
+        scoreMusic = new SoundPlayer("res/music/theme_song.wav");
     }
 
     private boolean hasStarted = false;
@@ -297,6 +296,7 @@ public class Game_2_Model implements Model {
         new Timer(time * 1000, e -> {
             inGame = false;
             state = ModelState.WINSCREEN;
+            scoreMusic.loop(20);
             if (getScores().getKey() > getScores().getValue()) Beard.beardPlayer1++;
             else if (getScores().getKey() < getScores().getValue()) Beard.beardPlayer2 ++;
         }).start();
@@ -340,7 +340,7 @@ public class Game_2_Model implements Model {
 
     @Override
     public void close() {
-
+            scoreMusic.stop();
     }
 
     public void setGameStart()
