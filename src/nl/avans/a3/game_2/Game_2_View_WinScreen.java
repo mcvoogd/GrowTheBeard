@@ -7,6 +7,7 @@ import nl.avans.a3.util.EasyTransformer;
 import nl.avans.a3.util.ResourceHandler;
 
 import nl.avans.a3.util.Beard;
+import nl.avans.a3.util.SoundPlayer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,7 +31,7 @@ public class Game_2_View_WinScreen implements View {
     private BufferedImage[] playerImage;
     private BufferedImage[] beards;
     private int beardCounter, switchBeardCounter;
-
+    private SoundPlayer scoreMusic;
     public Game_2_View_WinScreen(Game_2_Model model)
     {
         this.model = model;
@@ -38,6 +39,8 @@ public class Game_2_View_WinScreen implements View {
 
     @Override
     public void start() {
+        scoreMusic = new SoundPlayer("res/music/theme_song.wav");
+        scoreMusic.loop(20);
         winner = new BufferedImage[3];
         text = ResourceHandler.getImage("res/images_scoreboard/text.png");
         BufferedImage winnerImage = ResourceHandler.getImage("res/images_scoreboard/winner.png");
@@ -120,7 +123,7 @@ public class Game_2_View_WinScreen implements View {
 
     @Override
     public void close() {
-
+        scoreMusic.stop();
     }
 
     @Override
