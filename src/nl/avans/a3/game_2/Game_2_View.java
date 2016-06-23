@@ -214,6 +214,8 @@ public class Game_2_View implements View {
     public void close() {
     }
 
+    private final Random random = new Random(System.currentTimeMillis());
+
     @Override
     public void onModelEvent(ModelEvent event) {
         if(!(event instanceof Game_2_Event)){
@@ -228,7 +230,8 @@ public class Game_2_View implements View {
             }
             else {
                 // put new random here, FloBo worries that it will not be equally random anymore, I just don't care about such minimal errors.
-                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int) (new Random(System.currentTimeMillis()).nextFloat() * 3 * framesPerAnimationFrame)));
+                // changed this to proper random - flobo
+                platforms.put(newObject.id, new Platform(newObject.x, newObject.y, (int) (random.nextFloat() * 3 * framesPerAnimationFrame)));
             }
         }
         else if(event instanceof G2_ObjectMove){
