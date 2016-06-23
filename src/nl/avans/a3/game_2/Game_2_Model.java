@@ -114,11 +114,13 @@ public class Game_2_Model implements Model {
             return Math.sin(x/(JUMP_DURATION/Math.PI))*JUMP_HEIGHT;
         }
 
-        private boolean isGoodIntersect(Rectangle platform){ // assumes the rectangle already intercepts
+        private boolean isGoodIntersect(Rectangle platform) // assumes the rectangle already intercepts
+        {
             Rectangle self = getBounds();
-            if(platform.y + platform.height - self.y > 20) return false; // we are to high
-            // we are to far left
-            return self.x + self.width >= platform.x && platform.x + platform.width >= self.x;
+            if (platform.y+platform.height-self.y > 20) return false; // we are to high
+            if (self.x + self.width < platform.x) return false; // we are to far left
+            if (platform.x+platform.width < self.x) return false; // we are to far right
+            return true; // otherwise we have a good intersect
         }
 
         public void update()
